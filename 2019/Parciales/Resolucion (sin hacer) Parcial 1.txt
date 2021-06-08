@@ -1,0 +1,11 @@
+
+- Aréas (son cinco privadas, una por cada robot)
+- Son dos tipos de robot (corredor y jefe)
+- El jefe envía la calle y ID a cada corredor  
+- el jefe elige los random y se los envía a cada robot (distintos a cada robot, y en cada paso de cada robot)
+- el jefe envía la cantidad exacta de mensajes (no más de los necesarios). Algunos robots podrían llegar en menos pasos y por ende, deberían recibir menos mensajes
+- Empiezan todos a la vez, tanto en la primera como en la segunda etapa.
+- El jefe informa quien llegó primero, quien junto más flores y quien junto más papeles, como corresponde.
+- No quedan mensajes sin recibirse
+- No bloquean ninguna esquina (son todas áreas privadas)
+
