@@ -12,26 +12,26 @@
 </div>
 
 
-## Parciales :skull:
-
-
-## Prácticas 2020 :older_woman:
-
-
-## Prácticas 2021 :mask:
-
-
 ## Ejercicios de Ayuda
 
-- **[Vectores - Algoritmos Básicos](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/VECTORES)**
-- **[Minimos](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/Minimos)**
-- **[Maximos](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/Maximos)**
-- **[Listas](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/LISTAS)**
+- **[IMPERATIVO](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO)**
 
+  - **[Minimos](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/Minimos)**
+  - **[Maximos](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/Maximos)**
+  - **[Vectores](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/VECTORES)**
+    - **[Ordenacion por Insercion](https://github.com/OmgCopito95/Algoritmos-Basicos/blob/master/IMPERATIVO/VECTORES/ordenacion_insercion.pas)**
+  - **[Listas](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/LISTAS)**
+    - **[Merge de Listas](https://github.com/OmgCopito95/Algoritmos-Basicos/blob/master/IMPERATIVO/LISTAS/merge_de_listas.pas)**
+    - **[Merge Acumulador](https://github.com/OmgCopito95/Algoritmos-Basicos/blob/master/IMPERATIVO/LISTAS/merge_acumulador.pas)**
+    
+  - **[RECURSION](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/RECURSION)**
+  
+    - **[Listas](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/RECURSION/Listas)** 
+    - **[Vectores](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/RECURSION/Vectores)**
+     
+  - **[ARBOLES](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/ARBOLES)** 
+  
+- **[RINFO](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/RINFO)**
 
-## Ejercicios Resueltos :gift:
-
-
-## Ejercicios para Practicar 
 
  
