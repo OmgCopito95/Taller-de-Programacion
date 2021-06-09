@@ -11,6 +11,27 @@
   <hr>
 </div>
 
+## Parciales :skull:
+- **[2018](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2018/Parciales)**
+- **[2019](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2019/Parciales)**
+- **[2020](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Parciales)**
+
+## Prácticas 2020 :older_woman:
+- **[Contenido](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020)**
+   - **Prácticas**
+      - **[Imperativo](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Imperativo)** 
+      - **[POO](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/POO)**
+      - **[Concurrente](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Concurrente)** 
+   - **Teoría**
+      - **[Ejercicios Resueltos De Teoría](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Actividades%20de%20Teoria)**
+
+## Prácticas 2021 :mask:
+
+- **[Contenido](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021)**
+  - **Prácticas**
+      - **[Imperativo](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Imperativo)** 
+      - **[POO](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/POO)**
+      - **[Concurrente](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Concurrente)** 
 
 ## Ejercicios de Ayuda
 
