@@ -33,7 +33,7 @@
       - **[POO](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/POO)**
       - **[Concurrente](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Concurrente)** 
 
-## Ejercicios de Ayuda
+## Códigos de Ayuda
 
 - **[IMPERATIVO](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO)**
 
