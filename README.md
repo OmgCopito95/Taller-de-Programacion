@@ -25,7 +25,7 @@
    - **Teoría**
       - **[Ejercicios Resueltos De Teoría](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Actividades%20de%20Teoria)**
 
-## Prácticas 2021 :mask:
+## Prácticas 2021 - Primer Semestre :mask:
 
 - **[Contenido](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021)**
   - **Prácticas**
