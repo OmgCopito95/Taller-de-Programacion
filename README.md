@@ -40,6 +40,7 @@
   - **[Minimos](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/Minimos)**
   - **[Maximos](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/Maximos)**
   - **[Vectores](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/VECTORES)**
+    - **[Ordenacion por Selección](https://github.com/OmgCopito95/Algoritmos-Basicos/blob/master/IMPERATIVO/VECTORES/ordenacion_seleccion.lpr)**
     - **[Ordenacion por Insercion](https://github.com/OmgCopito95/Algoritmos-Basicos/blob/master/IMPERATIVO/VECTORES/ordenacion_insercion.pas)**
   - **[Listas](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO/LISTAS)**
     - **[Merge de Listas](https://github.com/OmgCopito95/Algoritmos-Basicos/blob/master/IMPERATIVO/LISTAS/merge_de_listas.pas)**
