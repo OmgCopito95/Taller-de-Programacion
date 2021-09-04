@@ -16,22 +16,44 @@
 - **[2019](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2019/Parciales)**
 - **[2020](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Parciales)**
 
-## Prácticas 2020 :older_woman:
-- **[Contenido](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020)**
-   - **Prácticas**
-      - **[Imperativo](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Imperativo)** 
-      - **[POO](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/POO)**
-      - **[Concurrente](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Concurrente)** 
-   - **Teoría**
-      - **[Ejercicios Resueltos De Teoría](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Actividades%20de%20Teoria)**
+## 
 
-## Prácticas 2021 - Primer Semestre :mask:
+## Prácticas :older_woman: :mask:
 
-- **[Contenido](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021)**
-  - **Prácticas**
-      - **[Imperativo](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Imperativo)** 
-      - **[POO](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/POO)**
-      - **[Concurrente](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Concurrente)** 
+<details>
+  <summary>2020</summary>
+  
+  ## Prácticas 2020 
+  1. **[Contenido](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020)**
+  2. **Prácticas**
+      * **[Imperativo](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Imperativo)** 
+      * **[POO](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/POO)**
+      * **[Concurrente](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Concurrente)** 
+  3. **Teoría**
+      * **[Ejercicios Resueltos De Teoría](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Actividades%20de%20Teoria)** 
+</details>
+
+<details>
+  <summary>2021</summary>
+  
+  ## Prácticas 2021 - Primer Semestre 
+  1. **[Contenido](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021)**
+  2. **Prácticas**
+      * **[Imperativo](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Imperativo)** 
+      * **[POO](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/POO)**
+      * **[Concurrente](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Concurrente)**
+</details>    
+
+---
+
+## Prácticas 2021 - Segundo Semestre :mask:
+
+- Turno D :sun_with_face:
+    - **[Turno D - Clases Prácticas](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Segundo%20Semestre/Turno%20D%20-%20Aula%205)**
+- Turno E :new_moon_with_face:
+    - **[Turno E - Clases Prácticas](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Segundo%20Semestre/Turno%20E%20-%20Aula%204)**
+
+---
 
 ## Códigos de Ayuda
 
