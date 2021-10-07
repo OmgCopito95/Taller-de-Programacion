@@ -1,0 +1,48 @@
+/*2- Utilizando la clase Persona (ya implementada). Realice un programa que almacene en 
+un vector 15 personas. La información de cada persona debe leerse de teclado. Luego de 
+almacenar la información:
+ - Informe la cantidad de personas mayores de 65 años.
+ - Muestre la representación de la persona con menor DNI.
+*/
+package FABIAN.practica_1;
+
+import PaqueteLectura.GeneradorAleatorio;
+
+public class Ejercicio2_Parte2 {
+    public static void main(String[] args) {
+        GeneradorAleatorio.iniciar();
+        
+        int cant= 15, edad= 65;
+        Persona [] vp= new Persona[cant];
+        int i;
+        for (i=0; i<cant; i++){
+            vp[i]= new Persona();
+            vp[i].setNombre(GeneradorAleatorio.generarString(5));
+            System.out.println("Nombre: " + vp[i].getNombre()); 
+            vp[i].setDNI(GeneradorAleatorio.generarInt(10));
+            System.out.println("DNI: " + vp[i].getDNI()); 
+            vp[i].setEdad(GeneradorAleatorio.generarInt(100));
+            System.out.println("Edad: "+ vp[i].getEdad()); 
+            System.out.println("_______________________________");
+        }
+        
+        int superan_65= 0;
+        
+        Persona min = new Persona(); //Para calcular a la persona con menor dni     //NO HACE FALTA ESTO
+        min.setDNI(999);
+        
+        for (i=0; i<cant; i++){
+            if (vp[i].getEdad()>edad) {
+                superan_65++;
+            }
+            if (vp[i].getEdad()<min.getDNI()) {
+                min= vp[i];                     
+            }
+        }
+        System.out.println("La cantidad de personas con mas de 65 años es: " + superan_65); 
+        System.out.println(min.toString());
+    }
+}
+
+//EN VEZ DE CREARTE OTRA INSTANCIA DEL OBJETO PERSONA, PODRIAS GUARDARTE LA POSICION EN LA QUE SE ENCUENTRA EL VECTOR
+// Y ASI AHORRAS MEMORIA 
