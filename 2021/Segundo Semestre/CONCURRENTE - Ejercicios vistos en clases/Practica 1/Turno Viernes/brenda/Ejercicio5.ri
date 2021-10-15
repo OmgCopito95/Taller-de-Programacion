@@ -1,0 +1,103 @@
+programa p1_ej5
+
+procesos
+  proceso juntarFlores (ES flores: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin  
+  
+  proceso depositarFlores (E flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin  
+  
+  proceso juntarPapeles (ES papeles: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin  
+  
+  proceso depositarPapeles (E papeles:numero)
+  comenzar
+    repetir papeles
+      depositarPapel
+  fin  
+
+  proceso recorrerAvenidaPapeles
+  variables
+    papeles:numero
+    callePrincipio:numero
+  comenzar
+    papeles:=0
+    callePrincipio:= posCa
+    repetir 19
+      si HayPapelEnLaEsquina
+        juntarPapeles(papeles)
+      mover
+    si HayPapelEnLaEsquina
+      juntarPapeles(papeles)
+    Pos(PosAv,callePrincipio)  
+    depositarPapeles(papeles)
+  fin
+  
+  proceso recorrerCalleFlores
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    repetir 19
+      si HayFlorEnLaEsquina
+        juntarFlores(flores)
+      mover
+    si HayFlorEnLaEsquina
+      juntarFlores(flores)
+    depositarFlores(flores)
+  fin
+
+areas
+  area1: AreaP(1,75,20,80)  {REVISAR}
+  area2: AreaP(75,81,80,100)
+  area3: AreaP(81,10,100,15)
+  area4: AreaP(10,1,15,20)
+  
+  
+robots 
+  robot tipo1
+  comenzar
+    derecha
+    recorrerCalleFlores
+    Pos((PosAv - 19), (PosCa + 5))
+    recorrerCalleFlores
+  fin
+  
+  robot tipo2
+  comenzar
+    recorrerAvenidaPapeles
+    Pos((PosAv + 5), PosCa)
+    recorrerAvenidaPapeles
+  fin
+
+     
+variables 
+  robot1: tipo1
+  robot2: tipo2
+  robot3: tipo1
+  robot4: tipo2
+
+
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,area4)
+  Iniciar(robot1, 1, 75)
+  Iniciar(robot2, 75, 81)
+  Iniciar(robot3, 81, 10)
+  Iniciar(robot4, 10, 1)
+fin
+
+

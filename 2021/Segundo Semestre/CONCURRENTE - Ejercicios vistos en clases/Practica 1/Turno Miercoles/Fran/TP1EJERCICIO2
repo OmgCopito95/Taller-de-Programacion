@@ -1,0 +1,78 @@
+programa TP1EJERCICIO2
+procesos
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+areas
+  areaR1: AreaP(10,10,10,19) 
+  areaR2:AreaP(10,20,19,20)
+  areaR3:AreaP(20,11,20,20)
+  areaR4:AreaP(11,10,20,10)
+robots
+  robot robot1
+  variables
+    f:numero
+  comenzar
+    f:=0
+    repetir 9
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    Informar(f)
+  fin
+  robot robot2
+  variables
+    f:numero
+  comenzar
+    f:=0
+    derecha
+    repetir 9
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    Informar(f)
+  fin
+  robot robot3
+  variables
+    f:numero
+  comenzar
+    f:=0
+    repetir 2
+      derecha
+    repetir 9
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    Informar(f)
+  fin
+  robot robot4
+  variables
+    f:numero
+  comenzar
+    f:=0
+    repetir 3
+      derecha
+    repetir 9
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    Informar(f)
+  fin
+variables
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+comenzar
+  AsignarArea(r1, areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r4,areaR4)
+  Iniciar(r1,10,10)
+  Iniciar(r2,10,20)
+  Iniciar(r3,20,20)
+  Iniciar(r4,20,10)
+fin

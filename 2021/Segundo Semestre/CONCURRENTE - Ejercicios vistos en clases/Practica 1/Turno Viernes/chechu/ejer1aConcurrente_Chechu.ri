@@ -1,0 +1,61 @@
+{Modifique el programa anterior para que el mismo robot realice lo mismo en las avenidas 1, 3 y 5.}
+programa ejer1a_concurrenteChechu
+procesos
+  proceso juntarFlores (ES flor:numero; ES esqSinFlor:numero)
+  comenzar
+    si (~HayFlorEnLaEsquina)
+      esqSinFlor:= esqSinFlor + 1
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin
+  proceso recorrerAvenida (ES flores: numero; ES esqSinFlor: numero)
+  comenzar
+    juntarFlores(flores,esqSinFlor)
+    repetir 99
+      mover
+      juntarFlores(flores,esqSinFlor)
+  fin
+  proceso dejarFlores (E flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+{----AREAS-----}
+areas
+  ciudad : AreaP(1,1,1,100) {Av,Ca}
+  ciudad1: AreaP(3,1,3,100) {Arranco en Av 3, Ca 1}
+  ciudad2: AreaP(5,1,5,100) {Arranco en Av 5, Ca 1 }
+{----ROBOT-----}  
+robots
+  robot tipo1
+  variables
+    flores: numero
+    esqSinFlor: numero
+  comenzar    {MODULARIZAR}
+    flores := 0
+    esqSinFlor := 0
+    recorrerAvenida(flores, esqSinFlor)
+    dejarFlores (flores)
+    Informar (flores)
+    Informar (esqSinFlor)
+    Pos(3,1) {posiciono el robot para que no se caiga}
+    recorrerAvenida(flores, esqSinFlor)
+    dejarFlores (flores)
+    Informar (flores)
+    Informar (esqSinFlor)
+    Pos(5,1) 
+    recorrerAvenida(flores, esqSinFlor)
+    dejarFlores (flores)
+    Informar (flores)
+    Informar (esqSinFlor)
+  fin
+{------PROGRAMA PRINCIPAL----------}
+variables
+  robot1: tipo1
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot1, ciudad1)
+  AsignarArea(robot1,ciudad2)
+  Iniciar(robot1, 1, 1)
+fin

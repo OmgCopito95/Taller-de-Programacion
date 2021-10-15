@@ -1,0 +1,122 @@
+programa ejer3
+procesos
+  proceso ContarPapeles(ES totalPapel:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      totalPapel:= totalPapel + 1
+      tomarPapel
+    repetir totalPapel
+      depositarPapel  
+  fin
+  
+  proceso ContarFlores(ES totalFlores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      totalFlores:= totalFlores + 1
+      tomarFlor
+    repetir totalFlores
+      depositarFlor
+  fin
+  
+areas
+  ciudad: AreaC(1,1,100,100) //revisar
+robots
+
+  robot robot1
+  variables
+    totalPapel:numero
+    totalFlores: numero
+    resta:numero
+    rep:numero
+  comenzar
+    rep:= 1
+    mientras (rep <= 4)//
+      totalPapel:= 0  
+      totalFlores:=0
+      resta:=0
+      repetir 2
+        repetir rep
+          mover //falta la primera esquina
+          ContarPapeles(totalPapel   
+          ContarFlores(totalFlores)
+        derecha 
+      resta:= totalPapel - totalFlores
+
+      si (resta = 1) //contar cant escalones
+        Informar('el escalon ',rep,' supero en 1')
+      sino
+        Informar('el escalon ',rep,' no supero en 1')
+        
+      repetir 2
+        derecha  
+      rep:= rep + 1
+  fin
+  
+  robot robot2
+  variables
+    totalPapel:numero
+    totalFlores: numero
+    resta:numero
+    rep:numero
+  comenzar
+    rep:= 1  
+    mientras (rep <= 4)//
+      totalPapel:= 0  
+      totalFlores:=0
+      resta:=0
+      repetir 2
+        repetir rep
+          mover
+          ContarPapeles(totalPapel    
+          ContarFlores(totalFlores)
+        derecha    
+      resta:= totalPapel - totalFlores
+      si (resta = 1)
+        Informar('el escalon ',rep,' supero en 1')
+      sino
+        Informar('el escalon ',rep,' no supero en 1')
+      repetir 2
+        derecha  
+      rep:= rep + 1
+  fin
+  
+  robot robot3
+  variables
+    totalPapel:numero
+    totalFlores: numero
+    resta:numero
+    rep:numero
+  comenzar
+    rep:= 1
+    mientras (rep <= 4)//
+      totalPapel:= 0  
+      totalFlores:=0
+      resta:=0
+      repetir 2
+        repetir rep
+          mover
+          ContarPapeles(totalPapel  
+          ContarFlores(totalFlores)
+        derecha    
+      resta:= totalPapel - totalFlores
+      si (resta = 1)
+        Informar('el escalon ',rep,' supero en 1')
+      sino
+        Informar('el escalon ',rep,' no supero en 1')
+      repetir 2
+        derecha  
+      rep:= rep + 1
+  fin
+  
+variables
+  R1: robot1  //con un tipo de robot alcanza
+  R2: robot2
+  R3: robot3
+comenzar
+  AsignarAarea(R1,ciudad)
+  AsignarAarea(R2,ciudad)
+  AsignarAarea(R3,ciudad)
+  Iniciar(R1,12,14)
+  Iniciar(R2,17,10)
+  Iniciar(R3,22,6)
+fin

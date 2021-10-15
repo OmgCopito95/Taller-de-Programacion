@@ -1,0 +1,38 @@
+programa ejer1b
+
+procesos
+  proceso JuntarFlores (ES totalFlores: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      totalFlores:= totalFlores + 1
+  fin   
+  
+areas
+  ciudad: AreaC(1,1,100,100) //revisar
+robots
+  robot tipoR
+  
+  variables
+    totalFlores: numero
+  comenzar
+    totalFlores:=0
+    repetir 99
+      JuntarFlores (totalFlores)
+      mover
+    JuntarFlores (totalFlores)
+    Informar(totalFlores) //faltan las esquinas sin flores
+  fin
+  
+variables
+  robot1: tipoR
+  robot2: tipoR
+  robot3: tipoR
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,3,1)
+  Iniciar(robot3,5,1)
+fin

@@ -1,0 +1,37 @@
+programa ej1
+procesos 
+  proceso Juntar (ES flores : numero; ES NOflores : numero) {junta y cuenta flores y esquinas vacias}
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina 
+        tomarFlor 
+        flores:=flores+1
+    sino
+      NOflores:=NOflores+1 
+  fin 
+areas 
+  ciudad: AreaP(1,1,1,100) {declaracion de area privada del robot}
+robots 
+  robot robot1 
+  variables 
+    totalFlores: numero
+    totalNOflores:numero 
+  comenzar 
+    Pos(1,1) {NO HACE FALTA}
+    totalFlores:=0
+    totalNOflores:=0
+    repetir 99 {MODULARIZAR}
+      Juntar(totalFlores,totalNOflores)
+      mover 
+    Juntar(totalFlores,totalNOflores)  
+    Informar(totalFlores) {informa la cantidad de flores recogidas}
+    Informar(totalNOflores) {informa la cantidad de esquinas vacias}
+    repetir totalFlores {MODULARIZAR}
+      depositarFlor  {deposita todas las flores en la ultima esquina}
+  fin 
+variables 
+  R-info : robot1 
+comenzar 
+  AsignarArea(R-info,ciudad) 
+  Iniciar(R-info, 1 , 1) 
+fin

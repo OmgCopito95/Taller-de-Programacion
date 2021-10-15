@@ -1,0 +1,48 @@
+{Realice un programa para que un robot junte todas las flores de la avenida 1 y las deposite al final de dicha avenida. Al finalizar, debe informar la cantidad de flores depositadas y la cantidad de esquinas sin flores que encontrÃƒÂ³ durante el recorrido.}
+programa ejer1_concurrenteChechu
+procesos
+  proceso juntarFlores (ES flor:numero; ES esqSinFlor:numero)
+  comenzar
+    si (~HayFlorEnLaEsquina)
+      esqSinFlor:= esqSinFlor + 1
+    sino
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        flor:= flor + 1
+  fin
+  proceso recorrerAvenida (ES flores: numero; ES esqSinFlor: numero)
+  comenzar
+    juntarFlores(flores,esqSinFlor)
+    repetir 99
+      mover
+      juntarFlores(flores,esqSinFlor)
+  fin
+  proceso dejarFlores (E flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+{-----AREAS------}
+areas
+  ciudad : AreaP(1,1,1,100)
+{----ROBOT-----}  
+robots
+  robot tipo1
+  variables
+    flores: numero
+    esqSinFlor: numero
+  comenzar
+    flores := 0
+    esqSinFlor := 0
+    recorrerAvenida(flores, esqSinFlor)
+    dejarFlores (flores)
+    Informar (flores)
+    Informar (esqSinFlor)
+  fin
+{-------Programa Principal----------}
+variables
+  robot1: tipo1
+comenzar
+  AsignarArea(robot1,ciudad)
+  Iniciar(robot1, 1, 1)
+fin

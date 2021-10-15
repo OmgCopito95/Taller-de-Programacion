@@ -1,0 +1,110 @@
+programa punto4
+
+procesos
+
+  proceso recorrerFlores(ES f: numero)
+  comenzar
+    repetir 12
+      repetir 24
+        juntarFlores(f)
+        mover
+      derecha
+      juntarFlores(f)
+      mover
+      derecha
+      repetir 24
+        juntarFlores(f)
+        mover
+      repetir 3
+        derecha
+      juntarFlores(f)
+      mover
+      repetir 3
+        derecha
+    repetir 24
+      juntarFlores(f)
+      mover
+  fin
+
+  proceso recorrerPapeles(ES p: numero)
+  comenzar
+    repetir 12
+      repetir 24 //repetir 99 - recorre toda la av
+        juntarPapeles(p)
+        mover
+      derecha
+      juntarPapeles(p)
+      mover
+      derecha
+      repetir 24
+        juntarPapeles(p)
+        mover
+      repetir 3
+        derecha
+      juntarPapeles(p)
+      mover
+      repetir 3
+        derecha
+    repetir 24
+      juntarPapeles(p)
+      mover
+  fin
+
+  proceso juntarFlores(ES f: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+  fin
+
+  proceso juntarPapeles(ES p: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p + 1
+  fin
+
+areas
+
+  area1: AreaPC(1, 1, 25, 25) //revisar
+  area2: AreaPC(26, 26, 50, 50)
+  area3: AreaPC(51, 51, 75, 75)
+  area4: AreaPC(76, 76, 100, 100)
+
+robots
+
+  robot robotitoImpares
+  variables
+    flor: numero
+  comenzar
+    flor:= 0
+    recorrerFlores(flor)
+    Pos(51, 51)
+    recorrerFlores(flor)
+    Informar(flor)
+  fin
+
+  robot robotitoPares
+  variables
+    papel: numero
+  comenzar
+    papel:= 0
+    recorrerPapeles(papel)
+    Pos(76, 76)
+    recorrerPapeles(papel)
+    Informar(papel)
+  fin
+
+variables
+
+  walle: robotitoImpares
+  terminator: robotitoPares
+
+comenzar
+  AsignarArea(walle, area1)
+  AsignarArea(walle, area3)
+  AsignarArea(terminator, area2)
+  AsignarArea(terminator, area4)
+  Iniciar(walle, 1, 1)
+  Iniciar(terminator, 26, 26)
+fin

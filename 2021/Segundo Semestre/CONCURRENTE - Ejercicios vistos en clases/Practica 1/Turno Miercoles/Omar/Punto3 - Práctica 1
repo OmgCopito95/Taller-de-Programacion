@@ -1,0 +1,50 @@
+programa punto3
+
+areas
+  
+  ciudad: AreaC(1, 1, 100, 100)
+
+robots    //falta terminar
+
+  robot robotito
+  comenzar
+    mover
+    derecha
+    mover
+    repetir 3
+      derecha
+    repetir 2
+      mover
+    derecha
+    repetir 2
+      mover
+    repetir 3
+      derecha
+    repetir 3
+      mover
+    derecha
+    repetir 3
+      mover
+    repetir 3
+      derecha
+    repetir 4
+      mover
+    derecha
+    repetir 4
+      mover
+  fin
+
+variables
+
+  walle: robotito
+  terminator: robotito
+  granSoldador: robotito
+
+comenzar
+  AsignarArea(walle, ciudad)
+  AsignarArea(terminator, ciudad)
+  AsignarArea(granSoldador, ciudad)
+  Iniciar(walle, 8, 10)
+  Iniciar(terminator, 11, 8)
+  Iniciar(granSoldador, 14, 6)
+fin

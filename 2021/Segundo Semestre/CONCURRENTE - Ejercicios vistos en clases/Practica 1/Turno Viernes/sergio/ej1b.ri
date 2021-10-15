@@ -1,0 +1,52 @@
+{no se puede ejecutar instruccion pos}
+programa ej1
+procesos  
+  proceso Juntar (ES flores : numero; ES NOflores : numero) {junta y cuenta flores y esquinas vacias}
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina 
+        tomarFlor 
+        flores:=flores+1
+    sino
+      NOflores:=NOflores+1 
+  fin
+  proceso Recorrer (E av:numero)
+  variables  
+    totalFlores: numero
+    totalNOflores:numero
+  comenzar 
+    Pos(av,1)
+    totalFlores:=0
+    totalNOflores:=0
+    repetir 99 
+      Juntar(totalFlores,totalNOflores)
+      mover 
+    Juntar(totalFlores,totalNOflores)  
+    Informar(totalFlores) {informa la cantidad de flores recogidas}
+    Informar(totalNOflores) {informa la cantidad de esquinas vacias}
+    repetir totalFlores
+      depositarFlor  {deposita todas las flores en la ultima esquina}
+  fin
+areas 
+  ciudad1: AreaP(1,1,1,100)
+  ciudad2: AreaP(3,1,3,100)
+  ciudad3: AreaP(5,1,5,100) 
+robots 
+  robot robot1 
+  comenzar
+    Recorrer (posAv)
+  fin
+  
+
+variables 
+  R-info : robot1 
+  R-info2 : robot1
+  R-info3 : robot1 
+comenzar 
+  AsignarArea(R-info,ciudad1)
+  AsignarArea(R-info2,ciudad2)
+  AsignarArea(R-info3,ciudad3)
+  Iniciar(R-info,1,1)
+  Iniciar(R-info2,3,1)
+  Iniciar(R-info3,5,1)
+fin

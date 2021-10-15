@@ -1,0 +1,57 @@
+programa ej1
+procesos
+  proceso JuntarPapeles (ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso limpiarLado (E av:numero; E ca:numero)
+  variables
+    papeles:numero
+  comenzar
+    pos (av,ca)
+    papeles:=0
+    repetir 19
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles (papeles)
+    informar (papeles)
+  fin
+areas {REVISAR}
+  Lado1:areaP(10,10,10,29)
+  Lado2:areaP(11,29,30,30)
+  Lado3:areaP(30,30,30,11)
+  Lado4:areaP(30,11,10,10)
+robots {FALTA GIRAR ROBOTS}
+  robot:robot1
+  comenzar
+    limpiarLado(10,10)
+  fin
+  robot:robot2
+  comenzar
+    limpiarLado(10,30)
+  fin
+  robot:robot3
+  comenzar
+    limpiarLado(30,30)
+  fin
+  robot:robot3
+  comenzar
+    limpiarLado(30,10)
+  fin
+  variables
+    rinfo1:robot1
+    rinfo2:robot2
+    rinfo3:robot3
+    rinfo4:robot4
+  comenzar
+    AsignarArea (rinfo1:lado1)
+    AsignarArea (rinfo2:lado1)
+    AsignarArea (rinfo3:lado1)
+    AsignarArea (rinfo4:lado1)
+    Iniciar(rinfo1, 10 , 10)
+    Iniciar(rinfo2, 10 , 30)
+    Iniciar(rinfo3, 30 , 30)
+    Iniciar(rinfo4, 30 , 10)
+  fin

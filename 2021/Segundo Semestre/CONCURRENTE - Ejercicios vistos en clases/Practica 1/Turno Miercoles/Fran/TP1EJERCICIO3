@@ -1,0 +1,71 @@
+programa TP1EJERCICIO3
+procesos
+  proceso cuantasFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+    mientras(HayFlorEnLaBolsa) //repetir f
+      depositarFlor
+  fin
+  proceso cuantosPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+    mientras(HayPapelEnLaBolsa) //repetir p
+      depositarPapel
+  fin
+  proceso comparar(E p:numero; E f:numero; ES ok:boolean)
+  variables
+    aux:numero
+  comenzar
+    ok:= F
+    aux:= f+1
+    si(p = aux)
+      ok:= V
+  fin
+areas
+  ciudad: AreaC(1,1,50,50) //revisar
+robots
+  robot r
+  variables
+    flor:numero
+    papel:numero
+    ok:boolean
+    supero:numero
+    pasos:numero
+  comenzar
+    supero:=0
+    flor:= 0
+    papel:= 0
+    pasos:=2
+    repetir 4
+      repetir pasos
+        cuantasFlores(flor)
+        cuantosPapeles(papel)
+        mover
+      derecha
+      repetir pasos
+        cuantasFlores(flor)
+        cuantosPapeles(papel)
+        mover
+      repetir 3
+        derecha  
+      comparar(papel,flor,ok)
+      si(ok)
+        supero:=supero+1
+      pasos:= pasos+1  
+      flor:=0
+      papel:=0
+    Informar(supero)  
+  fin    
+variables
+  r1:r
+  r2:r //falta un robot
+comenzar
+  AsignarArea(r1,ciudad)
+  AsignarArea(r2,ciudad)
+  Iniciar(r1,1,1)
+  Iniciar(r2,8,1)
+fin

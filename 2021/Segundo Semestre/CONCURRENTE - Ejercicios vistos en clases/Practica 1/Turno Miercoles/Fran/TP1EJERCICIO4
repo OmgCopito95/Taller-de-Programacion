@@ -1,0 +1,82 @@
+programa TP1EJERCICIO4
+procesos
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso recorrerAreaFlor(ES f:numero)
+  variables
+    av:numero
+    ca:numero
+  comenzar
+    av:= PosAv
+    ca:=PosCa
+    repetir 24
+      repetir 99
+        juntarFlores(f)
+        mover
+      juntarFlores(f)
+      av:=av+1
+      Pos(av,ca)
+    repetir 99
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+  fin
+  proceso recorrerAreaPapel(ES p:numero)
+  variables
+    av:numero
+    ca:numero
+  comenzar
+    av:= PosAv
+    ca:= PosCa
+    repetir 24
+      repetir 99
+        juntarPapeles(p)
+        mover
+      juntarPapeles(p)
+      av:=av+1
+      Pos(av,ca)
+    repetir 99
+      juntarPapeles(p)
+      mover
+    juntarPapeles(p)
+  fin    
+areas
+  ciudad: AreaC(1,1,100,100) //revisar - 4 areas privadas 2 para cada uno
+robots
+  robot papelero
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    recorrerAreaPapel(papeles)
+    Pos(76,1)
+    recorrerAreaPapel(papeles)
+  fin
+  robot florero
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    recorrerAreaFlor(flores)
+    Pos(51,1)
+    recorrerAreaFlor(flores)
+  fin  
+variables
+  rPapelero:papelero
+  rFlorero:florero
+comenzar
+  AsignarArea(rPapelero, ciudad)
+  AsignarArea(rFlorero, ciudad)
+  Iniciar(rPapelero,26,1)
+  Iniciar(rFlorero,1,1)
+fin

@@ -1,0 +1,62 @@
+programa punto1
+	
+procesos
+
+	proceso recorrerAvenida(E flor: numero; E noFlor: numero)
+	comenzar
+		flor:= 0
+		noFlor:= 0
+		repetir 99
+			juntar(flor, noFlor)
+			mover
+		//ulti esquina
+		hayFlor(flor, noFlor)
+	fin
+
+proceso juntar(ES flor: numero; ES sinFlor: numero)
+	comenzar
+		si(HayFlorEnLaEsquina)
+			mientras (HayFlorEnLaEsquina)
+				tomarFlor
+				flor:= flor + 1
+		sino
+			sinFlor:= sinFlor + 1
+	fin
+	
+	proceso hayFlor(E flor: numero; E sinFlor: numero)
+	comenzar
+		si(HayFlorEnLaBolsa) //revisar
+			Informar(flor)
+			depositarFlor
+		sino
+			Informar(sinFlor)
+	fin
+
+areas
+
+	ciudad: AreaC(1, 1, 100, 100) //revisar - 1 area privada para cada robot
+
+robots
+
+	robot robotito1
+	variables
+		f: numero
+		noF: numero
+	comenzar
+		recorrerAvenida(f, noF)
+	fin
+
+variables
+
+	walle: robotito1
+	eva: robotito1
+	auto: robotito1
+	
+comenzar
+	AsignarArea(walle, ciudad)
+	AsignarArea(eva, ciudad)
+	AsignarArea(auto, ciudad)
+	Iniciar(walle, 1, 1)
+	Iniciar(eva, 3, 1)
+	Iniciar(auto, 5, 1)
+fin

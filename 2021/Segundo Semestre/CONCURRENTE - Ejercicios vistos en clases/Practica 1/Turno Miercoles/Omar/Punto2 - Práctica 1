@@ -1,0 +1,83 @@
+programa punto2
+
+procesos
+  proceso juntarPapeles(ES p: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p + 1
+  fin
+
+areas
+
+  ciudad: AreaC(1, 1, 100, 100) //revisar
+
+robots
+
+  robot robotito1
+  variables
+    papel: numero
+  comenzar
+    papel:= 0
+    repetir 19
+      juntarPapeles(papel)
+      mover
+    Informar(papel)
+  fin
+
+  robot robotito2
+  variables
+    papel: numero
+  comenzar
+    papel:= 0
+    derecha
+    repetir 19
+      juntarPapeles(papel)
+      mover
+    Informar(papel)
+  fin
+
+  robot robotito3
+  variables
+    papel: numero
+  comenzar
+    papel:= 0
+    repetir 2
+      derecha
+    repetir 19
+      juntarPapeles(papel)
+      mover
+    Informar(papel)
+  fin
+
+  robot robotito4
+  variables
+    papel: numero
+  comenzar
+    papel:= 0
+    repetir 3
+      derecha
+    repetir 19
+      juntarPapeles(papel)
+      mover
+    Informar(papel)
+  fin
+
+variables
+
+  walle: robotito1
+  eva: robotito2
+  terminator: robotito3
+  yoRobot: robotito4
+
+comenzar
+  AsignarArea(walle, ciudad)
+  AsignarArea(eva, ciudad)
+  AsignarArea(terminator, ciudad)
+  AsignarArea(yoRobot, ciudad)
+  Iniciar(walle, 10, 10)
+  Iniciar(eva, 10, 29)
+  Iniciar(terminator, 29, 29)
+  Iniciar(yoRobot, 29 , 10)
+fin
+

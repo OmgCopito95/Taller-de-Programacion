@@ -1,0 +1,92 @@
+programa ej1
+procesos
+  proceso JuntarPapeles (ES papeles:numero)
+  variables
+    aux:numero
+  comenzar
+    aux:=0
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:=papeles+1
+    aux:=papeles
+    repetir aux
+      depositarPapel
+  fin
+  proceso JuntarFlores (ES flores:numero)
+  variables
+    aux:numero
+  comenzar
+    aux:=0
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:=flores+1
+    aux:=flores
+    repetir aux
+      depositarFlor
+  fin
+proceso Escalon (E lado:numero; ES supero:numero)
+variables
+  flores:numero
+  papeles:numero
+comenzar
+  papeles:=0
+  flores:=0
+  JuntarPapeles (papeles)
+  juntarFlores (flores)
+  repetir 2
+    repetir lado
+    mover
+    JuntarPapeles (papeles)
+    JuntarFlores (flores)
+    repetir 3
+      derecha
+  si flores + 1 = papeles
+    supero := supero + 1    
+fin
+
+proceso Escalera
+variables
+  supero:numero
+  lado:numero
+comenzar
+  lado:=1
+  derecha
+  repetir 3
+    escalon(lado,supero)
+    lado := lado+1
+  informar (supero)
+fin
+areas
+ciudad:areaC(1,1,100,100) {REVISAR}
+robots
+  robot:robot1
+  comenzar
+    escalera
+  fin
+  robot:robot2
+  comenzar
+    Pos(12,14)
+    escalera
+  fin
+  robot:robot3
+  comenzar
+    Pos (17,10)
+    escalera
+  fin
+  robot:robot3
+  comenzar
+    pos (22,6)
+    escalera
+  fin
+  variables
+    rinfo1:robot1 {UN SOLO TIPO DE ROBOT}
+    rinfo2:robot2
+    rinfo3:robot3
+  comenzar
+    AsignarArea (rinfo1:ciudad)
+    AsignarArea (rinfo2:ciudad)
+    AsignarArea (rinfo3:ciudad)
+    Iniciar(rinfo1, 12 , 14)
+    Iniciar(rinfo2, 17 , 10)
+    Iniciar(rinfo3, 22 , 6)
+  fin

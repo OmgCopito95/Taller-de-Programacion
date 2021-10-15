@@ -1,0 +1,103 @@
+programa punto5
+
+procesos
+
+  proceso limparFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+
+  proceso limparPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+
+  proceso depositarF
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+
+  proceso depositarP
+  comenzar
+    mientras(HayPapelEnLaBolsa) //volver a la primera esq
+      depositarPapel
+  fin
+
+areas
+
+  ciudad: AreaC(1,1, 100, 100) //revisan
+
+robots
+
+  robot robotito1
+  comenzar
+    derecha
+    repetir 19
+      limparFlores
+      mover
+    Pos(1, 80)
+    repetir 19
+      limparFlores
+      mover
+    depositarF
+  fin
+
+  robot robotito2
+  comenzar
+    repetir 19
+      limparPapeles
+      mover
+    Pos(80, 80)
+    repetir 19
+      limparPapeles
+      mover
+    depositarP
+  fin
+
+  robot robotito3
+  comenzar
+    derecha
+    repetir 19
+      limparFlores
+      mover
+    Pos(80, 15)
+    repetir 19
+      limparFlores
+      mover
+    depositarF
+  fin
+
+  robot robotito4
+  comenzar
+    repetir 19
+      limparPapeles
+      mover
+    //falta ultima esquina
+    Pos(15, 1)
+    repetir 19
+      limparPapeles
+      mover
+    //falta ultima esquina
+    depositarP
+  fin
+
+variables
+
+  walle: robotito1  //dos tipos alcanzan
+  eva: robotito2
+  terminator: robotito3
+  granSoldador: robotito4
+
+comenzar
+  AsignarArea(walle, ciudad)
+  AsignarArea(eva, ciudad)
+  AsignarArea(terminator, ciudad)
+  AsignarArea(granSoldador, ciudad)
+  Iniciar(walle, 1, 75)
+  Iniciar(eva, 75, 80)
+  Iniciar(terminator, 80, 10)
+  Iniciar(granSoldador, 10, 1)
+fin

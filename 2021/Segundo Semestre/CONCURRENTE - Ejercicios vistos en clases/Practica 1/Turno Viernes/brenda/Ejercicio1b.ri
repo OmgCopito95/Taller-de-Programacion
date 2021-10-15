@@ -1,0 +1,68 @@
+programa p1_ej1b
+
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin    
+  
+  proceso evaluarEsquina (ES flores:numero; ES vacias: numero)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      juntarFlores(flores)
+    sino
+      vacias:= vacias + 1
+  fin
+
+  proceso recorrerAvenida (ES flores: numero; ES vacias: numero)
+  comenzar
+    flores:= 0
+    vacias:= 0
+    repetir 99
+      evaluarEsquina(flores, vacias)
+      mover
+    evaluarEsquina(flores, vacias)
+  fin
+  
+  proceso depositarFlores (E flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin   
+
+
+areas
+  area1: AreaP(1,1,1,100)
+  area2: AreaP(3,1,3,100)
+  area3: AreaP(5,1,5,100)
+  
+  
+robots 
+  robot tipo1
+  variables
+    flores: numero
+    vacias: numero
+  comenzar
+    recorrerAvenida(flores, vacias)
+    depositarFlores(flores)
+    Informar (flores)
+    Informar (vacias)
+  fin
+
+     
+variables 
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+
+
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  Iniciar(robot1, 1, 1)
+  Iniciar(robot2, 3, 1)
+  Iniciar(robot3, 5, 1)
+fin

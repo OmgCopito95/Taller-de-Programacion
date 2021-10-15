@@ -1,0 +1,75 @@
+programa ejer4
+procesos
+  proceso LimpiarFlores 
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  
+  proceso LimpiarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin 
+  
+  proceso AreaImpar (E actual:numero)
+  comenzar
+    mientras (PosAv <= actual) //repetir
+      repetir 99
+        LimpiarFlores
+        mover
+      LimpiarFlores
+      Pos(PosAv+1,1)
+  fin
+  
+  proceso AreaPar(E actual: numero)
+  comenzar
+    mientras (PosAv <= actual) //repetir
+      repetir 99
+        LimpiarPapeles
+        mover
+      LimpiarPapeles
+      Pos(PosAv+1,1)
+  fin
+  
+areas
+  area1: AreaC(1,1,25,100)  //revisar
+  area2: AreaC (26,1,50,100)
+  area3: AreaC(51,1,57,100)
+  area4: AreaC(76,1,100,100)
+
+robots
+  robot robot1
+  variables
+    actual: numero
+  comenzar
+    actual:= 25
+    AreaImpar(actual)
+    actual:= 75
+	  Pos(51,1)
+    AreaImpar(actual)
+  fin
+
+
+  robot robot2
+  variables
+    actual: numero
+  comenzar
+    actual:=26
+    AreaPar(actual)
+    actual:= 100
+	  Pos(76,1)
+    AreaPar(actual)
+  fin
+
+variables
+  R1: robot1
+  R2: robot2
+comenzar
+  AsignarArea(R1,area1)
+  AsignarArea(R1,area3)
+  AsignarArea(R2,area2)
+  AsignarArea(R2,area4)
+  Iniciar(R1,1,1)
+  Iniciar(R2,26,1)
+fin  

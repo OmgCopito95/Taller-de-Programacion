@@ -1,0 +1,81 @@
+
+programa Ejer3
+
+procesos
+  proceso JuntarF
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  
+  proceso JuntarP
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  
+  proceso  moverseP
+  comenzar
+    repetir 99
+      JuntarP
+      mover
+    JuntarP
+  fin
+  
+  proceso moverseI
+  comenzar
+    repetir 99
+      JuntarF
+      mover
+    JuntarF
+  fin
+  
+  proceso recorrerP
+  comenzar
+    repetir 24
+      moverseP
+      Pos(PosAv+1,1)
+    moverseP
+  fin
+      
+  proceso recorrerI
+  comenzar
+    repetir 24
+      moverseI
+      Pos(PosAv+1,1)
+    moverseI
+  fin
+  
+areas
+  ciudad1 : AreaP(1,1,25,100)
+  ciudad2 : AreaP(26,1,50,100)
+  ciudad3 : AreaP(51,1,75,100)
+  ciudad4 : AreaP(76,1,100,100)
+  
+robots
+  robot tipoPar
+  comenzar
+    repetir 2
+      recorrerP
+      Pos(76,1)
+  fin
+ 
+  robot tipoImpar
+  comenzar
+    repetir 2
+      recorrerI
+      Pos(51,1)
+  fin 
+  
+variables
+  robotPar : tipoPar
+  robotImpar :tipoImpar
+comenzar
+  AsignarArea(robotPar,ciudad2)
+  AsignarArea(robotPar,ciudad4)
+  AsignarArea(robotImpar,ciudad1)
+  AsignarArea(robotImpar,ciudad3)
+  Iniciar(robotPar,26,1)
+  Iniciar(robotImpar,1,1)
+fin
+        

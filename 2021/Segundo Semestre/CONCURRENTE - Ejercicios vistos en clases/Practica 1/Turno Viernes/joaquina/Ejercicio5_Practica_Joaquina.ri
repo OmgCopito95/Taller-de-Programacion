@@ -1,0 +1,93 @@
+{Realice un programa en el que cuatro robots realizan las siguientes actividades:
+El robot 1 debe limpiar de flores las primeras 20 esquinas de las calles 75 y 80. Al finalizar cada calle, debe depositar todas las flores en la última esquina.
+El robot 2 debe limpiar de papeles las últimas 20 esquinas de las avenidas 75 y 80. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina. 
+El robot 3 debe limpiar de flores las últimas 20 esquinas de las calles 10 y 15. Al finalizar cada calle, debe depositar todas las flores en la última esquina.
+El robot 4 debe limpiar de papeles las primeras 20 esquinas de las avenidas 10 y 15. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.}
+
+programa Ejer3
+
+procesos
+  proceso JuntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  
+  proceso DepositarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa) {USAR CANTIDAD QUE JUNTE}
+      depositarFlor
+  fin
+  
+  proceso JuntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+
+  proceso DepositarPapeles
+  comenzar
+    mientras(HayPapelEnLaBolsa){USAR CANTIDAD QUE JUNTE}
+      depositarPapel
+  fin 
+  
+  proceso RecorrerImp
+  comenzar
+    repetir 19
+      JuntarFlores
+      mover
+    JuntarFlores
+  fin
+  
+  proceso RecorrerPar
+  comenzar
+    repetir 19
+      JuntarPapeles
+      mover
+    JuntarPapeles
+  fin
+  
+areas
+  ciudad1 : AreaP(1,75,20,80) {REVISAR AREAS}
+  ciudad2 : AreaP(75,81,80,100)  {lo pongo en 81 por el mismo motivo}
+  ciudad3 : AreaP(81,10,100,15) {lo puse en 81 porque asi son 20 calles}
+  ciudad4 : AreaP(10,1,15,20)
+  
+robots
+  robot tipoImpar
+  comenzar
+    derecha
+    RecorrerImp
+    DepositarFlores
+    Pos(PosAv - 19,PosCa+5)
+    RecorrerImp
+    DepositarFlores
+  fin
+  
+  robot tipoPar
+  comenzar
+    RecorrerPar
+    Pos(PosAv,PosCa - 19)
+    DepositarPapeles
+    Pos(PosAv + 5,PosCa)
+    RecorrerPar
+    Pos(PosAv,PosCa - 19)
+    DepositarPapeles
+  fin
+   
+variables
+  robot2 : tipoPar
+  robot4 : tipoPar
+  robot1 : tipoImpar
+  robot3 : tipoImpar
+comenzar
+  AsignarArea(robot1,ciudad1)
+  AsignarArea(robot2,ciudad2)
+  AsignarArea(robot3,ciudad3)
+  AsignarArea(robot4,ciudad4)
+  Iniciar(robot1,1,75)
+  Iniciar(robot2,75,81)
+  Iniciar(robot3,81,10)
+  Iniciar(robot4,10,1)
+fin
+        

@@ -1,0 +1,68 @@
+programa TP1EJERCICIO5
+procesos
+  proceso calleFlores
+  comenzar
+    repetir 19
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+    mientras(HayFlorEnLaBolsa)
+      depositarPapel //debe ser flor
+  fin
+  proceso avenidaPapeles
+  comenzar
+    repetir 19
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+      mover
+    //analizar la ult esquina
+    //volver  a la primera
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+areas
+  areaR1: AreaP(1,75,20,80) //revisar- hacer calles
+  areaR2: AreaP(75,80,80,100)
+  areaR3: AreaP(80,10,100,15)
+  areaR4: AreaP(10,1,15,20)
+robots
+  robot papelero
+  variables  
+    av:numero
+    ca:numero
+  comenzar
+    av:= PosAv
+    ca:= PosCa
+    avenidaPapeles
+    av:=av+5
+    Pos(av,ca)
+    avenidaPapeles
+  fin
+  robot florero
+  variables
+    av:numero
+    ca:numero
+  comenzar
+    derecha
+    av:= PosAv
+    ca:= PosCa
+    calleFlores
+    ca:=ca+5
+    Pos(av,ca)
+    calleFlores
+  fin
+variables
+  r1: florero
+  r2: papelero
+  r3: florero
+  r4: papelero
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r4,areaR4)
+  Iniciar(r1,1,75)
+  Iniciar(r2,75,80)
+  Iniciar(r3,80,10)
+  Iniciar(r4,10,1)
+fin

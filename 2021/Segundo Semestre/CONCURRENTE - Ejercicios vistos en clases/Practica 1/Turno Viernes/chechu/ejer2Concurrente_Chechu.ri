@@ -1,0 +1,83 @@
+{Realice un programa en el que 4 robots limpien de papeles el perÃ­metro de un cuadrado de lado 20 en sentido horario, como se muestra en la figura}
+{El vÃ©rtice inferior izquierdo del cuadrado se ubica en la esquina (10,10).}
+{Al finalizar, cada robot debe informar la cantidad de papeles juntados en su lado.}
+{Al realizar este programa, analizar: CALLE HORIZONTAL}
+{Â¿CÃ³mo deben declararse la o las Ã¡reas? de PC}
+{Â¿Existe riesgo de colisiÃ³n?Yo creo que si porque podria llegar antes de que el robot de la otra esquina salga}
+
+programa ejer2Chechu
+procesos
+  proceso juntarPapel(ES papeles:numero)
+  comenzar  
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  proceso recorrerArea(ES papeles:numero)
+  comenzar
+    repetir 19 {me muevo y junto, el último que junto sería el primero del siguiente robot}
+      mover
+      juntarPapel(papeles)
+  fin
+{----AREAS-----}
+areas
+  A1 : AreaPC(10,10,10,30) {Av,Ca; Arranco en Av 10, Ca 10} 
+  A2 : AreaPC(10,30,30,30) {recordar que las areas son DISJUNTAS}
+  A3 : AreaPC(30,30,30,10) 
+  A4 : AreaPC(30,10,10,10) {REVISAR AREAS}
+
+{---.ROBOT----}  
+robots
+  robot tipo1
+  variables
+    papeles: numero
+  comenzar
+    papeles := 0
+    recorrerArea(papeles)
+    Informar (papeles)
+  fin
+   robot tipo2
+  variables
+    papeles: numero
+  comenzar
+    papeles := 0
+    derecha
+    recorrerArea(papeles)
+    Informar (papeles)
+  fin
+  robot tipo3
+  variables
+    papeles: numero
+  comenzar
+    papeles := 0
+    repetir 2
+      derecha
+    recorrerArea(papeles)
+    Informar (papeles)
+  fin
+  robot tipo4
+  variables
+    papeles: numero
+  comenzar
+    papeles := 0
+    repetir 3
+      derecha
+    recorrerArea(papeles)
+    Informar (papeles)
+  fin
+{------PROGRAMA PRINCIPAL----------}
+variables
+  robot1: tipo1
+  robot2:tipo2
+  robot3:tipo3
+  robot4:tipo4
+comenzar
+  AsignarArea(robot1,A1)
+  AsignarArea(robot2, A2)
+  AsignarArea(robot3,A3)
+  AsignarArea(robot4,A4)
+  Iniciar(robot1, 10, 10)
+  Iniciar(robot2,10,30)
+  Iniciar(robot3,30,30)
+  Iniciar(robot4,30,10)
+fin

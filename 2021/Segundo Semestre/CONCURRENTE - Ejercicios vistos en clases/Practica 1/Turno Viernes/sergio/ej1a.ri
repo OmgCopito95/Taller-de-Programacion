@@ -1,0 +1,46 @@
+{cuando llega al final no se pueden depositar las flores porque 'no existe bolsa de flores'}
+
+
+programa ej1
+procesos 
+  proceso Juntar (ES flores : numero; ES NOflores : numero) {junta y cuenta flores y esquinas vacias}
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina 
+        tomarFlor 
+        flores:=flores+1
+    sino
+      NOflores:=NOflores+1 
+  fin 
+areas 
+  ciudad1: AreaP(1,1,1,100){declaracion de area privada del robot}
+  ciudad2: AreaP(3,1,3,100)
+  ciudad3: AreaP(5,1,5,100) 
+robots 
+  robot robot1 
+  variables 
+    totalFlores: numero
+    totalNOflores:numero
+  comenzar 
+    Pos(1,1) 
+    totalFlores:=0  {VA ADENTRO DEL REPETIR}
+    totalNOflores:=0
+    repetir 3 {REPETIR 2 - ULTIMA AVENIDA ANALIZAR AFUERA - MODULARIZAR}
+      repetir 99 
+        Juntar(totalFlores,totalNOflores)
+        mover 
+      Juntar(totalFlores,totalNOflores)  
+      Informar(totalFlores) {informa la cantidad de flores recogidas}
+      Informar(totalNOflores) {informa la cantidad de esquinas vacias}
+      repetir totalFlores
+        depositarFlor  {deposita todas las flores en la ultima esquina}
+      Pos(PosAv + 2,1)
+  fin 
+variables 
+  R-info : robot1 
+comenzar 
+  AsignarArea(R-info,ciudad1)
+  AsignarArea(R-info,ciudad2)
+  AsignarArea(R-info,ciudad3)
+  Iniciar(R-info, 1 , 1) 
+fin
