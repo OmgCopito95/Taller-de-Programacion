@@ -1,0 +1,108 @@
+programa ejer1d_p2_Chechu
+procesos
+{JUNTA LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  {RECORRIDO DE LOS ROBOTS 1 y 2}
+  proceso recorrerAvenida (ES cantF: numero)
+  comenzar
+    juntarFlores (cantF)
+    repetir 9
+      mover
+      juntarFlores (cantF)
+  fin
+ 
+{--- AREAS ---}
+areas
+  area1 : AreaP (1,1,1,10) {Av,Ca}
+  area2 : AreaP (2,11,2,20)
+  area3 : AreaP(3,21,3,30)
+  area4 : AreaP(4,31,4,40)
+  area5 : AreaP(5,41,5,50)
+  area6 : AreaP(6,51,6,60)
+  area7 : AreaP (2,1,2,1) {el robot jefe se queda parado en esta esquina}
+
+{-----ROBOTS------}
+robots
+  robot tipo1
+  variables
+    cantF,id : numero
+  comenzar
+    cantF := 0 {seteo en 0 el contador de flores}
+    RecibirMensaje (id, robot3) {el robot RECIBE la variable que le envio el robot3jefe diciendo quienSoy}
+    recorrerAvenida(cantF)
+    EnviarMensaje(cantF,robot3) {le envio al robot jefe la cantidad de flores juntadas por el robot "actual"}
+    EnviarMensaje(id, robot3){le envio al robot jefe el id "actual"}
+  fin
+  {.:::::::ROBOT JEFE::::::.}
+  robot tipo2
+  variables
+    cantFlores,id,max,idMax: numero
+  comenzar
+    max:= -1
+    {ENVIO LOS IDENTIFICADORES PARA CADA ROBOT, el enunciado SI LO PIDE}
+    EnviarMensaje (1, robot1){le envio el valor correspondiente a cada robot}
+    EnviarMensaje (2, robot2) {ESTO SE PUEDE MODULARIZAR?}
+    EnviarMensaje (3, robot3)
+    EnviarMensaje (4, robot4)
+    EnviarMensaje (5, robot5)
+    EnviarMensaje(6,robot6)
+    
+    {FLORES POR CADA ROBOT RECIBIDAS}   {ESTO SE PUEDE MODULARIZAR?}
+    repetir 6
+      RecibirMensaje(id, *) {recibo el id de un robot cualquiera y ahora quiero ver cual es}
+      si (id = 1)
+        RecibirMensaje (cantFlores, robot1){el jefe recibe la cantidad de flores juntadas por R1tipo1}
+      sino
+        si (id = 2) 
+          RecibirMensaje (cantFlores, robot2) {el jefe recibe la cantidad de flores juntadas por R2tipo1}
+        sino
+          si (id = 3)
+            RecibirMensaje (cantFlores, robot3) {el jefe recibe la cantidad de flores juntadas por R3tipo1}
+          sino
+            si (id = 4) 
+              RecibirMensaje (cantFlores, robot4) {el jefe recibe la cantidad de flores juntadas por R4tipo1}
+            sino
+              si (id = 5)
+                RecibirMensaje (cantFlores, robot5) {el jefe recibe la cantidad de flores juntadas por R5tipo1}
+              sino
+                si (id = 6)
+                  RecibirMensaje (cantFlores, robot6) {el jefe recibe la cantidad de flores juntadas por R2tipo1}
+      
+      si (cantFlores > max) {si R1 junto mas que el max} {MODULARIZAR}
+        max := cantFlores
+        idMax := id
+        Informar(idMax) {Necesito ayuda para escribir lo de los cartelitos que imprime en pantalla}
+      sino
+        Informar(max)
+  fin
+
+{-----PROGRAMA PRINCIPAL------}
+variables
+  robot1: tipo1 {Robot 1 y 2 hacen lo mismo}
+  robot2: tipo1
+  robot3: tipo1
+  robot4: tipo1
+  robot5: tipo1
+  robot6: tipo1
+  robot7: tipo2 {el jefe}
+comenzar
+  AsignarArea(robot1, area1)
+  AsignarArea(robot2, area2)
+  AsignarArea(robot3, area3)
+  AsignarArea(robot4, area4)
+  AsignarArea(robot5, area5)
+  AsignarArea(robot6, area6)
+  AsignarArea(robot7, area7)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,3,21)
+  Iniciar(robot4,4,31)
+  Iniciar(robot5,5,41)
+  Iniciar(robot6,6,51)
+  Iniciar(robot7,2,1)
+fin

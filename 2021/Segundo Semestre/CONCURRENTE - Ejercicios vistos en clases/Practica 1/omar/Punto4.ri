@@ -1,0 +1,112 @@
+programa punto4
+
+procesos
+
+  proceso recorrerFlores(ES f: numero)
+  comenzar
+    repetir 12 {Repito 12 veces las idas y vuetas}  {-----ESTA BIEN PERO FIJATE DE MODULARIZAR UN POQUITO MAS}
+      repetir 99
+        juntarFlores(f)
+        mover
+      juntarFlores(f)
+      derecha
+      mover
+      derecha
+      repetir 99
+        juntarFlores(f)
+        mover
+      juntarFlores(f)
+      repetir 3
+        derecha
+      mover
+      repetir 3
+        derecha
+    repetir 99 {En las últimas avenidas la recorro fuera de las 12, sino me pasaría del área asignada}
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+  fin
+
+  proceso recorrerPapeles(ES p: numero)
+  comenzar
+    repetir 12 {Repito 12 veces las idas y vuetas}
+      repetir 99
+        juntarPapeles(p)
+        mover
+      juntarPapeles(p)
+      derecha
+      mover
+      derecha
+      repetir 99
+        juntarPapeles(p)
+        mover
+      juntarPapeles(p)
+      repetir 3
+        derecha
+      mover
+      repetir 3
+        derecha
+    repetir 99 {En las últimas avenidas la recorro fuera de las 12, sino me pasaría del área asignada}
+      juntarPapeles(p)
+      mover
+    juntarPapeles(p)
+  fin
+
+  proceso juntarFlores(ES f: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+  fin
+
+  proceso juntarPapeles(ES p: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p + 1
+  fin
+
+areas
+
+  area1: AreaP(1, 1, 25, 100)
+  area2: AreaP(26, 1, 50, 100)
+  area3: AreaP(51, 1, 75, 100)
+  area4: AreaP(76, 1, 100, 100)
+
+robots
+
+  robot robotitoImpares
+  variables
+    flor: numero
+  comenzar
+    flor:= 0
+    recorrerFlores(flor)
+    Pos(51, 1)
+    recorrerFlores(flor)
+    Informar(flor)
+  fin
+
+  robot robotitoPares
+  variables
+    papel: numero
+  comenzar
+    papel:= 0
+    recorrerPapeles(papel)
+    Pos(76, 1)
+    recorrerPapeles(papel)
+    Informar(papel)
+  fin
+
+variables
+
+  walle: robotitoImpares
+  terminator: robotitoPares
+
+comenzar
+  AsignarArea(walle, area1)
+  AsignarArea(walle, area3)
+  AsignarArea(terminator, area2)
+  AsignarArea(terminator, area4)
+  Iniciar(walle, 1, 1)
+  Iniciar(terminator, 26, 1)
+fin

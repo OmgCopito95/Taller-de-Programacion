@@ -1,0 +1,115 @@
+{NO SE LLEGÓ A REVISAR}
+
+programa nombrePrograma
+procesos
+ 
+  proceso juntarPapeles(ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:=papel+1
+  fin
+  
+  proceso recorrerA(ES papel:numero)
+  comenzar
+    derecha
+    repetir 9
+      juntarPapeles(papel)
+      mover
+    juntarPapeles(papel)
+  fin
+  
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+
+  proceso recorrerB(ES flor:numero)
+  comenzar
+    derecha
+    repetir 9
+      juntarFlores(flor)
+      mover
+    juntarFlores(flor)
+  fin
+
+areas
+  ciudad: AreaC(1,1,100,100)
+  {ciudadA: AreaC(1,5,20,5)
+  ciudadB: AreaC(1,1,20,1) las areas son estas CREO pero no anda una}
+
+robots
+  robot equipoA
+  variables
+    papel:numero
+  comenzar
+    papel:=0
+    recorrerA(papel)  
+    EnviarMensaje(papel,A2)
+  fin
+
+  robot equipoACoor
+  variables 
+    papelA1,papelA2:numero
+  comenzar
+    RecibirMensaje(papelA1,A1)
+    recorrerA(papelA2)
+    papelA2:=papelA2+papelA1
+    Informar(papelA2)     
+  fin
+
+  robot equipoB
+  variables
+    flor:numero
+  comenzar
+    flor:=0
+    recorrerB(flor)  
+    EnviarMensaje(flor,B2)
+  fin
+
+  robot equipoBCoor
+  variables 
+    florB1,florB2:numero
+  comenzar
+    RecibirMensaje(florB1,B1)
+    recorrerB(florB2)
+    florB2:=florB2+florB1
+    Informar(florB2)     
+  fin
+  
+variables
+  A1: equipoA
+  A2: equipoACoor
+  B1: equipoB
+  B2: equipoBCoor
+comenzar
+  AsignarArea(A1,ciudad)
+  AsignarArea(A2,ciudad)
+  AsignarArea(B1,ciudad)
+  AsignarArea(B2,ciudad)
+  Iniciar(A1,1,1)
+  Iniciar(A2,11,1)
+  Iniciar(B1,1,5)
+  Iniciar(B2,11,5)  
+fin
+
+
+
+{3. Realice un programa con 2 equipos:
+- El equipo A, compuesto por los robots A1 y A2, debe juntar papeles de las
+primeras 20 esquinas de la calle 1
+- El equipo B, compuesto por los robots B1 y B2, debe juntar flores de las primeras
+20 esquinas de la calle 5
+Los robots A1 y B1 deberÃƒÂ¡n realizar las 10 primeras esquinas de su recorrido, y al
+finalizar avisarÃƒÂ¡n a los robots A2 y B2 respectivamente para que continÃƒÂºen con las
+siguientes 10 esquinas. El segundo robot de cada equipo debe informar la cantidad
+de elementos recogidos en las 20 esquinas.
+Inicialice los 4 robots en las esquinas que considere mÃƒÂ¡s apropiadas segÃƒÂºn el
+trayecto que le corresponde realizar a cada uno.
+b. Modifique el programa anterior para que cada equipo repita el recorrido con las
+siguientes 20 esquinas de sus correspondientes calles.
+c. Analice (no es necesario implementar) cÃƒÂ³mo implementarÃƒÂ­a el inciso b si ahora
+cada equipo debe realizar 8 segmentos de 20 esquinas.
+}

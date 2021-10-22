@@ -1,0 +1,136 @@
+{NO SE LLEGÓ A REVISAR}
+
+programa ejercicio3Practica2
+  
+procesos
+  proceso juntarPapeles (ES papeles:numero)
+  comenzar  
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1   
+  fin
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor   
+      flores:= flores + 1
+  fin
+  proceso recorrerFlores (ES flores:numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)  
+  fin
+  proceso recorrerPapeles (ES papeles:numero)
+  comenzar
+    repetir 9
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)  
+  fin
+  
+areas
+  { areas equipo A }
+  area1 : AreaP(1,1,10,1)
+  area2 : AreaP(11,1,20,1)
+  area3 : AreaP(21,1,30,1)
+  area4 : AreaP(31,1,40,1)
+   {   areas equipo B }     
+  area5 : AreaP(1,5,10,5)
+  area6 : AreaP(11,5,20,5)
+  area7 : AreaP(21,5,30,5)
+  area8 : AreaP(31,5,40,5)
+robots 
+  robot tipo1
+  variables
+    papeles:numero
+  comenzar 
+    derecha    
+    papeles:=0
+    recorrerPapeles(papeles)
+    Informar(papeles)
+    EnviarMensaje(papeles,robot2)
+    
+    {segundo recorrido}    
+    Pos(PosAv+11,1)
+    RecibirMensaje(papeles,robot2)
+    recorrerPapeles(papeles)
+    Informar(papeles)
+    EnviarMensaje(papeles,robot2)            
+  fin
+  
+  
+  robot tipo2
+  variables 
+    papeles:numero
+  comenzar
+    derecha
+    RecibirMensaje(papeles,robot1)
+    recorrerPapeles(papeles)
+    Informar(papeles)
+    EnviarMensaje(papeles,robot1)
+    
+    {segundo recorrido}
+    Pos(PosAv+11,1)
+    RecibirMensaje(papeles,robot1)
+    recorrerPapeles(papeles)
+    Informar(papeles)    
+  fin  
+  
+  
+  robot tipo3
+  variables
+    flores:numero
+  comenzar
+    derecha
+    flores:=0   
+    recorrerFlores(flores) 
+    Informar(flores)
+    EnviarMensaje(flores,robot4)
+    
+    {segundo recorrido}
+    Pos(PosAv+11,5)
+    RecibirMensaje(flores,robot4)
+    recorrerFlores(flores)
+    Informar(flores)
+    EnviarMensaje(flores,robot4)
+  fin
+  
+  robot tipo4
+  variables
+    flores:numero
+  comenzar
+    derecha
+    RecibirMensaje(flores,robot3)
+    recorrerFlores(flores)
+    Informar(flores)
+    EnviarMensaje(flores,robot3)              
+    {segundo recorrido}    
+    Pos(PosAv+11,5)
+    RecibirMensaje(flores,robot3)
+    recorrerFlores(flores)
+    Informar(flores)       
+  fin
+variables 
+  robot1: tipo1  
+  robot2: tipo2
+  robot3: tipo3
+  robot4: tipo4  
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot1,area3)
+  AsignarArea(robot2,area4)  
+  
+  AsignarArea(robot3,area5)
+  AsignarArea(robot4,area6)
+  AsignarArea(robot3,area7)
+  AsignarArea(robot4,area8)
+  
+  Iniciar(robot1, 1, 1)   {equipo a}
+  Iniciar(robot2, 11, 1)
+  Iniciar(robot3, 1, 5) {equipo b}
+  Iniciar(robot4, 11,5)
+fin
+

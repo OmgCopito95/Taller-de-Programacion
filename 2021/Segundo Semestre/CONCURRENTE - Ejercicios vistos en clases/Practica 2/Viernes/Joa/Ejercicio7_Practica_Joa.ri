@@ -1,0 +1,101 @@
+programa Ejer7
+
+procesos
+  
+  proceso JuntarFlores (ES flor:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flor:=flor+1
+  fin
+  
+  proceso JuntarPapeles (ES papel:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papel:=papel+1
+  fin
+  
+  proceso Izquierda 
+  comenzar
+    repetir 3
+      derecha
+  fin
+  
+  proceso JuntarAmbos (ES flores:numero ES papeles:numero)
+  comenzar
+    JuntarFlores(flores)
+    JuntarPapeles(papeles)
+  fin
+  
+  proceso Comparar (E flores:numero E papeles:numero ES cantMasFlores:numero)
+  comenzar
+    si (flores > papeles)
+      cantMasFlores:=cantMasFlores+1
+  fin
+  
+  proceso Escalar ( ES cantMasFlores:numero)
+  variables
+    alto:numero
+    flores:numero
+    papeles:numero
+  comenzar
+    flores:=0
+    papeles:=0
+    alto:=PosCa
+    repetir 4
+      Random(alto,1,5)
+      repetir alto
+        JuntarAmbos(flores,papeles)
+        mover
+      JuntarAmbos(flores,papeles)
+      derecha
+      mover
+      JuntarAmbos(flores,papeles)
+      Izquierda
+      Comparar(flores,papeles,cantMasFlores)
+      flores:=0
+      papeles:=0
+  fin
+  
+areas
+  ciudad : AreaC (1,1,16,20) {DEBERIAN SER AREAS PRIVADAS}
+
+robots
+
+  robot tipo1
+  variables
+    cantMasFlores:numero
+  comenzar
+    cantMasFlores:=0
+    Escalar(cantMasFlores)
+    EnviarMensaje(cantMasFlores,robotJefe)
+  fin
+  
+  robot jefe
+  variables
+    suma:numero
+    cantidad:numero
+  comenzar
+    suma:=0
+    repetir 3
+      RecibirMensaje(cantidad,*)
+      suma:=suma+cantidad
+    Informar(suma)
+  fin
+  
+variables
+  robot1:tipo1
+  robot2:tipo1
+  robot3:tipo1
+  robotJefe:jefe
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robotJefe,ciudad)
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,7,1)
+  Iniciar(robot3,12,1)
+  Iniciar(robotJefe,1,1)
+fin

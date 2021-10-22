@@ -1,0 +1,89 @@
+programa punto2
+
+procesos
+	proceso juntarPapeles(ES p: numero)
+	comenzar
+		mientras(HayPapelEnLaEsquina)
+			tomarPapel
+			p:= p + 1
+	fin
+
+areas
+
+	lado1A: AreaP(10, 10, 10, 29)
+	lado2A: AreaP(10, 30, 29, 30)
+	lado1B: AreaP(30, 11, 30, 30)
+	lado2B: AreaP(11, 10, 30, 10)
+
+robots
+	{---------SE PODRIAN MODULARIZAR UN POQUITO MAS}
+	robot robotito1
+	variables
+		papel: numero
+	comenzar
+		papel:= 0
+		repetir 19
+			juntarPapeles(papel)
+			mover
+		juntarPapeles(papel)
+		Informar(papel)
+	fin
+
+	robot robotito2
+	variables
+		papel: numero
+	comenzar
+		papel:= 0
+		derecha
+		repetir 19
+			juntarPapeles(papel)
+			mover
+		juntarPapeles(papel)
+		Informar(papel)
+	fin
+
+	robot robotito3
+	variables
+		papel: numero
+	comenzar
+		papel:= 0
+		repetir 2
+			derecha
+		repetir 19
+			juntarPapeles(papel)
+			mover
+		juntarPapeles(papel)
+		Informar(papel)
+	fin
+
+	robot robotito4
+	variables
+		papel: numero
+	comenzar
+		papel:= 0
+		repetir 3
+			derecha
+		repetir 19
+			juntarPapeles(papel)
+			mover
+		juntarPapeles(papel)
+		Informar(papel)
+  fin
+
+variables
+
+	walle: robotito1
+	eva: robotito2
+	terminator: robotito3
+	yoRobot: robotito4
+
+comenzar
+	AsignarArea(walle, lado1A)
+	AsignarArea(eva, lado2A)
+	AsignarArea(terminator, lado1B)
+	AsignarArea(yoRobot, lado2B)
+	Iniciar(walle, 10, 10)
+	Iniciar(eva, 10, 30)
+	Iniciar(terminator, 30, 30)
+	Iniciar(yoRobot, 30 , 10)
+fin

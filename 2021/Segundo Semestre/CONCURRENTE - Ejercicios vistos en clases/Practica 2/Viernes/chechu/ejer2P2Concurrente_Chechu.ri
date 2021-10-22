@@ -1,0 +1,91 @@
+programa eje2P2Concurrente_Chechu
+procesos
+  proceso izquierda
+  comenzar  
+    repetir 3
+      derecha
+  fin
+  {JUNTAR FLORES}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+   {JUNTAR PAPELES}
+  proceso juntarPapeles (ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+  proceso recorrerEscalones(ES cantEscalones: numero)
+  variables
+    cantF,cantP,calleInicial:numero   
+  comenzar
+    cantF := 0 {seteo en 0 el contador de flores}
+    cantP := 0 {seteo en 0 el contador de papeles}
+    calleInicial := PosCa { NO HACE FALTA}
+    Random(calleInicial, 1,5)
+    
+    repetir calleInicial {el alto es random digamos}
+      juntarFlores(cantF)
+      juntarPapeles(cantP)
+      mover
+    juntarFlores(cantF)
+    juntarPapeles(cantP)
+    si (cantF > cantF)
+      cantEscalones:= cantEscalones + 1
+    derecha
+    mover {del alto que es de 1}
+    izquierda    
+  fin
+{--- AREAS ---}
+areas
+  areaJefe : AreaP (1,1,1,1) {Av,Ca; {el robot jefe se queda parado en esta esquina}}
+  area1 : AreaP (2, 1, 6, 20)
+  area2 : AreaP (7, 1, 11, 20)
+  area3 : AreaP (12, 1, 16, 20)
+{-----ROBOTS------}
+robots
+  robot tipo1
+  variables
+    cantEscalones: numero
+  comenzar
+    cantEscalones := 0 {seteo en 0 el contador de escalones}
+    repetir 4 {porque son 4 escalones}
+      recorrerEscalones(cantEscalones)
+    EnviarMensaje(cantEscalones,robotJefe) {le envio al robot jefe la cantidad de escalones}
+  fin
+  {.:::::::ROBOT JEFE::::::.}
+  robot tipo2
+  variables
+    escalonesR1,escalonesR2,escalonesR3,sumaEscalones: numero
+  comenzar
+  {NO ENVIO LOS IDENTIFICADORES PARA CADA ROBOT, el enunciado NO LO PIDE}
+    sumaEscalones := 0
+    RecibirMensaje(escalonesR1,robot1)  {REPETIR 3 CON * Y SUMO}
+    RecibirMensaje(escalonesR2,robot2)
+    RecibirMensaje(escalonesR3,robot3)
+    sumaEscalones := escalonesR1 + escalonesR2 + escalonesR3
+    Informar(sumaEscalones)
+   
+  fin
+
+{-----PROGRAMA PRINCIPAL------}
+variables
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+  robotJefe: tipo2 {el jefe}
+comenzar
+  AsignarArea(robotJefe, areaJefe)
+  AsignarArea(robot1, area1)
+  AsignarArea(robot2, area2)
+  AsignarArea(robot3, area3)
+  Iniciar(robotJefe,1,1) {INICIO AL JEFE}
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,7,1)
+  Iniciar(robot3,12,1)
+fin
+

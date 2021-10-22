@@ -1,0 +1,154 @@
+{ Realice un programa en el que un robot fiscalizador controla el acceso de 4 robots
+recolectores al cuadrante encerrado entre las esquinas (25,25) y (75,75) . Para ello, el
+robot fiscalizador avisa a un robot recolector aleatorio que puede ingresar al área. El
+robot que recibe la autorización de acceso calcula una esquina aleatoria dentro del
+área, limpia dicha esquina de flores y papeles, regresa a su esquina y avisa al robot
+fiscalizador que ya finalizó.
+
+  Se realizarán en total 10 accesos al cuadrante entre los 4 robots recolectores. Al
+finalizar, el robot fiscalizador deberá indicar al robot ganador que se posicione en la
+esquina (50,50).
+El robot fiscalizador inicia en la esquina (1,1) y los robots recolectores inician en las
+esquinas (25,1) (30,1) (35,1) y (40,1) respectivamente.}
+
+programa ejer4
+procesos
+  proceso JuntarPapeles (ES cantPapeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+
+  proceso asignarID
+  variables
+    id:numero
+  comenzar
+    id:= 1
+    EnviarMensaje(id,R1)
+    EnviarMensaje(id + 1,R2)
+    EnviarMensaje(id + 2,R3)
+    EnviarMensaje(id + 3,R4)
+  fin
+
+  proceso JuntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cantFlores:= cantFlores + 1 
+  fin
+
+  proceso Maximo (ES max:numero; E sumaTotal:numero; E nroRobot:numero; ES MaxRobot:numero)
+  comenzar
+    si (sumaTotal > max)
+      max:= sumaTotal
+      MaxRobot:= nroRobot
+  fin
+
+areas
+  area1: AreaP(1,1,1,1)         {fiscalizador}
+  area2: AreaP(25,1,25,1)
+  area3: AreaP(30,1,30,1)
+  area4: AreaP(35,1,35,1)
+  area5: AreaP(40,1,40,1)
+  area6: AreaPC(25,25,75,75) {el cuadrante donde pueden entrar todos los robots}
+
+robots
+  robot tipoR
+  variables
+    cantPapeles:numero
+    cantFlores:numero
+    sumaTotal: numero
+    avDestino: numero
+    caDestino: numero
+    AvInicial: numero
+    CaInicial: numero
+    quienSoy: numero
+    totalObjetos:numero
+    robotSeleccionado: numero
+  comenzar
+    AvInicial:= PosAv
+    CaInicial:= PosCa
+    RecibirMensaje(quienSoy,fiscalizador)
+    repetir 10
+      RecibirMensaje(robotSeleccionado,fiscalizador)
+      si(robotSeleccionado = quienSoy)
+        Random(avDestino,25,75)
+        Random(caDestino,25,75)
+        Pos(avDestino,caDestino)
+        cantFlores:= 0
+        cantPapeles:= 0
+        JuntarFlores(cantFlores)
+        JuntarPapeles(cantPapeles)
+        totalObjetos:= cantFlores + cantPapeles
+        Informar(totalObjetos)
+        Pos(AvInicial,CaInicial)
+        EnviarMensaje(totalObjetos,fiscalizador)
+  fin
+  
+
+  robot tipoFisc
+  variables
+    quienSoy: numero
+    robotSeleccionado: numero
+    max: numero
+    MaxRobot:numero
+    totalObjetos:numero
+  comenzar
+    max:= -1
+    MaxRobot:= -1
+    asignarID
+    repetir 10    {ESTO SE PODRIA MODULARIZAR..}
+      Random(robotSeleccionado,1,4)
+      EnviarMensaje(robotSeleccionado,R1)
+      EnviarMensaje(robotSeleccionado,R2)
+      EnviarMensaje(robotSeleccionado,R3)
+      EnviarMensaje(robotSeleccionado,R4)
+      si(robotSeleccionado = 1)
+        RecibirMensaje(totalObjetos,R1)
+        si(totalObjetos > max)
+          max:= totalObjetos
+          MaxRobot:= 1
+      sino
+        si(robotSeleccionado = 2)
+          RecibirMensaje(totalObjetos,R2)
+          si(totalObjetos > max)
+            max:= totalObjetos
+            MaxRobot:= 2
+        sino
+          si(robotSeleccionado = 3)
+            RecibirMensaje(totalObjetos,R3)
+            si(totalObjetos > max)
+              max:= totalObjetos
+              MaxRobot:= 3
+          sino
+            si(robotSeleccionado = 4)
+              RecibirMensaje(totalObjetos,R4)
+              si(totalObjetos > max)
+                max:= totalObjetos
+                MaxRobot:= 4
+    Informar(MaxRobot)
+  fin
+
+variables
+  R1: tipoR
+  R2: tipoR
+  R3: tipoR
+  R4: tipoR
+  fiscalizador: tipoFisc
+comenzar
+  AsignarArea(fiscalizador,area1)
+  AsignarArea(R1,area2)
+  AsignarArea(R1,area6)
+  AsignarArea(R2,area3)
+  AsignarArea(R2,area6)
+  AsignarArea(R3,area4)
+  AsignarArea(R3,area6)
+  AsignarArea(R4,area5)
+  AsignarArea(R4,area6)
+  Iniciar(fiscalizador,1,1)
+  Iniciar(R1,25,1)
+  Iniciar(R2,30,1)
+  Iniciar(R3,35,1)
+  Iniciar(R4,40,1)
+fin

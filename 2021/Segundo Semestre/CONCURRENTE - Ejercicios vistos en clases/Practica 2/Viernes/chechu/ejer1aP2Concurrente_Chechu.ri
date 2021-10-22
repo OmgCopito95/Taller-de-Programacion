@@ -1,0 +1,63 @@
+{Dos robots compiten para ver cuál junta más flores. El primer robot recoge todas las flores de la avenida 1 entre las calles 1 y 10. El segundo robot recoge todas las flores de la avenida 2, entre las calles 11 y 20.
+Al finalizar el recorrido, el robot que recogió mayor cantidad de flores debe informar la diferencia de flores que obtuvo respecto al robot perdedor (el que obtuvo menos flores).
+Los robots inician en las esquinas (1, 1) y (2, 11) respectivamente.
+}
+programa ejer1ap2_Chechu
+procesos
+ {JUNTA LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  {RECORRIDO DE LOS ROBOTS 1 y 2}
+  proceso recorrerAvenida (ES cantF: numero)
+  comenzar
+    juntarFlores (cantF)
+    repetir 9
+      mover
+      juntarFlores (cantF)
+  fin
+  
+{-----AREAS------}
+areas
+  area1 : AreaP (1,1,1,10) {Av,Ca}
+  area2 : AreaP (2,11,2,20)
+
+{-----ROBOTS------}
+robots
+  robot tipo1
+  variables
+    cantFlores, cantFlores2: numero
+  comenzar
+    cantFlores := 0
+    recorrerAvenida(cantFlores)
+    EnviarMensaje(cantFlores,robot2){le envio al R2 la cantidad de flores que junte}
+    RecibirMensaje (cantFlores2, robot2) {recibo la cantidad de flores que me envia que fueron juntadas por el R2}
+    si (cantFlores > cantFlores2) {si es robot2 de tipo2}
+      Informar(cantFlores - cantFlores2) {informo la diferencia}
+  fin
+  
+  robot tipo2
+  variables
+    cantFlores, cantFlores1: numero
+  comenzar
+    cantFlores := 0
+    recorrerAvenida(cantFlores)
+    EnviarMensaje(cantFlores,robot1){le envio al R1 la cantidad de flores que junte}
+    RecibirMensaje (cantFlores1, robot1) {recibo la cantidad de flores que me envia que fueron juntadas por el R1}
+    si (cantFlores > cantFlores1) {si es robot1 de tipo1}
+      Informar('moco-caca',cantFlores - cantFlores1) {informo la diferencia}
+  fin
+    
+{-----PROGRAMA PRINCIPAL------}
+variables
+  robot1:tipo1 {Robot 1 y 2 hacen lo mismo pero necesito que sean diferentes porque sino no podrÃƒÂ­an comunicarse}
+  robot2:tipo2
+comenzar
+  AsignarArea(robot1, area1)
+  AsignarArea(robot2, area2)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+fin

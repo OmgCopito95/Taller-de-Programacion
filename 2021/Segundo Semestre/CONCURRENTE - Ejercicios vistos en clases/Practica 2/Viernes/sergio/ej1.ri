@@ -1,0 +1,56 @@
+programa ej1
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flor + 1
+  fin
+
+  proceso moverVert(E pasos:numero ES flores:numero)
+  comenzar
+    flores:=0
+    repetir pasos
+      juntarFlores (flores)
+      mover
+    juntarFlores(flores)
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  {areaJefe:areaP(100,100,100,100)}
+robots 
+  robot robot1
+  variables
+    ajenas:numero
+    flores:numero
+  comenzar
+    moverVert (9,flores)
+    EnviarMensaje (flores,robot2)
+    RecibirMensaje (ajenas, robot2)
+    si (ajenas < flores) 
+      Informar(flores)
+  fin
+  robot robot2
+  variables
+    ajenas:numero
+    flores:numero
+  comenzar
+    moverVert (9,flores)
+    EnviarMensaje (flores,robot1)
+    RecibirMensaje (ajenas, robot1)
+    si (ajenas < flores) 
+      Informar(flores)
+  fin
+variables
+  rinfo1 : robot1
+  rinfo2:robot2
+  {jefe:boss}
+comenzar
+  AsignarArea (rinfo1,area1)
+  AsignarArea (rinfo2,area2)
+  {AsignarArea (jefe,areaJefe)}
+  Iniciar(rinfo1, 1 , 1)
+  Iniciar(rinfo2, 2 , 11)
+  {Iniciar(jefe, 100 , 100)}
+fin

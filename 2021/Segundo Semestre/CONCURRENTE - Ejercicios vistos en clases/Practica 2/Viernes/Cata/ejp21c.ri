@@ -1,0 +1,116 @@
+programa nombrePrograma
+procesos 
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+
+  proceso maximo (ES max:numero; ES rMax:numero; E flor:numero; E id:numero)
+  comenzar
+    si flor > max
+      max:= flor
+      rMax:= id
+  fin
+
+  proceso minimo (ES min:numero; ES rMin:numero; E flor:numero; E id:numero)
+  comenzar
+    si flor < min
+      min:= flor
+      rMin:= id
+  fin
+
+areas
+  ciudad: AreaP(1,1,1,10)
+  ciudad2:AreaP(2,11,2,20)
+  ciudad3: AreaP(3,21,3,30)
+  ciudad4: AreaP(4,31,4,40)
+  ciudad5: AreaP(5,41,5,50)
+  ciudad6: AreaP(6,51,6,60)
+  ciudadJ:AreaP(2,1,2,1)
+robots
+  robot robot1
+  variables 
+    flor,id:numero
+  comenzar
+    flor:=0
+    RecibirMensaje(id,jefe)
+    repetir 9
+      juntarFlores(flor)
+      mover
+    juntarFlores(flor)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(flor,jefe)    
+  fin
+  robot jefe
+  variables
+    flor,rMax,max,diferencia,id,min,rMin:numero    
+  comenzar
+    flor:=0
+    max:=-1
+    rMax:=0
+    rMin:=0
+    min:=999
+    diferencia:=0
+    EnviarMensaje(1,r1)     {NO HACE FALTA IDENTIFICARLOS}
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    EnviarMensaje(5,r5)
+    EnviarMensaje(6,r6)
+    repetir 6      
+      RecibirMensaje(id,*)  
+      {PREGUNTAR CUAL ES EL ID QUE RECIBI Y ESPERAR EL DATO DEL ROBOT CORRESPONDIENTE}
+      RecibirMensaje(flor,*)  {NO VA}   
+      maximo (max,rMax,flor,id)
+      minimo(min,rMin,flor,id)
+    Informar('Ganador',rMax)  
+    diferencia:= max - min
+    Informar('Diferencia',diferencia)    
+  fin
+variables
+  r1,r2,r3,r4,r5,r6: robot1
+  jefe:jefe
+comenzar
+  AsignarArea (r1,ciudad)
+  AsignarArea (r2,ciudad2)
+  AsignarArea (r3,ciudad3)
+  AsignarArea (r4,ciudad4)
+  AsignarArea (r5,ciudad5)
+  AsignarArea (r6,ciudad6)  
+  AsignarArea (jefe,ciudadJ)
+  Iniciar (r1,1,1)
+  Iniciar(r2,2,11)
+  Iniciar(r3,3,21)
+  Iniciar(r4,4,31)
+  Iniciar(r5,5,41)
+  Iniciar(r6,6,51)
+  Iniciar(jefe,2,1)
+fin
+
+
+
+
+{1. Dos robots compiten para ver cuÃƒÂ¡l junta mÃƒÂ¡s flores. El primer robot recoge todas las
+flores de la avenida 1 entre las calles 1 y 10. El segundo robot recoge todas las
+flores de la avenida 2, entre las calles 11 y 20.
+Al finalizar el recorrido, el robot que recogiÃƒÂ³ mayor cantidad de flores debe informar
+la diferencia de flores que obtuvo respecto al robot perdedor (el que obtuvo menos
+flores).
+Los robots inician en las esquinas (1, 1) y (2, 11) respectivamente.
+b. Modifique el ejercicio anterior, considerando que ahora habrÃƒÂ¡ un robot fiscalizador,
+que serÃƒÂ¡ responsable de informar la diferencia de flores que obtuvo el ganador con
+respecto al perdedor. El robot fiscalizador se ubica en la esquina (2,1)
+c. Modifique el ejercicio anterior para que ahora participen 6 robots
+○ Robot 1: Avenida 1, entre las calles 1 y 10
+○ Robot 2: Avenida 2, entre las calles 11 y 20
+○ Robot 3: Avenida 3, entre las calles 21 y 30
+○ Robot 4: Avenida 4, entre las calles 31 y 40
+○ Robot 5: Avenida 5, entre las calles 41 y 50
+○ Robot 6: Avenida 6, entre las calles 51 y 60
+○ Fiscalizador: Avenida 2, calle 1
+
+}
+
+

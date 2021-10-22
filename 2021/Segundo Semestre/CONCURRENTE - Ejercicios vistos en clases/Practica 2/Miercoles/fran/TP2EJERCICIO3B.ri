@@ -1,0 +1,150 @@
+programa TP2EJERCICIO3
+procesos
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)    
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+areas
+  areaA: AreaC(1,1,40,1)
+  areaB: AreaC(1,5,40,5)
+  areaA1: AreaP(1,2,1,2)
+  areaB1: AreaP(1,4,1,4)
+  areaA2: AreaP(11,2,11,2)
+  areaB2: AreaP(11,4,11,4)
+robots
+  robot A1
+  variables
+    flores:numero
+    av:numero
+    ca:numero
+  comenzar
+    av:=1
+    ca:=1
+    Pos(av,ca)
+    derecha
+    flores:=0
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    Pos(1,2)
+    EnviarMensaje(flores, RA2)
+    RecibirMensaje(flores, RA2)
+    av:=av+20
+    Pos(av,ca)
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    Pos(1,2)
+    EnviarMensaje(flores, RA2)  
+  fin
+  robot A2    
+  variables
+    flores:numero
+    av:numero
+    ca:numero
+  comenzar
+    RecibirMensaje(flores,RA1)
+    av:=11
+    ca:=1
+    Pos(av,ca)
+    derecha
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    Pos(11,2)
+    EnviarMensaje(flores, RA1)
+    RecibirMensaje(flores, RA1)
+    av:=av+20
+    Pos(av,ca)
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    Pos(11,2)
+    Informar(flores)
+  fin
+  robot B1
+  variables  
+    papeles:numero
+    av:numero
+    ca:numero
+  comenzar
+    av:=1
+    ca:=5
+    Pos(av,ca)
+    derecha
+    papeles:=0
+    repetir 9
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+    Pos(1,4)
+    EnviarMensaje(papeles,RB2)
+    RecibirMensaje(papeles, RB2)
+    av:=av+20
+    Pos(av,ca)
+    repetir 9
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+    Pos(1,4)
+    EnviarMensaje(papeles, RB2)
+  fin
+  robot B2
+  variables
+    papeles:numero
+    av:numero
+    ca:numero
+  comenzar
+    RecibirMensaje(papeles,RB1)
+    av:=11
+    ca:=5
+    Pos(av,ca)
+    derecha
+    repetir 9
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+    Pos(11,4)
+    EnviarMensaje(papeles, RB1)
+    RecibirMensaje(papeles, RB1)
+    av:=av+20
+    Pos(av,ca)
+    repetir 9
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+    Pos(11,4)
+    Informar(papeles)
+  fin  
+variables
+  RA1: A1
+  RA2: A2
+  RB1: B1
+  RB2: B2
+comenzar
+  AsignarArea(RA1, areaA)
+  AsignarArea(RA1, areaA1)
+  AsignarArea(RA2, areaA)
+  AsignarArea(RA2, areaA2)
+  AsignarArea(RB1, areaB)
+  AsignarArea(RB1, areaB1)
+  AsignarArea(RB2, areaB)
+  AsignarArea(RB2, areaB2)
+  Iniciar(RA1, 1,2)
+  Iniciar(RA2, 11,2)
+  Iniciar(RB1, 1,4)
+  Iniciar(RB2, 11,4)
+fin
+

@@ -1,0 +1,73 @@
+programa nombrePrograma
+procesos 
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+areas
+  ciudad: AreaP(1,1,1,10)
+  ciudad2:AreaP(2,11,2,20)
+  ciudadJ:AreaP(2,1,2,1)
+robots
+  robot robot1
+  variables 
+    flor,id:numero
+  comenzar
+    flor:=0
+    RecibirMensaje(id,jefe) {NO HACE FALTA IDENTIFICAR A LOS ROBOTS}
+    repetir 9 { MODULARIZAR }
+      juntarFlores(flor)
+      mover
+    juntarFlores(flor)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(flor,jefe)    
+  fin
+  robot jefe
+  variables
+    florR1,florR2,diferencia,id:numero    
+  comenzar
+    florR1:=0
+    florR2:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    repetir 2     { ---- NO HABRIA QUE HACERLO - REEMPLAZAR POR RECIBIR 2 MENSAJES}
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(florR1,r1)                
+      sino
+        RecibirMensaje(florR2,r2)  
+    si(florR1>florR2)
+      diferencia:= florR1 - florR2  
+    sino
+      diferencia:= florR2 - florR1
+    Informar(diferencia)    
+  fin
+variables
+  r1: robot1
+  r2:robot1
+  jefe:jefe
+comenzar
+  AsignarArea (r1,ciudad)
+  AsignarArea (r2,ciudad2)  
+  AsignarArea (jefe,ciudadJ)
+  Iniciar (r1,1,1)
+  Iniciar(r2,2,11)
+  Iniciar(jefe,2,1)
+fin
+
+
+
+
+{1. Dos robots compiten para ver cuÃ¡l junta mÃ¡s flores. El primer robot recoge todas las
+flores de la avenida 1 entre las calles 1 y 10. El segundo robot recoge todas las
+flores de la avenida 2, entre las calles 11 y 20.
+Al finalizar el recorrido, el robot que recogiÃ³ mayor cantidad de flores debe informar
+la diferencia de flores que obtuvo respecto al robot perdedor (el que obtuvo menos
+flores).
+Los robots inician en las esquinas (1, 1) y (2, 11) respectivamente.
+b. Modifique el ejercicio anterior, considerando que ahora habrÃ¡ un robot fiscalizador,
+que serÃ¡ responsable de informar la diferencia de flores que obtuvo el ganador con
+respecto al perdedor. El robot fiscalizador se ubica en la esquina (2,1)}
+

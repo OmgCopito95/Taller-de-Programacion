@@ -1,0 +1,58 @@
+programa TP2EJERCICIO1B
+procesos
+  proceso juntarFlores (ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+areas
+  areaR1: AreaP(1,1,1,10)
+  areaR2: AreaP(2,11,2,20)
+  areaJF: AreaP(2,1,2,1)
+robots
+  robot florero
+  variables
+    flores:numero
+    quienSoy:numero
+  comenzar
+    RecibirMensaje(quienSoy, rJF)
+    flores:=0
+    diferencia:=0
+    repetir 9
+      juntarFlores(flores)
+      mover
+    EnviarMensaje(quienSoy, rJF)
+    EnviarMensaje(flores, rJF)  
+  fin 
+  robot robotJF
+  variables
+    f1: numero
+    f2: numero
+    quienEs: numero
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    repetir 2
+      RecibirMensaje(quienEs, *)
+      si(quienEs = 1)
+        RecibirMensaje(f1, R1)
+      sino
+        RecibirMensaje(f2, R2)
+    si(f1 > f2)
+      Informar(f1 - f2)
+    sino
+      Informar(f2-f1)
+  fin
+variables
+  R1: florero
+  R2: florero
+  rJF: robotJF
+comenzar
+  AsignarArea(R1, areaR1)
+  AsignarArea(R2, areaR2)
+  AsignarArea(rJF, areaJF)
+  Iniciar(R1, 1,1)
+  Iniciar(R2, 2,11)
+  Iniciar(rJF, 2,1)
+fin

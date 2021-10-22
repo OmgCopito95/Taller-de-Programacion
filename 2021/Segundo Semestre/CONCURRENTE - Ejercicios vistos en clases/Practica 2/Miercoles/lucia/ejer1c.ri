@@ -1,0 +1,85 @@
+{Modifique el ejercicio anterior para que ahora participen 6 robots
+ Robot 1: Avenida 1, entre las calles 1 y 10
+ Robot 2: Avenida 2, entre las calles 11 y 20
+ Robot 3: Avenida 3, entre las calles 21 y 30
+ Robot 4: Avenida 4, entre las calles 31 y 40
+ Robot 5: Avenida 5, entre las calles 41 y 50
+ Robot 6: Avenida 6, entre las calles 51 y 60
+ Fiscalizador: Avenida 2, calle 1
+El fiscalizador deberá informar la cantidad de flores que juntó el robot ganador.}
+
+programa ejer1c
+procesos
+  proceso JuntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin 
+   
+  proceso recorrer (ES cantFlores:numero)
+  comenzar
+    repetir 9
+      JuntarFlores(cantFlores)
+      mover
+    JuntarFlores(cantFlores)
+  fin
+{================== FIN PROCESOS ==================}
+
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  area7: AreaP(2,1,2,1)
+
+robots
+  robot tipoR
+  variables
+    cantFlores:numero
+  comenzar
+    cantFlores:= 0
+    recorrer(cantFlores)
+    EnviarMensaje(cantFlores,jefe)
+  fin
+
+  robot tipoJ
+  variables
+    cantFlores: numero
+    max:numero
+  comenzar
+    max:= -1
+    repetir 6
+      RecibirMensaje(cantFlores,*)
+      si (cantFlores > max) {MODULARIZAR}
+        max:= cantFlores
+    Informar (max)
+  fin
+{================== FIN PROGRAMA PRINCIPAL ==================}
+
+variables
+  robot1: tipoR
+  robot2: tipoR
+  robot3: tipoR
+  robot4: tipoR
+  robot5: tipoR
+  robot6: tipoR
+  jefe: tipoJ
+comenzar
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,area4)
+  AsignarArea(robot5,area5)
+  AsignarArea(robot6,area6)
+  AsignarArea(jefe,area7)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,3,21)
+  Iniciar(robot4,4,31)
+  Iniciar(robot5,5,41)
+  Iniciar(robot6,6,51)
+  Iniciar(jefe,2,1)
+fin

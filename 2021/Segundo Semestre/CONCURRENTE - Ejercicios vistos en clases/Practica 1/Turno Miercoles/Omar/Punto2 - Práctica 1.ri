@@ -10,7 +10,7 @@ procesos
 
 areas
 
-  ciudad: AreaC(1, 1, 100, 100) //revisar
+  ciudad: AreaC(1, 1, 100, 100) {//revisar}
 
 robots
 

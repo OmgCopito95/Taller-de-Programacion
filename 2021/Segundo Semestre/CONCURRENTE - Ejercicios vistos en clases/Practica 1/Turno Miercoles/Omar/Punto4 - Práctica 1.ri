@@ -29,7 +29,7 @@ procesos
   proceso recorrerPapeles(ES p: numero)
   comenzar
     repetir 12
-      repetir 24 //repetir 99 - recorre toda la av
+      repetir 24 {//repetir 99 - recorre toda la av}
         juntarPapeles(p)
         mover
       derecha
@@ -66,7 +66,7 @@ procesos
 
 areas
 
-  area1: AreaPC(1, 1, 25, 25) //revisar
+  area1: AreaPC(1, 1, 25, 25) {//revisar}
   area2: AreaPC(26, 26, 50, 50)
   area3: AreaPC(51, 51, 75, 75)
   area4: AreaPC(76, 76, 100, 100)

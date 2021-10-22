@@ -1,0 +1,110 @@
+{d. Modifique el inciso anterior para que ahora el fiscalizador informe también, cuál
+fue el robot ganador.
+}
+
+
+programa uno_c
+procesos
+  proceso juntarflores(ES f:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      f:=f+1
+  fin    
+       
+  proceso recorrer(ES cant_flores:numero)
+  comenzar
+    repetir 9
+      juntarflores(cant_flores)
+      mover
+    juntarflores(cant_flores)
+  fin
+
+  proceso maximo(E fl:numero ; ES m:numero;ES ganador:numero; E id:numero)
+  comenzar
+    si(fl>m)
+      m:=fl
+      ganador:=id 
+  fin
+
+areas
+  Area1: AreaP (1,1,1,10)
+  Area2: AreaP (2,11,2,20)
+  Area3: AreaP (3,21,3,30)
+  Area4: AreaP (4,31,4,40)
+  Area5: AreaP (5,41,5,50)
+  Area6: AreaP (6,51,6,60)
+  Area7: AreaP (2,1,2,1)  
+
+robots
+  robot robot1
+  variables
+    flores:numero
+    quiensoy:numero
+  comenzar                                    
+    flores:=0    
+    RecibirMensaje(quiensoy,jefe)
+    recorrer(flores)
+    EnviarMensaje(quiensoy,jefe)
+    EnviarMensaje(flores,jefe) {mando el dato y quien lo va a recibir} 
+  fin
+  
+  robot robot2
+  variables
+    cantidadflores:numero
+    max:numero
+    id:numero
+    ganador:numero
+  comenzar
+    ganador:=-1
+    max:=-1
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    EnviarMensaje(5,r5)
+    EnviarMensaje(6,r6)
+    
+    repetir 6
+      RecibirMensaje(id,*)  {recibe dato de cualquiera de los 6 robots}
+      si (id = 1)  
+        RecibirMensaje(cantidadflores,r1)
+      sino
+        si(id = 2) 
+          RecibirMensaje(cantidadflores,r2)
+        sino
+          si(id = 3)      
+            RecibirMensaje(cantidadflores,r3)
+          sino
+            si (id = 4)  
+              RecibirMensaje(cantidadflores,r4)
+            sino
+              si (id = 5)
+                RecibirMensaje(cantidadflores,r5)  
+              sino
+                RecibirMensaje(cantidadflores,r6)
+      maximo(cantidadflores,max,ganador,id) 
+    Informar(ganador)              
+    Informar(max)               
+  fin
+
+variables
+  r1,r2,r3,r4,r5,r6: robot1
+  jefe:robot2
+comenzar
+  AsignarArea (r1,Area1)
+  AsignarArea (r2,Area2)
+  AsignarArea (r3,Area3)
+  AsignarArea (r4,Area4)
+  AsignarArea (r5,Area5)
+  AsignarArea (r6,Area6)
+  AsignarArea (jefe,Area7)
+  
+  Iniciar (r1,1,1)
+  Iniciar (r2,2,11)
+  Iniciar (r3,3,21)
+  Iniciar (r4,4,31)
+  Iniciar (r5,5,41)
+  Iniciar (r6,6,51)
+  Iniciar (jefe,2,1)
+fin 

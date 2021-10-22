@@ -1,0 +1,107 @@
+programa ejer5Chechu
+procesos
+{DEJA LAS FLORES ACUMULADAS}
+  proceso depositarFlores (E flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+  {DEJA LOS PAPELES ACUMULADOS}
+  proceso depositarPapeles (E papeles:numero)
+  comenzar
+    repetir papeles
+      depositarPapel
+  fin
+  {JUNTO PAPELES}   
+  proceso juntarPapeles(ES cantP: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP + 1
+  fin
+  {JUNTO FLORES}  
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin 
+  {------RECORRIDO DE LAS AVENIDAS PARA LOS PAPELES---------}
+  proceso recorrerAvenidaPapeles
+  variables
+    papeles:numero
+    callePrincipio:numero {donde guardo la primer calle}
+  comenzar
+    papeles:=0
+    callePrincipio:= PosCa
+    repetir 19
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+    Pos(PosAv,callePrincipio) {En la misma avenida porque este robot solo avanza en calles hacia arriba}
+    depositarPapeles(papeles)
+  fin
+{------RECORRIDO DE LAS CALLES PARA LAS FLORES---------}
+  proceso recorrerCalleFlores
+  variables
+    flores : numero
+  comenzar
+    flores := 0
+    repetir 19
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    depositarFlores(flores)
+  fin
+{------AREAS-------}
+areas
+  area1R1 : AreaP (1, 75, 20, 75) {se mueve por la calle}
+  area2R1 : AreaP (1, 80, 20, 80)
+  
+  area1R2 : AreaP (75, 80, 75, 100){se mueve por la avenida}
+  area2R2 : AreaP (80, 80, 80, 100)
+
+  area1R3 : AreaP (80, 10, 100, 10) {se mueve por la calle}
+  area2R3 : AreaP (80, 15, 100, 15)
+
+  area1R4 : AreaP (10, 1, 10, 20){se mueve por la avenida}
+  area2R4 : AreaP (15, 1, 15, 20)
+{-------ROBOTS-------}
+robots
+
+  robot tipo1 {debe limpiar flores y depositarlas en la última esquina}
+  comenzar
+    derecha
+    recorrerCalleFlores
+    Pos((PosAv - 19), (PosCa + 5)) {Vuelvo a la Primer avenida pero 5 calles mas arriba}
+    recorrerCalleFlores
+  fin
+
+
+  robot tipo2  {debe limpiar papeles y depositarlos en la primer esquina}
+  comenzar
+    recorrerAvenidaPapeles
+    Pos((PosAv + 5), PosCa){Me corro 5 avenidas a la derecha en la misma calle}
+    recorrerAvenidaPapeles
+  fin
+  
+{-------PROGRAMA PRINCIPAL-------}
+variables
+  robot1:tipo1
+  robot2:tipo2
+  robot3:tipo1
+  robot4:tipo2
+comenzar
+  AsignarArea(robot1,area1R1)
+  AsignarArea(robot1,area2R1)
+  AsignarArea(robot2,area1R2)
+  AsignarArea(robot2,area2R2)
+  AsignarArea(robot3,area1R3)
+  AsignarArea(robot3,area2R3)
+  AsignarArea(robot4,area1R4)
+  AsignarArea(robot4,area2R4) 
+  Iniciar(robot1,1,75)
+  Iniciar(robot2,75,80)
+  Iniciar(robot3,80,10)
+  Iniciar(robot4,10,1)
+fin

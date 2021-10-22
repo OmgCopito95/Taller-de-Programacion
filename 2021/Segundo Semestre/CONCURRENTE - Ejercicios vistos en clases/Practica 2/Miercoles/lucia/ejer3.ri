@@ -1,0 +1,106 @@
+{Realice un programa con 2 equipos:
+- El equipo A, compuesto por los robots A1 y A2, debe juntar papeles de las
+primeras 20 esquinas de la calle 1
+- El equipo B, compuesto por los robots B1 y B2, debe juntar flores de las primeras
+20 esquinas de la calle 5
+Los robots A1 y B1 deberán realizar las 10 primeras esquinas de su recorrido, y al
+finalizar avisarán a los robots A2 y B2 respectivamente para que continúen con las
+siguientes 10 esquinas. El segundo robot de cada equipo debe informar la cantidad
+de elementos recogidos en las 20 esquinas.
+Inicialice los 4 robots en las esquinas que considere más apropiadas según el
+trayecto que le corresponde realizar a cada uno.}
+
+programa ejer3
+procesos
+  proceso JuntarPapel (ES cantPapeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+
+  proceso JuntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cantFlores:= cantFlores + 1 
+  fin
+
+  proceso RecorrerPapeles(ES cantPapeles:numero)
+  comenzar
+    repetir 9
+      JuntarPapel(cantPapeles)
+      mover
+    JuntarPapel(cantPapeles)
+  fin
+
+  proceso RecorrerFlores(ES cantFlores:numero)
+  comenzar
+    repetir 9
+      JuntarFlores(cantFlores)
+      mover
+    JuntarFlores(cantFlores)
+  fin
+
+areas
+  area1: AreaP(1,1,1,10)  {Area de equipo A}
+  area2: AreaP(1,11,1,20)
+
+  area3: AreaP(5,1,5,10)  {Area de equipo B}
+  area4: AreaP(5,11,5,20)
+  
+robots
+{========== Comienzo de Equipo A ==========}
+  robot tipoP
+  variables
+    cantPapeles:numero
+  comenzar
+    cantPapeles:=0
+    RecorrerPapeles(cantPapeles)
+    EnviarMensaje(cantPapeles,A2)
+  fin
+
+  robot tipoPJ
+  variables
+    cantPapeles:numero
+  comenzar
+    RecibirMensaje(cantPapeles,A1)
+    RecorrerPapeles(cantPapeles)
+    Informar(cantPapeles)
+  fin
+
+{========== Comienzo de Equipo B ==========}
+  robot tipoF
+  variables 
+    cantFlores:numero
+  comenzar
+    cantFlores:= 0
+    RecorrerFlores(cantFlores)
+    EnviarMensaje(cantFlores,B2)     
+  fin
+  
+  robot tipoFJ
+  variables
+    cantFlores:numero
+  comenzar
+    RecibirMensaje(cantFlores,B1)
+    RecorrerFlores(cantFlores)
+    Informar(cantFlores)
+  fin
+{========== FIN PROGRAMA PRINCIPAL ==========}
+
+variables
+  A1: tipoP     {equipo A}
+  A2: tipoPJ
+  B1: tipoF    {equipo B}
+  B2: tipoFJ
+comenzar
+  AsignarArea (A1,area1)
+  AsignarArea(A2,area2)
+  AsignarArea(B1,area3)
+  AsignarArea(B2,area4)
+  Iniciar(A1,1,1)
+  Iniciar(A2,1,11)
+  Iniciar(B1,5,1)
+  Iniciar(B2,5,11)
+fin

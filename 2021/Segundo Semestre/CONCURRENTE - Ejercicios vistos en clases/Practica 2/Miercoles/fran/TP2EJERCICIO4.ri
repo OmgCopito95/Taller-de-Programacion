@@ -1,0 +1,170 @@
+
+{MODULARIZAR CODIGO}
+programa TP2EJERCICIO4
+procesos
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+areas
+  cuadrado: AreaC(25,25,75,75) {PC}
+  areaJF: AreaP(1,1,1,1)
+  areaR1: AreaP(25,1,25,1)
+  areaR2: AreaP(30,1,30,1)
+  areaR3: AreaP(35,1,35,1)
+  areaR4: AreaP(40,1,40,1)
+robots
+  robot recolector
+  variables
+    auxElementosJuntados: numero
+    avIni: numero
+    caIni: numero
+    avRandom: numero
+    caRandom: numero
+    ok:boolean
+  comenzar
+    auxElementosJuntados:=0
+    avIni:= PosAv
+    caIni:= PosCa
+    RecibirMensaje(ok, rJF)
+    mientras(ok)
+      Random(avRandom, 25,75)
+      Random(caRandom, 25,75)
+      Pos(avRandom,caRandom)
+      juntarFlores(auxElementosJuntados)
+      juntarPapeles(auxElementosJuntados)
+      EnviarMensaje(auxElementosJuntados, rJF)
+      auxElementosJuntados:= 0
+      Pos(avIni, caIni)
+      RecibirMensaje(ok, rJF)
+    RecibirMensaje(ok, rJF)
+    si(ok)
+      Pos(50,50)
+  fin      
+  robot jefe
+  variables
+    eleR1: numero
+    eleR2: numero
+    eleR3: numero
+    eleR4: numero
+    aux: numero
+    ok:boolean
+    elegirAleatorio: numero
+  comenzar
+    elegirAleatorio:= 0
+    eleR1:=0
+    eleR2:=0
+    eleR3:=0
+    eleR4:=0
+    ok:= V
+    repetir 10
+      Random(elegirAleatorio, 1,4)
+      si(elegirAleatorio = 1)
+        EnviarMensaje(ok,r1)
+        RecibirMensaje(aux, r1)
+        eleR1:= eleR1+aux
+      sino
+        si(elegirAleatorio = 2)
+          EnviarMensaje(ok, r2)
+          RecibirMensaje(aux,r2)
+          eleR2:= eleR2+aux
+        sino
+          si(elegirAleatorio = 3)
+            EnviarMensaje(ok, r3)
+            RecibirMensaje(aux,r3)
+            eleR3:= eleR3+aux
+          sino
+            EnviarMensaje(ok,r4)
+            RecibirMensaje(aux,r4)
+            eleR4:= eleR4+aux
+    ok:= F
+    EnviarMensaje(ok,r1)
+    EnviarMensaje(ok,r2)
+    EnviarMensaje(ok,r3)
+    EnviarMensaje(ok,r4)
+
+    si(eleR1 > eleR2)
+      si(eleR1 > eleR3)
+        si(eleR1 > eleR4)
+          EnviarMensaje(ok, r2)
+          EnviarMensaje(ok,r3)
+          EnviarMensaje(ok,r4)
+          ok:= V
+          EnviarMensaje(ok,r1)     
+        sino
+          EnviarMensaje(ok,r1)
+          EnviarMensaje(ok,r2)
+          EnviarMensaje(ok,r3)
+          ok:=V
+          EnviarMensaje(ok,r4)  
+      sino
+        si(eleR3 > eleR4)
+          EnviarMensaje(ok,r1)
+          EnviarMensaje(ok,r2)
+          EnviarMensaje(ok,r4)
+          ok:=V
+          EnviarMensaje(ok,r3)
+        sino
+          EnviarMensaje(ok,r1)
+          EnviarMensaje(ok,r2)
+          EnviarMensaje(ok,r3)
+          ok:=V
+          EnviarMensaje(ok,r4)
+    sino
+      si(eleR2 > eleR3)
+        si(eleR2 > eleR4)
+          EnviarMensaje(ok,r1)
+          EnviarMensaje(ok,r3)
+          EnviarMensaje(ok,r4)
+          ok:=V
+          EnviarMensaje(ok,r2)
+        sino
+          EnviarMensaje(ok,r1)
+          EnviarMensaje(ok,r2)
+          EnviarMensaje(ok,r3)
+          ok:=V
+          EnviarMensaje(ok,r4)
+      sino
+        si(eleR3 > eleR4)
+          EnviarMensaje(ok,r1)
+          EnviarMensaje(ok,r2)
+          EnviarMensaje(ok,r4)
+          ok:=V
+          EnviarMensaje(ok,r3)
+        sino
+          EnviarMensaje(ok,r1)
+          EnviarMensaje(ok,r2)
+          EnviarMensaje(ok,r3)
+          ok:=V
+          EnviarMensaje(ok,r4)
+  fin         
+variables
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  r4: recolector
+  rJF: jefe
+comenzar
+  AsignarArea(r1, cuadrado)
+  AsignarArea(r2, cuadrado)
+  AsignarArea(r3, cuadrado)
+  AsignarArea(r4, cuadrado)
+  AsignarArea(rJF, areaJF)
+  AsignarArea(r1, areaR1)
+  AsignarArea(r2, areaR2)
+  AsignarArea(r3, areaR3)
+  AsignarArea(r4, areaR4)
+  Iniciar(rJF, 1,1)
+  Iniciar(r1, 25,1)
+  Iniciar(r2, 30,1)
+  Iniciar(r3, 35,1)
+  Iniciar(r4, 40,1)
+fin

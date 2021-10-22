@@ -1,0 +1,67 @@
+{b. Modifique el ejercicio anterior, considerando que ahora habrá un robot fiscalizador, que será responsable de informar la diferencia de flores que obtuvo el ganador con respecto al perdedor. El robot fiscalizador se ubica en la esquina (2,1)
+}
+programa ejer1p2_Chechu
+procesos
+ {JUNTA LAS FLORES DE UNA ESQUINA}
+  proceso juntarFlores (ES cantF: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF + 1
+  fin
+  {RECORRIDO DE LOS ROBOTS 1 y 2}
+  proceso recorrerAvenida (ES cantF: numero)
+  comenzar
+    juntarFlores (cantF)
+    repetir 9
+      mover
+      juntarFlores (cantF)
+  fin
+    
+{--- AREAS ---}
+areas
+  area1 : AreaP (1,1,1,10) {Av,Ca}
+  area2 : AreaP (2,11,2,20)
+  area3 : AreaP (2,1,2,1) {el robot jefe se queda parado en esta esquina}
+{-----ROBOTS------}
+robots
+  robot tipo1
+  variables
+    cantF : numero
+  comenzar
+    cantF := 0 {seteo en 0 el contador de flores}
+    recorrerAvenida(cantF)
+    EnviarMensaje(cantF,robot3) {le envio al robot jefe la cantidad de flores juntadas}
+  fin
+
+
+  {.:::::::ROBOT JEFE::::::.}
+  robot tipo2
+  variables
+    cantFlores1,cantFlores2: numero
+  comenzar
+    {NO ES NECESARIO IDENTIFICAR LOS ROBOTS PORQUE EL ENUNCIADO NO ME LO PIDE!!}  }
+    
+    RecibirMensaje (cantFlores1, *){el jefe recibe la cantidad de flores juntadas por R1tipo1}
+    RecibirMensaje (cantFlores2, *) {el jefe recibe la cantidad de flores juntadas por R2tipo1}
+
+
+    si (cantFlores1 > cantFlores2) {si R1 junto mas que R2}
+      Informar(cantFlores1 - cantFlores2)
+    sino
+      Informar(cantFlores2 - cantFlores1) {cc R2 junto mas que R1}
+  fin
+    
+{-----PROGRAMA PRINCIPAL------}
+variables
+  robot1:tipo1 {Robot 1 y 2 hacen lo mismo}
+  robot2:tipo1
+  robot3:tipo2 {el jefe}
+comenzar
+  AsignarArea(robot1, area1)
+  AsignarArea(robot2, area2)
+  AsignarArea(robot3, area3)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,2,1)
+fin

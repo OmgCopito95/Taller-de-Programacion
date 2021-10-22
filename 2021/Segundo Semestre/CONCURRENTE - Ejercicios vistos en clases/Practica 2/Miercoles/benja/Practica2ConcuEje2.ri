@@ -1,0 +1,118 @@
+{REVISAR POR QUE SE ROMPE}
+
+programa ejercicio2Practica2
+  
+procesos
+  proceso contarPapeles (ES papeles:numero)
+  comenzar  
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+    {con: repetir papeles depositarPapel no me anda }  
+    mientras (HayPapelEnLaEsquina)   
+      depositarPapel          
+  fin
+  proceso contarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor   
+      flores:= flores + 1
+      {con: repetir flores depositarFlor no anda }
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor  
+  fin
+  proceso lado (E lado:numero;ES flores:numero;ES papeles:numero)
+  comenzar
+    repetir lado 
+      si (HayPapelEnLaEsquina)
+        contarPapeles(papeles)
+      si (HayFlorEnLaEsquina)  
+        contarFlores(flores)
+      mover
+  fin
+  proceso escalon (E largo:numero;ES flor:numero;ES papel:numero)
+  comenzar
+    lado(largo,flor,papel)
+    derecha
+    si (HayPapelEnLaEsquina)                 
+      contarPapeles(papel)
+    si (HayFlorEnLaEsquina)  
+      contarFlores(flor)
+    mover
+  fin
+  
+  proceso escalera(E altura:numero;ES f:numero;ES p:numero;ES cantidad:numero)
+  comenzar    
+    repetir 4
+      f:=0
+      p:=0
+      escalon(altura,f,p) 
+      si (f > p)
+        cantidad:=cantidad+1                                    
+      repetir 3
+        derecha   
+  fin
+
+areas
+  area1 : AreaC(2,1,30,30) {DEBEN SER 3 PRIVADAS}
+  areaJ:  AreaP(1,1,1,1)
+  
+robots 
+  robot tipo1
+  variables
+    cantidad:numero
+    altura:numero
+    flores:numero
+    papeles:numero
+  comenzar     
+    cantidad:=0
+    RecibirMensaje(altura,robot4)
+    escalera(altura,flores,papeles,cantidad)
+    Informar(cantidad)
+    EnviarMensaje(cantidad,robot4)
+  fin
+  
+    
+  robot jefe
+  variables
+    total,cant:numero
+    x:numero  
+  comenzar  
+    total:=0  
+    
+    Random(x,1,5)  {NO MANDA EL ALTO DE LOS ESCALONES}
+    EnviarMensaje(x,robot1)  
+    
+    Random(x,1,5)    
+    EnviarMensaje(x,robot2)  
+    
+    Random(x,1,5)    
+    EnviarMensaje(x,robot3)  
+    
+    repetir 3  
+      RecibirMensaje (cant,*)
+      total:=total+cant        
+      
+    Informar(total) 
+  fin
+  
+  
+variables 
+  robot1: tipo1  
+  robot2: tipo1
+  robot3: tipo1
+  robot4: jefe
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot3,area1)
+  AsignarArea(robot4,areaJ)
+  Iniciar(robot1, 2, 1)
+  Iniciar(robot2, 7, 1)
+  Iniciar(robot3, 12, 1)
+  Iniciar(robot4,1,1)
+fin
+
+
+
+

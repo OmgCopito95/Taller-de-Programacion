@@ -1,0 +1,73 @@
+programa ej1
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flor + 1
+  fin
+
+  proceso moverVert(E pasos:numero ES flores:numero)
+  comenzar
+    flores:=0
+    repetir pasos - 1
+      juntarFlores (flores)
+      mover
+    juntarFlores(flores)
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  areaJefe:AreaP(2,1,2,1)
+robots 
+  robot slave
+  variables
+    flores:numero
+  comenzar
+    moverVert (10,flores)
+    EnviarMensaje (flores,boss)
+  fin
+  robot boss {este robot no se encuentra en la ciudad???}
+  variables
+    flores1:numero
+    flores2:numero
+    flores3:numero
+    flores4:numero
+    flores5:numero
+    flores6:numero
+  comenzar
+    RecibirMensaje (flores1,*)  {ESPANTOSO - HACER UN REPETIR 6}
+    RecibirMensaje (flores2,*)
+    RecibirMensaje (flores3,*)
+    RecibirMensaje (flores4,*)
+    RecibirMensaje (flores5,*)
+    RecibirMensaje (flores6,*)
+    si flores1 > flores2 {vale por una cadena infinita de if y else QUE SEGURO VA A ESTAR MAL}
+      informar(flores1)
+    sino                    {HABIA QUE CALCULAR UN MAXIMO}
+      informar(flores2)
+  fin
+variables
+  slave1:slave
+  slave2:slave
+  slave3:slave
+  slave4:slave
+  slave5:slave
+  slave6:slave
+  jefe:boss
+comenzar
+  AsignarArea (slave1,area1)
+  AsignarArea (slave2,area2)
+  AsignarArea (jefe,areaJefe)
+  Iniciar(slave1, 1 , 1)
+  Iniciar(slave2, 2 , 11)
+  Iniciar(slave2, 3 , 21)
+  Iniciar(slave2, 4 , 31)
+  Iniciar(slave2, 5 , 41)
+  Iniciar(slave2, 6 , 51)
+  Iniciar(jefe, 2 , 1)
+fin

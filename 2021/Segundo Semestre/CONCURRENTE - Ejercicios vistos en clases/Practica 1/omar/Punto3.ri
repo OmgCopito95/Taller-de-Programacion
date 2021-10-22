@@ -1,0 +1,75 @@
+programa punto3
+
+procesos
+
+	proceso juntarElementos(ES papel: numero; ES flor: numero)
+	comenzar
+		mientras(HayPapelEnLaEsquina)
+			tomarPapel {�PUEDO OMITIR �STA L�NEA PARA AS� NO TENER QUE USAR EL "DEPOSITAR PAPEL"?}
+			papel:= papel + 1	{----- SI NO JUNTAS LOS PAPELES O FLORES, TE QUEDAS EN UN BUCLE INFINITO PORQUE NUNCA SALE DEL MIENTRAS}
+
+		mientras(HayFlorEnLaEsquina)
+			tomarFlor {�PUEDO OMITIR �STA L�NEA PARA AS� NO TENER QUE USAR EL "DEPOSITAR FLOR"?}
+			flor:= flor + 1
+		
+		si(HayPapelEnLaBolsa)	{----NO HACE FALTA PREGUNTAR}
+			repetir papel
+				depositarPapel
+
+		si(HayFlorEnLaBolsa) {----NO HACE FALTA PREGUNTAR}
+			repetir flor
+				depositarFlor
+
+	fin
+
+areas
+	
+	ciudad: AreaC(12, 6, 32, 24)
+
+robots
+
+	robot robotito
+	variables
+		escalones: numero
+		cantPapeles: numero
+		cantFlores: numero
+		cantEscalones: numero
+	comenzar
+		escalones:= 1
+		cantPapeles:= 0
+		cantFlores:= 0
+		cantEscalones:= 0
+
+		mientras(escalones <= 4) {SE PODRIA USAR UN REPETIR}
+			repetir escalones	{SE PODRIA MODULARIZAR}
+				juntarElementos(cantPapeles, cantFlores)
+				mover
+			derecha
+			repetir escalones
+				juntarElementos(cantPapeles, cantFlores)
+				mover
+			repetir 3	{MODULARIZAR PROCESO IZQUIERDA}
+				derecha
+			si((cantPapeles - cantFlores) = 1)
+				cantEscalones:= cantEscalones + 1
+			cantPapeles:= 0
+			cantFlores:= 0
+			escalones:= escalones + 1
+		Informar(cantEscalones)
+	fin
+
+variables
+
+	walle: robotito
+	terminator: robotito
+	granSoldador: robotito
+
+comenzar
+	AsignarArea(walle, ciudad)
+	AsignarArea(terminator, ciudad)
+	AsignarArea(granSoldador, ciudad)
+	Iniciar(walle, 12, 14)
+	Iniciar(terminator, 17, 10)
+	Iniciar(granSoldador, 22, 6)
+fin
+

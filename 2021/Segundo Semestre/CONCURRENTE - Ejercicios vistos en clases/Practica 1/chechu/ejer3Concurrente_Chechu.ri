@@ -1,0 +1,65 @@
+{Realice un programa en el que 3 robots realicen escaleras de 4 escalones, en las que el tamaÃ±o de cada escalÃ³n se incrementa en un 1 respecto al escalÃ³n anterior. El primer escalÃ³n serÃ¡ de 1x1, el segundo de 2x2, y asÃ­ sucesivamente, como se muestra a continuaciÃ³.Al finalizar el recorrido, cada robot debe informar la cantidad de escalones en los que la cantidad de papeles superÃ³ en 1 a la cantidad de flores. Durante el recorrido, no se debe modificar el contenido de las esquinas.}
+programa ejer3Chechu
+procesos
+  proceso procesarEsquina(ES flores: numero; ES papeles: numero)
+  variables
+    cantF: numero
+  comenzar
+    cantF:=0
+    mientras (HayFlorEnLaEsquina)   {FALTA QUE TAMBIEN JUNTEN PAPELES!}
+      tomarFlor
+      cantF := cantF + 1
+    flores:= flores + cantF
+    repetir cantF
+      depositarFlor
+  fin
+  proceso evaluarEscalon(E alto: numero; ES cantEscalones:numero)
+  variables
+    flores: numero
+    papeles: numero
+  comenzar
+    flores := 0
+    papeles:= 0
+    repetir alto
+      procesarEsquina(flores, papeles)
+      mover
+    derecha
+    repetir alto
+      procesarEsquina(flores, papeles)
+      mover
+    repetir 3
+      derecha
+      {izquierda ?????????????????????} {SE PODRIA MODULARIZAR}
+    si (papeles = (flores+1))
+      cantEscalones:= cantEscalones + 1
+  fin
+{----AREAS-----}
+areas
+  ciudad : AreaC(12,6,32,24) {El primer escalon sera de 1x1, el segundo de 2x2, y asi sucesivamente}   
+{---ROBOT----}  
+robots
+  robot tipo1
+  variables
+    cantEscalones: numero  
+    alto:numero
+  comenzar
+    cantEscalones := 0
+    alto := 1
+    repetir 4
+      evaluarEscalon(alto,cantEscalones)
+      alto:= alto+1
+    Informar(cantEscalones)
+  fin
+{----PROGRAMA PRINCIPAL---------}
+variables
+  robot1: tipo1 {todos los robots hacen lo mismo}
+  robot2:tipo1
+  robot3:tipo1
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2, ciudad)
+  AsignarArea(robot3,ciudad)
+  Iniciar(robot1,12,14)
+  Iniciar(robot2, 17, 10)
+  Iniciar(robot3,22,6)
+fin

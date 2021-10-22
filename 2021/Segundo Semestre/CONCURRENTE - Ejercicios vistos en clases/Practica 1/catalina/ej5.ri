@@ -1,0 +1,96 @@
+programa nombrePrograma
+procesos  
+  proceso juntarFlores(ES flor:numero)
+  comenzar 
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor 
+      flor:=flor+1 
+  fin 
+  proceso recorrer(ES flor:numero)
+  comenzar  
+    repetir 19 
+      juntarFlores(flor)
+      mover 
+    juntarFlores(flor)
+  fin   
+  proceso depositar(E flor:numero)
+  comenzar
+    repetir flor
+      depositarFlor 
+  fin
+  proceso juntarPapeles(ES papel:numero)
+  comenzar 
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel 
+      papel:=papel+1 
+  fin 
+  proceso recorrerPapel(ES papel:numero)
+  comenzar  
+    repetir 19 
+      juntarPapeles(papel)
+      mover 
+    juntarPapeles(papel) 
+  fin   
+  proceso depositarPapeles(ES papel:numero){podria ser solo un param de entrada?}
+  comenzar
+    repetir papel {por que rompe si depositar si hay}
+      depositarPapel 
+  fin  
+areas
+  ciudad1 : AreaP(1,75,20,75)
+  ciudad2 : AreaP(1,80,20,80) 
+  ciudad3 : AreaP(80,15,100,15)
+  ciudad4 : AreaP(80,10,100,10)
+  ciudad5 : AreaP(10,1,10,20)
+  ciudad6: AreaP(15,1,15,20)
+  ciudad7: AreaP(75,80,75,100)
+  ciudad8: AreaP(80,80,80,100)
+  
+robots
+  robot robot1
+  variables
+    flor:numero
+  comenzar
+    flor:=0 
+    derecha   
+    recorrer(flor)  
+    depositar(flor) {aca no rompe}    
+    Pos(PosAv - 19,PosCa + 5)
+    recorrer(flor) 
+    depositar(flor)   {aca si ,en ningun caso le puse flores}
+  fin
+  robot robot2
+  variables
+    papel:numero
+  comenzar
+    papel:=0    {FALTA PONER EN 0 OTRA VEZ LA VARIABLE CADA VEZ QUE CAMBIA DE LUGAR SINO VA A QUERER DEPOSITAR MAS COSAS DE LAS QUE TIENE}
+    recorrerPapel(papel)
+    Pos(PosAv,PosCa - 19)  
+    depositarPapeles(papel)     
+    Pos(PosAv + 5,PosCa)
+    recorrerPapel(papel)
+    Pos(PosAv,PosCa - 19)  
+    depositarPapeles(papel)  {rompe pero tiene un repetir}
+  fin
+variables
+  r1: robot1
+  r3: robot1
+  r2,r4:robot2
+comenzar
+  AsignarArea(r1,ciudad1)  
+  AsignarArea(r1,ciudad2)
+  
+  AsignarArea(r2,ciudad5)
+  AsignarArea(r2,ciudad6)
+  
+  AsignarArea(r3,ciudad3)
+  AsignarArea(r3,ciudad4)
+  
+  AsignarArea(r4,ciudad7)
+  AsignarArea(r4,ciudad8)
+  Iniciar(r1,1,75)
+  Iniciar(r3,80,10)  
+  Iniciar(r2,10,1)
+  Iniciar(r4,75,80)    
+fin
+

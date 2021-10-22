@@ -1,0 +1,128 @@
+programa nombrePrograma
+procesos 
+  proceso limpiarEsquina(ES flor:numero; ES papel:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel  
+      papel:=papel+1
+  fin
+  proceso maximo (ES max:numero; ES rMax:numero; E flor:numero; E id:numero)
+  comenzar
+    si flor > max
+      max:= flor
+      rMax:= id
+  fin
+areas
+  ciudad: AreaC (25,25,75,75) {REVISAR}
+  ciudad1: AreaC(1,1,100,1)
+robots
+  robot robot1
+  variables
+    num,av,ca,avR,caR,id,flor,papel:numero  
+    ok:boolean  
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    papel:=0
+    flor:=0
+    RecibirMensaje(id,jefe) 
+
+    repetir 10
+      RecibirMensaje(ok,jefe)
+      si(ok=V) 
+        Random(avR,25,75)
+        Random(caR,25,75)
+        Pos(avR,caR)
+        limpiarEsquina(flor,papel)
+        Pos(av,ca)
+        EnviarMensaje(id,jefe)
+        EnviarMensaje(flor+papel,jefe)
+  fin
+  robot jefe
+  variables
+    ran,objetos,total1,total2,total3,total4,rMax,max:numero
+  comenzar
+    max:=-1
+    rMax:=0
+    total1:=0
+    total2:=0
+    total3:=0
+    total4:=0
+  {MANDAR LOS IDS A CADA ROBOT}
+EnviarMensaje(1,r1)
+EnviarMensaje(2,r2)
+EnviarMensaje(3,r3)
+EnviarMensaje(4,r4) 
+
+
+    repetir 10
+      Random(ran,1,4)
+      si(ran=1)   {USAR SI SINO}
+        EnviarMensaje(V,r1)
+        EnviarMensaje(F,r2)
+        EnviarMensaje(F,r3)
+        EnviarMensaje(F,r4)
+        
+      si(ran=2)  
+        EnviarMensaje(V,r2)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r3)
+        EnviarMensaje(F,r4)
+        
+      si(ran=3)
+        EnviarMensaje(V,r3)
+        EnviarMensaje(F,r4)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r2)
+        
+      si(ran=4)
+        EnviarMensaje(V,r4)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r2)
+        EnviarMensaje(F,r3)
+         
+
+      RecibirMensaje(ran,*)
+      RecibirMensaje(objetos,*) {IDENTIFICAR QUIEN MANDA - REVISAR}
+      maximo (max,rMax,objetos,ran)
+    Informar(rMax,max)
+  {a veces no anda y si bien finalizan todos los robots hay que darle al cuadrado para que termine} 
+    
+  fin
+variables
+  r1,r2,r3,r4: robot1
+  jefe:jefe
+comenzar
+  AsignarArea (r1,ciudad)
+  AsignarArea(r2,ciudad)
+  AsignarArea(r3,ciudad)
+  AsignarArea(r4,ciudad)
+  AsignarArea(jefe,ciudad)
+  AsignarArea(r1,ciudad1)
+  AsignarArea(r2,ciudad1)
+  AsignarArea(r3,ciudad1)
+  AsignarArea(r4,ciudad1)
+  AsignarArea(jefe,ciudad1)
+  Iniciar (r1,25,1)
+  Iniciar(r2,30,1)
+  Iniciar(r3,35,1)
+  Iniciar(r4,40,1)
+  Iniciar(jefe,1,1)
+fin
+
+
+{Realice un programa en el que un robot fiscalizador controla el acceso de 4 robots
+recolectores al cuadrante encerrado entre las esquinas (25,25) y (75,75) . Para ello, el
+robot fiscalizador avisa a un robot recolector aleatorio que puede ingresar al ÃƒÂ¡rea. El
+robot que recibe la autorizaciÃƒÂ³n de acceso calcula una esquina aleatoria dentro del
+ÃƒÂ¡rea, limpia dicha esquina de flores y papeles, regresa a su esquina y avisa al robot
+fiscalizador que ya finalizÃƒÂ³.
+Se realizarÃƒÂ¡n en total 10 accesos al cuadrante entre los 4 robots recolectores. Al
+finalizar, el robot fiscalizador deberÃƒÂ¡ indicar al robot ganador que se posicione en la
+esquina (50,50).
+El robot fiscalizador inicia en la esquina (1,1) y los robots recolectores inician en las
+esquinas (25,1) (30,1) (35,1) y (40,1) respectivamente
+}

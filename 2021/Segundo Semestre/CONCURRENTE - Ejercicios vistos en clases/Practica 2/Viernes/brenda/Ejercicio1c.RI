@@ -1,0 +1,83 @@
+programa p2_ej1c
+
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin    
+  
+  proceso recorrerAvenida (ES flores: numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin 
+  
+  proceso esMaximo (E flores: numero; ES maxFlores:numero)
+  comenzar
+    si (flores > maxFlores)
+      maxFlores:=flores
+  fin 
+
+
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  areaF: AreaP(2,1,2,1)
+  
+  
+robots 
+  robot competidor
+  variables
+    floresPropias: numero
+  comenzar
+    floresPropias:=0
+    recorrerAvenida(floresPropias)
+    EnviarMensaje(floresPropias,robotF)
+  fin
+  
+  robot fiscalizador
+  variables
+    flores, maxFlores: numero
+  comenzar
+    maxFlores:=0
+    repetir 6
+      RecibirMensaje(flores,*)
+      esMaximo(flores,maxFlores)
+    Informar(maxFlores)
+  fin
+  
+     
+variables 
+  robot1: competidor
+  robot2: competidor
+  robot3: competidor
+  robot4: competidor
+  robot5: competidor
+  robot6: competidor
+  robotF: fiscalizador
+
+
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,area4)
+  AsignarArea(robot5,area5)
+  AsignarArea(robot6,area6)
+  AsignarArea(robotF,areaF)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,3,21)
+  Iniciar(robot4,4,31)
+  Iniciar(robot5,5,41)
+  Iniciar(robot6,6,51)
+  Iniciar(robotF,2,1)
+fin

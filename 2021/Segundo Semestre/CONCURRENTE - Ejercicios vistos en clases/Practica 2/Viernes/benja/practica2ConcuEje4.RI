@@ -1,0 +1,171 @@
+programa ejercicio4Practica2
+  
+procesos
+  proceso juntarPapeles (ES papeles:numero)
+  comenzar  
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1   
+  fin
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor   
+      flores:= flores + 1
+  fin
+  proceso recolectar (ES flores:numero;ES papeles:numero)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      juntarFlores(flores)
+    si (HayPapelEnLaEsquina)
+      juntarPapeles(papeles)  
+  fin
+     
+  proceso identificarRobot
+  comenzar  
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4) 
+  fin
+  
+  
+  proceso avisarRobot (E id:numero;ES ok:boolean)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(ok,robot1)  
+    sino
+      si (id = 2)
+        EnviarMensaje(ok,robot2)
+      sino
+        si(id = 3)
+          EnviarMensaje(ok,robot3)
+        sino
+          si (id = 4)
+            EnviarMensaje(ok,robot4)
+  fin
+areas
+  {  }
+  area1 : AreaP(25,1,25,1)
+  area2 : AreaP(30,1,30,1)
+  area3 : AreaP(35,1,35,1)
+  area4 : AreaP(40,1,40,1)
+  areaJefe: AreaP(1,1,1,1) 
+  areaCuadrante: AreaPC(25,25,75,75)
+
+  
+robots  
+  robot tipo1
+  variables
+    flores:numero
+    papeles:numero
+    x,y:numero
+    av:numero        
+    gane,ok:boolean
+    quiensoy:numero
+    
+  comenzar
+    av:=PosAv
+    flores:=0
+    papeles:=0
+    RecibirMensaje(quiensoy,robot5)
+    RecibirMensaje(ok,robot5)    
+    mientras (ok)
+      Random(x,25,75)
+      Random(y,25,75)
+      Pos(x,y)
+      recolectar(flores,papeles)          
+      EnviarMensaje(ok,robot5)
+      Pos(av,1)
+      RecibirMensaje(ok,robot5)  
+    EnviarMensaje(quiensoy,robot5)      
+    EnviarMensaje(flores,robot5)
+    EnviarMensaje(papeles,robot5)      
+        
+    RecibirMensaje(gane,robot5)
+    si (gane)
+      Pos(50,50)
+    
+  fin    
+  robot tipo2
+  variables
+    flores:numero
+    papeles:numero
+    ok:boolean
+    id:numero
+    max,total:numero 
+    idGanador:numero
+  comenzar      
+    max:=-1           
+    ok:=V  
+    identificarRobot
+    repetir 10        
+      Random(id,1,4)
+      avisarRobot(id,ok)                                         
+      RecibirMensaje(ok,*)    
+     {/////////////////}   
+    ok:=F  
+    EnviarMensaje(ok,robot1)   {aviso a los robots que ya se termino}
+    EnviarMensaje(ok,robot2)  
+    EnviarMensaje(ok,robot3)    
+    EnviarMensaje(ok,robot4)
+     {   /////////////////////////      }
+    repetir 4
+      RecibirMensaje(id,*)                 
+      si (id = 1)
+        RecibirMensaje(flores,robot1)
+        RecibirMensaje(papeles,robot1)
+      sino 
+        si (id = 2)
+          RecibirMensaje(flores,robot2)
+          RecibirMensaje(papeles,robot2)  {  proceso al ganador  }
+        sino 
+          si (id = 3)
+            RecibirMensaje(flores,robot3)
+            RecibirMensaje(papeles,robot3)
+          sino
+            si (id = 4)
+              RecibirMensaje(flores,robot4)    
+              RecibirMensaje(papeles,robot4)              
+      total:=flores+papeles                      
+      si (max < total)      {el ganador es el que junta mas elementos}
+        idGanador:=id
+        max:=total         
+        {  //////////////////////     }
+    Informar('ganador_',idGanador)    
+    id:=1    
+    repetir 4
+      si (id = idGanador )    
+        ok:=V                          {aviso al robot ganador y a los perdedores}
+        avisarRobot(idGanador,ok)             {para que terminen su ejecucion}
+      sino
+        ok:=F
+        avisarRobot(id,ok)  
+      id:=id+1
+      {//////////////////////////////}
+  fin  
+    
+
+variables 
+  robot1: tipo1  
+  robot2: tipo1
+  robot3: tipo1
+  robot4: tipo1  
+  robot5: tipo2
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,area4)  
+  AsignarArea(robot5,areaJefe)
+  AsignarArea(robot1,areaCuadrante)
+  AsignarArea(robot2,areaCuadrante)
+  AsignarArea(robot3,areaCuadrante)
+  AsignarArea(robot4,areaCuadrante)    
+  Iniciar(robot5, 1,1)
+  Iniciar(robot1, 25, 1)   {equipo a}
+  Iniciar(robot2, 30, 1)
+  Iniciar(robot3, 35, 1) {equipo b}
+  Iniciar(robot4, 40, 1)
+  
+fin

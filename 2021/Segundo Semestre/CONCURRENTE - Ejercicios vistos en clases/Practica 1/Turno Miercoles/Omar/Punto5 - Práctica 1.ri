@@ -22,13 +22,13 @@ procesos
 
   proceso depositarP
   comenzar
-    mientras(HayPapelEnLaBolsa) //volver a la primera esq
+    mientras(HayPapelEnLaBolsa) {//volver a la primera esq}
       depositarPapel
   fin
 
 areas
 
-  ciudad: AreaC(1,1, 100, 100) //revisan
+  ciudad: AreaC(1,1, 100, 100) {//revisar}
 
 robots
 
@@ -75,18 +75,18 @@ robots
     repetir 19
       limparPapeles
       mover
-    //falta ultima esquina
+    {//falta ultima esquina}
     Pos(15, 1)
     repetir 19
       limparPapeles
       mover
-    //falta ultima esquina
+    {//falta ultima esquina}
     depositarP
   fin
 
 variables
 
-  walle: robotito1  //dos tipos alcanzan
+  walle: robotito1  {//dos tipos alcanzan}
   eva: robotito2
   terminator: robotito3
   granSoldador: robotito4

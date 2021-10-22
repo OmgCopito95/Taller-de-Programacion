@@ -1,0 +1,116 @@
+{NO SE LLEGÓ A REVISAR}
+
+programa ejercicio8
+
+procesos
+ 
+  proceso JuntarFlores (ES flor:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flor:=flor+1
+  fin
+  
+  proceso JuntarPapeles (ES papel:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papel:=papel+1
+  fin
+  
+  proceso MoverEquipoB (ES flor:numero)
+  comenzar
+    repetir 9
+      JuntarFlores(flor)
+      mover
+    JuntarFlores(flor)
+  fin
+  
+  proceso MoverEquipoA (ES papel:numero)
+  comenzar
+    repetir 9
+      JuntarPapeles(papel)
+      mover
+    JuntarPapeles(papel)
+  fin
+  
+areas
+  ciudadA1 :AreaP(1,1,1,10)
+  ciudadA1b :AreaP(1,21,1,30)
+  ciudadA2 :AreaP(1,11,1,20)
+  ciudadA2b :AreaP(1,31,1,40)
+  ciudadB1 :AreaP(5,1,5,10)
+  ciudadB1b : AreaP(5,21,5,30)
+  ciudadB2 :AreaP(5,11,5,20)
+  ciudadB2b : AreaP(5,31,5,40)
+robots
+  
+  robot PrimerRecorrido
+  variables
+    totalPapeles:numero
+    totalFlores:numero
+  comenzar
+    totalPapeles:=0
+    totalFlores:=0
+    si (PosAv = 1)
+      MoverEquipoA(totalPapeles)
+      EnviarMensaje(totalPapeles,A2)
+      Pos(PosAv,PosCa+11)
+      RecibirMensaje(totalPapeles,A2)
+      MoverEquipoA(totalPapeles)
+      EnviarMensaje(totalPapeles,A2)
+    sino
+      MoverEquipoB(totalFlores)
+      EnviarMensaje(totalFlores,B2)
+      Pos(PosAv,PosCa+11)
+      RecibirMensaje(totalFlores,B2)
+      MoverEquipoB(totalFlores)
+      EnviarMensaje(totalFlores,B2)
+  fin
+  
+  robot SegundoRecorrido
+  variables
+    totalFlores:numero
+    totalPapeles:numero
+  comenzar
+    si(PosAv = 1)
+      RecibirMensaje(totalPapeles,A1)
+      MoverEquipoA(totalPapeles)
+      EnviarMensaje(totalPapeles,A1)
+      Pos(PosAv,PosCa+11)
+      RecibirMensaje(totalPapeles,A1)
+      MoverEquipoA(totalPapeles)
+      Informar('papeles',totalPapeles)
+    sino
+      RecibirMensaje(totalFlores,B1) 
+      MoverEquipoB(totalFlores)
+      EnviarMensaje(totalFlores,B1)
+      Pos(PosAv,PosCa+11)
+      RecibirMensaje(totalFlores,B1)
+      MoverEquipoB(totalFlores)
+      EnviarMensaje(totalFlores,B1)
+      Informar('flores',totalFlores)
+  fin
+  
+  
+variables
+  A1 :PrimerRecorrido
+  A2 :SegundoRecorrido
+  B1 :PrimerRecorrido
+  B2 :SegundoRecorrido
+comenzar
+  AsignarArea(A1,ciudadA1)
+  AsignarArea(A1,ciudadA1b)
+  AsignarArea(A2,ciudadA2)
+  AsignarArea(A2,ciudadA2b)
+  
+  AsignarArea(B1,ciudadB1)
+  AsignarArea(B1,ciudadB1b)
+  AsignarArea(B2,ciudadB2)
+  AsignarArea(B2,ciudadB2b)
+  Iniciar(A1,1,1)
+  Iniciar(A2,1,11)
+  Iniciar(B1,5,1)
+  Iniciar(B2,5,11)
+fin
+

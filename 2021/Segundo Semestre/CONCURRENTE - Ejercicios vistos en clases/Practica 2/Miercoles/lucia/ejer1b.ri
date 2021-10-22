@@ -1,0 +1,62 @@
+{Modifique el ejercicio anterior, considerando que ahora habrá un robot fiscalizador,
+que será responsable de informar la diferencia de flores que obtuvo el ganador con
+respecto al perdedor. El robot fiscalizador se ubica en la esquina (2,1)}
+
+programa ejer1b
+procesos 
+  proceso JuntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+
+  proceso recorrer (ES cantFlores: numero)
+  comenzar
+    repetir 9
+      JuntarFlores(cantFlores)
+      mover
+    JuntarFlores(cantFlores)
+  fin
+{================== FIN PROCESOS ==================}
+
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(2,1,2,1)
+robots
+  robot tipoR
+  variables
+    cantFlores:numero
+  comenzar
+    cantFlores:=0
+    recorrer(cantFlores)
+    EnviarMensaje(cantFlores,jefe)    
+  fin
+
+  robot tipoJ
+  variables
+    cantFloresR1:numero
+    cantFloresR2: numero
+  comenzar
+    RecibirMensaje(cantFloresR1,*)
+    RecibirMensaje(cantFloresR2,*)
+    si (cantFloresR1 > cantFloresR2)
+      Informar(cantFloresR1 - cantFloresR2)
+    sino
+      Informar(cantFloresR2 - cantFloresR1)
+  fin
+{================== FIN PROGRAMA PRINCIPAL ==================}
+
+variables
+  robot1: tipoR
+  robot2: tipoR
+  jefe: tipoJ
+comenzar
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(jefe,area3)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(jefe,2,1)
+fin

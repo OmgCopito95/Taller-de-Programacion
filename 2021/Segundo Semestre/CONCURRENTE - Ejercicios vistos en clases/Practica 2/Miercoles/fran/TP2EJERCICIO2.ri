@@ -1,0 +1,84 @@
+programa  TP2EJERCICIO2
+procesos
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso comparar(E f:numero; E p:numero; ES ok:boolean)
+  comenzar
+    ok:= F
+    si(f>p)
+      ok:= V
+  fin
+areas
+  areaTrabajadores: AreaC(2,1,17,25) {DEBEN SER 3 PRIVADAS}
+  areaJF: AreaP(1,1,1,1)
+robots
+  robot trabajador {MODULARIZAR}
+  variables
+    flores:numero
+    papeles:numero
+    ok:boolean
+    alto:numero
+    contador: numero
+  comenzar
+    contador:=0
+    flores:=0
+    papeles:=0
+    repetir 4
+      Random(alto,1,5)
+      repetir alto
+        juntarFlores(flores)
+        juntarPapeles(papeles)
+        mover
+      juntarFlores(flores)
+      juntarPapeles(papeles)
+      derecha
+      mover
+      juntarFlores(flores)
+      juntarPapeles(papeles)
+      comparar(flores,papeles,ok)
+      si(ok)
+        contador:=contador+1
+      flores:=0
+      papeles:=0
+      repetir 3
+        derecha  
+    EnviarMensaje(contador, rJF)    
+  fin
+  robot robotJF
+  variables 
+    contador: numero
+    aux:numero
+  comenzar
+    contador:=0
+    repetir 3
+      RecibirMensaje(aux, *)
+      contador:= contador+aux
+    Informar(contador)
+  fin
+variables
+  R1: trabajador
+  R2: trabajador
+  R3: trabajador
+  rJF: robotJF
+comenzar
+  AsignarArea(R1, areaTrabajadores)
+  AsignarArea(R2, areaTrabajadores)
+  AsignarArea(R3, areaTrabajadores)
+  AsignarArea(rJF, areaJF)
+  Iniciar(R1, 2,1)
+  Iniciar(R2, 7,1)
+  Iniciar(R3, 12,1)
+  Iniciar(rJF, 1,1)
+fin
+
+

@@ -1,0 +1,82 @@
+programa nombrePrograma
+procesos
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+  proceso juntarPapeles(ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:=papel+1
+  fin      
+areas
+  ciudad: AreaC (1,1,100,100) { DEBERIA SER AREAS PRIVADAS}
+robots
+  robot robot1
+  variables
+    alto,flor,papel,cant:numero
+  comenzar
+    cant:=0
+    repetir 4     {MODULARIZAR}
+      Random(alto,1,5)
+      repetir alto
+        juntarFlores(flor)
+        juntarPapeles(papel)
+        mover
+      derecha
+      juntarFlores(flor)
+      juntarPapeles(papel)
+      mover 
+      repetir 3 
+        derecha
+      juntarFlores(flor)
+      juntarPapeles(papel)
+      si(flor > papel)
+        cant:=cant+1{cuando termina el escalon cuento}
+    Informar(cant) 
+    EnviarMensaje(cant,jefe)         
+  fin
+  robot jefe
+  variables
+    cant,total:numero
+  comenzar
+    cant:=0    
+    repetir 3
+      RecibirMensaje(cant,*)
+      total:=total+cant
+    Informar('Total', total)
+  
+  fin
+
+variables
+  r1,r2,r3:robot1  
+  jefe: jefe
+
+comenzar
+  AsignarArea (jefe,ciudad)
+  AsignarArea (r1,ciudad)
+  AsignarArea (r2,ciudad)
+  AsignarArea (r3,ciudad)
+
+  Iniciar (jefe,1,1)
+  Iniciar (r1,2,1)
+  Iniciar (r2,7,1)
+  Iniciar (r3,12,1)
+
+fin
+
+
+
+
+{2. Realice un programa en el que 3 robots realizan una escalera de 4 escalones cada
+uno. Todos los escalones tienen un ancho fijo de 1, y un alto aleatorio entre 1 y 5. Al
+finalizar el recorrido, cada robot deberÃ¡ enviar al robot jefe la cantidad de escalones
+que tenÃ­an mÃ¡s flores que papeles. Una vez que los tres robots finalizaron, el robot
+jefe deberÃ¡ informar la suma de las cantidades enviadas por los 3 robots.
+â—‹ El robot jefe inicia en la esquina (1,1)
+â—‹ El robot 1 inicia en la esquina (2,1)
+â—‹ El robot 2 inicia en la esquina (7,1)
+â—‹ El robot 3 inicia en la esquina (12,1)}

@@ -1,0 +1,53 @@
+programa ej1
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flor + 1
+  fin
+
+  proceso moverVert(E pasos:numero ES flores:numero)
+  comenzar
+    flores:=0
+    repetir pasos - 1
+      juntarFlores (flores)
+      mover
+    juntarFlores(flores)
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  areaJefe:AreaP(100,100,100,100) {El robot fiscalizador se ubica en la esquina (2,1)}
+robots 
+  robot slave
+  variables
+    flores:numero
+  comenzar
+    moverVert (10,flores)
+    EnviarMensaje (flores,boss)
+  fin
+  robot boss {este robot no se encuentra en la ciudad???} { TODOS TIENEN QUE ESTAR EN LA CIUDAD}
+  variables
+    flores1:numero
+    flores2:numero
+  comenzar
+    RecibirMensaje (flores1,*)
+    RecibirMensaje (flores2,*)
+    si flores1 > flores2
+      informar(flores1)
+    sino
+      informar(flores2)
+  fin
+variables
+  slave1:slave
+  slave2:slave
+  jefe:boss
+comenzar
+  AsignarArea (slave1,area1)
+  AsignarArea (slave2,area2)
+  AsignarArea (jefe,areaJefe)
+  Iniciar(slave1, 1 , 1)
+  Iniciar(slave2, 2 , 11)
+  Iniciar(jefe, 100 , 100)
+fin

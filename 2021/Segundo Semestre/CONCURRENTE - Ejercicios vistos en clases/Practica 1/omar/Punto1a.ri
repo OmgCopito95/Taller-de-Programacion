@@ -1,0 +1,60 @@
+programa punto1
+	
+procesos
+
+	proceso juntar(ES flor: numero; ES sinFlor: numero)
+	comenzar
+		si(HayFlorEnLaEsquina)
+			mientras (HayFlorEnLaEsquina)
+				tomarFlor
+				flor:= flor + 1
+		sino
+			sinFlor:= sinFlor + 1
+	fin
+
+	proceso hayFlor(E flor: numero; E sinFlor: numero)
+	comenzar
+		si(HayFlorEnLaBolsa) {------------NO HACE FALTA}
+			Informar(flor)
+			repetir flor
+				depositarFlor
+		Informar(sinFlor)
+	fin
+
+areas
+
+	avenida1: AreaP(1, 1, 1, 100)
+	avenida3: AreaP(3, 1, 3, 100)
+	avenida5: AreaP(5, 1, 5, 100)
+
+robots
+
+	robot robotito
+	variables
+		f: numero
+		noF: numero
+		avenida: numero
+	comenzar
+		f:= 0
+		noF:= 0
+		avenida:= 1
+		mientras(avenida <= 5)
+			Pos(avenida, 1)
+			repetir 99	{---------MODULARIZAR}
+				juntar(f, noF)
+				mover
+			juntar(f, noF)
+			avenida:= avenida + 2
+		hayFlor(f, noF)
+	fin
+
+variables
+
+	walle: robotito
+  
+comenzar
+	AsignarArea(walle, avenida1)
+	AsignarArea(walle, avenida3)
+	AsignarArea(walle, avenida5)
+	Iniciar(walle, 1, 1)
+fin

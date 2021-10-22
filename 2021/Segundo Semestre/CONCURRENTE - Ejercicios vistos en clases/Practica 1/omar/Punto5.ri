@@ -1,0 +1,117 @@
+programa punto5
+
+procesos
+
+  proceso limparFlores(ES flor: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin
+
+  proceso limparPapeles(ES papel: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel + 1
+  fin
+
+  proceso depositarF(E flor: numero)
+  comenzar
+    si(HayFlorEnLaBolsa)  {----NO HACE FALTA PREGUNTAR}
+      repetir flor
+        depositarFlor
+  fin
+
+  proceso depositarP(E papel: numero)
+  comenzar
+    si(HayPapelEnLaBolsa){----NO HACE FALTA PREGUNTAR}
+      repetir papel
+        depositarPapel
+  fin
+
+areas
+
+  avenidaRobot1A: AreaP(1, 75, 20, 75)
+  avenidaRobot1B: AreaP(1, 80, 20, 80)
+
+  avenidaRobot2A: AreaP(75, 80, 75, 99)
+  avenidaRobot2B: AreaP(80, 80, 80, 99)
+
+  avenidaRobot3A: AreaP(80, 10, 99, 10)
+  avenidaRobot3B: AreaP(80, 15, 99, 15)
+  
+  avenidaRobot4A: AreaP(10, 1, 10, 20)
+  avenidaRobot4B: AreaP(15, 1, 15, 20)
+
+robots
+
+  robot robotitoCalles
+  variables
+    f: numero
+    calle: numero
+    avenida: numero
+  comenzar
+    f:= 0 {Voy a usar un contador de flores para decir despues cuantas flores tengo que depositar en la esquina}
+    derecha
+    repetir 19
+      limparFlores(f)
+      mover
+    limparFlores(f) {Proceso la ultima esquina}
+    calle:= PosCa {Me guardo la posicion de la calle en la que estoy parado}
+    avenida:= PosAv {Me guardo la posicion de la avenida en la que estoy parado}
+    Pos(avenida - 19, calle + 5) {Me reposiciono en la misma avenida que el inicio pero 5 calles mas arriba}
+    repetir 19
+      limparFlores(f)
+      mover
+    limparFlores(f)
+    depositarF(f)
+  fin
+
+  robot robotitoAvenidas
+  variables
+    p: numero
+    avenida: numero
+    calle: numero
+  comenzar
+    p:= 0 {Voy a usar un contador de papeles para decir despues cuantos papeles tengo que depositar en la esquina}
+    repetir 19
+      limparPapeles(p)
+      mover
+    limparPapeles(p)
+    avenida:= PosAv {Me guardo la posicion de la avenida en la que estoy parado}
+    calle:= PosCa {Me guardo la posicion de la calle en la que estoy parado}
+    Pos(avenida + 5, calle - 19) {Me reposiciono en la misma calle que el inicio pero 5 avenidas mas a la derecha}
+    repetir 19
+      limparPapeles(p)
+      mover
+    limparPapeles(p)
+    Pos(PosAv, calle - 19) {Me reposiciono en la misma avenida al que recorri por ultima vez}
+    depositarP(p)
+  fin
+
+variables
+
+  robot1: robotitoCalles
+  robot2: robotitoAvenidas
+  robot3: robotitoCalles
+  robot4: robotitoAvenidas
+
+comenzar
+  AsignarArea(robot1, avenidaRobot1A)
+  AsignarArea(robot1, avenidaRobot1B)
+
+  AsignarArea(robot2, avenidaRobot2A)
+  AsignarArea(robot2, avenidaRobot2B)
+
+  AsignarArea(robot3, avenidaRobot3A)
+  AsignarArea(robot3, avenidaRobot3B)
+
+  AsignarArea(robot4, avenidaRobot4A)
+  AsignarArea(robot4, avenidaRobot4B)
+  
+  Iniciar(robot1, 1, 75)
+  Iniciar(robot2, 75, 80)
+  Iniciar(robot3, 80, 10)
+  Iniciar(robot4, 10, 1)
+fin

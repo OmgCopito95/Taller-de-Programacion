@@ -1,0 +1,109 @@
+programa Ejercicio1Practica2
+procesos 
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor   
+      flores:= flores + 1
+  fin      
+  
+  proceso limpiarAvenidaFlor (ES flores:numero)
+  comenzar  
+    repetir 9
+      si (HayFlorEnLaEsquina)
+        juntarFlores(flores)
+      mover
+    si(HayFlorEnLaEsquina)
+      juntarFlores(flores)   
+  fin       
+ 
+areas
+  area1 : AreaP(1,1,1,10)
+  area2 : AreaP(2,11,2,20)
+  area3 : AreaP(3,21,3,30)
+  area4:  AreaP  (4,31,4,40)
+  area5:  AreaP(5,41,5,50)
+  area6:  AreaP(6,51,6,60)
+  esquina: AreaP(2,1,2,1)
+  
+  
+robots 
+  robot tipo1
+  variables
+    flores:numero
+    quiensoy:numero
+  comenzar    
+    flores:=0
+    RecibirMensaje(quiensoy,jefe)
+    limpiarAvenidaFlor(flores)   
+    EnviarMensaje(quiensoy,jefe)   
+    EnviarMensaje(flores,jefe)
+    
+  fin
+    
+  robot tipo2    
+  variables 
+    f:numero
+    id:numero
+    max:numero
+    idGanador:numero
+  comenzar    
+  
+    max:=-1      
+    
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    EnviarMensaje(5,robot5)
+    EnviarMensaje(6,robot6)               
+    repetir 6    
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(f,robot1)          
+      sino
+        si (id = 2)
+          RecibirMensaje(f,robot2)          
+        sino 
+          si (id = 3 )  
+            RecibirMensaje(f,robot3)            
+          sino 
+            si (id = 4)
+              RecibirMensaje(f,robot4)              
+            sino 
+              si (id = 5)
+                RecibirMensaje(f,robot5)                
+              sino 
+                RecibirMensaje(f,robot6)         
+      si (f > max ) {MODULARIZAR}
+        max:=f
+        idGanador:=id                                  
+    Informar('Robot',idGanador)
+    Informar('Cantidad',max)                    
+  fin
+  
+  
+variables 
+  robot1,robot2,robot3,robot4
+  robot5,robot6: tipo1    
+  jefe:tipo2
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,area4)
+  AsignarArea(robot5,area5)
+  AsignarArea(robot6,area6)
+  AsignarArea(jefe,esquina) 
+  
+  Iniciar(robot1, 1,1)
+  Iniciar(robot2, 2,11)
+  Iniciar(robot3, 3,21)
+  Iniciar(robot4, 4,31)
+  Iniciar(robot5, 5,41)
+  Iniciar(robot6, 6,51)
+  Iniciar(jefe,2,1)
+fin
+
+
+

@@ -9,11 +9,11 @@ procesos
 		repetir 99
 			juntar(flor, noFlor)
 			mover
-		//ulti esquina
+		{//ultima esquina falta}
 		hayFlor(flor, noFlor)
 	fin
 
-proceso juntar(ES flor: numero; ES sinFlor: numero)
+	proceso juntar(ES flor: numero; ES sinFlor: numero)
 	comenzar
 		si(HayFlorEnLaEsquina)
 			mientras (HayFlorEnLaEsquina)
@@ -25,7 +25,7 @@ proceso juntar(ES flor: numero; ES sinFlor: numero)
 	
 	proceso hayFlor(E flor: numero; E sinFlor: numero)
 	comenzar
-		si(HayFlorEnLaBolsa) //revisar
+		si(HayFlorEnLaBolsa)	{//revisar}
 			Informar(flor)
 			depositarFlor
 		sino
@@ -34,29 +34,27 @@ proceso juntar(ES flor: numero; ES sinFlor: numero)
 
 areas
 
-	ciudad: AreaC(1, 1, 100, 100) //revisar - 1 area privada para cada robot
+	ciudad: AreaC(1, 1, 100, 100) {//hay que hacer 3 areas privadas, una para cada avenida}
 
 robots
 
-	robot robotito1
+	robot robotito
 	variables
 		f: numero
 		noF: numero
 	comenzar
 		recorrerAvenida(f, noF)
+		Pos(3, 1)
+		recorrerAvenida(f, noF)
+		Pos(5,1)
+		recorrerAvenida(f, noF)
 	fin
 
 variables
 
-	walle: robotito1
-	eva: robotito1
-	auto: robotito1
+	walle: robotito
 	
 comenzar
 	AsignarArea(walle, ciudad)
-	AsignarArea(eva, ciudad)
-	AsignarArea(auto, ciudad)
 	Iniciar(walle, 1, 1)
-	Iniciar(eva, 3, 1)
-	Iniciar(auto, 5, 1)
 fin

@@ -1,0 +1,110 @@
+programa TP2EJERCICIO1B
+procesos
+  proceso juntarFlores (ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+areas
+  areaR1: AreaP(1,1,1,10)
+  areaR2: AreaP(2,11,2,20)
+  areaR3: AreaP(3,21,3,30)
+  areaR4: AreaP(4,31,4,40)
+  areaR5: AreaP(5,41,5,50)
+  areaR6: AreaP(6,51,6,60)
+  areaJF: AreaP(2,1,2,1)
+robots
+  robot florero
+  variables
+    flores:numero
+    quienSoy:numero
+  comenzar
+    RecibirMensaje(quienSoy, rJF)
+    flores:=0
+    repetir 9   {MODULARIZAR}
+      juntarFlores(flores)
+      mover
+    {FALTA LA ULTIMA}
+    EnviarMensaje(quienSoy, rJF)
+    EnviarMensaje(flores, rJF)  
+  fin 
+  robot robotJF
+  variables
+    maxFlores: numero
+    flores: numero
+    ganador: numero
+    quienEs: numero
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+    EnviarMensaje(5,R5)
+    EnviarMensaje(6,R6)
+    maxFlores:=0
+    ganador:=0
+    repetir 6
+      RecibirMensaje(quienEs, *)
+      si(quienEs = 1)
+        RecibirMensaje(flores, R1)
+        si(flores > maxFlores)    {PODRIA HACERSE UNA SOLA VEZ USANDO LA VARIABLE QUIENES}
+          maxFlores:= flores
+          ganador:= 1
+      sino
+        si(quienEs = 2)
+          RecibirMensaje(flores, R2)
+          si(flores > maxFlores)
+            maxFlores:= flores
+            ganador:= 2
+        sino
+          si(quienEs = 3)
+            RecibirMensaje(flores, R3)
+            si(flores > maxFlores)
+              maxFlores:= flores
+              ganador:= 3
+          sino
+            si(quienEs = 4)
+              RecibirMensaje(flores, R4)
+              si(flores > maxFlores)
+                maxFlores:= flores
+                ganador:= 4
+            sino
+              si(quienEs = 5)
+                RecibirMensaje(flores, R5)
+                si(flores > maxFlores)
+                  maxFlores:= flores
+                  ganador:= 5
+              sino
+                si(quienEs = 6)
+                  RecibirMensaje(flores,R6)
+                  si(flores > maxFlores)
+                    maxFlores:= flores
+                    ganador:= 6
+    Informar(ganador)
+    Informar(maxFlores)
+  fin
+variables
+  R1: florero
+  R2: florero
+  R3: florero
+  R4: florero
+  R5: florero
+  R6: florero
+  rJF: robotJF
+comenzar
+  AsignarArea(R1, areaR1)
+  AsignarArea(R2, areaR2)
+  AsignarArea(R3, areaR3)
+  AsignarArea(R4, areaR4)
+  AsignarArea(R5, areaR5)
+  AsignarArea(R6, areaR6)
+  AsignarArea(rJF, areaJF)
+  Iniciar(R1, 1,1)
+  Iniciar(R2, 2,11)
+  Iniciar(R3, 3,21)
+  Iniciar(R4, 4,31)
+  Iniciar(R5, 5,41)
+  Iniciar(R6, 6,51)
+  Iniciar(rJF, 2,1)
+fin
