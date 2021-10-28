@@ -1,0 +1,123 @@
+programa punto1
+
+procesos
+
+	proceso juntarFlores(ES flor: numero)
+	comenzar
+		mientras(HayFlorEnLaEsquina)
+			tomarFlor
+			flor:= flor + 1
+	fin
+
+	proceso depositoFlores(E flor: numero)
+	comenzar
+		repetir flor
+			depositarFlor
+	fin
+
+	proceso juntarPapeles(ES papel: numero)
+	comenzar
+		mientras(HayPapelEnLaEsquina)
+			tomarPapel
+			papel:= papel + 1
+	fin
+
+	proceso depositoPapeles(E papel: numero)
+	comenzar
+		repetir papel
+			depositarPapel
+	fin
+
+areas
+
+	areaFloreros: AreaPC(1, 1, 5, 10)
+	areaPapeleros: AreaPC(6, 1, 10, 9)
+	areaFlorero1: AreaP(6, 10, 6, 10)
+	areaFlorero2: AreaP(7, 10, 7, 10)
+	areaPapelero1: AreaP(8, 10, 8, 10)
+	areaPapelero2: AreaP(9, 10, 9, 10)
+	areaDeposito: AreaC(10, 10, 10, 10)
+
+robots
+
+	robot florero
+	variables
+		avActual: numero
+		caActual: numero
+		avRandom: numero
+		caRandom: numero
+		flor: numero
+	comenzar
+		flor:= 0
+		avActual:= PosAv
+		caActual:= PosCa
+		repetir 5
+			Random(avRandom, 1, 5)
+			Random(caRandom, 1, 10)
+			BloquearEsquina(avRandom, caRandom)
+			Pos(avRandom, caRandom)
+			juntarFlores(flor)
+			Pos(avActual, caActual)
+			LiberarEsquina(avRandom, caRandom)
+
+		BloquearEsquina(10,10)	{BLOQUEO -DEPOSITO 1-LIBERO Y ASI HASTA QUE SE TERMINEN}
+		Pos(10, 10)
+		depositoFlores(flor)
+		Pos(avActual, caActual)
+		LiberarEsquina(10, 10)
+	fin
+
+	robot papelero
+	variables
+		avActual: numero
+		caActual: numero
+		avRandom: numero
+		caRandom: numero
+		papel: numero
+	comenzar
+		papel:= 0
+		avActual:= PosAv
+		caActual:= PosCa
+		repetir 3
+			Random(avRandom, 6, 10)
+			Random(caRandom, 1, 9)
+			BloquearEsquina(avRandom, caRandom)
+			Pos(avRandom, caRandom)
+			juntarPapeles(papel)
+			Pos(avActual, caActual)
+			LiberarEsquina(avRandom, caRandom)
+			
+		BloquearEsquina(10,10){BLOQUEO -DEPOSITO 1-LIBERO Y ASI HASTA QUE SE TERMINEN}
+		Pos(10, 10)
+		depositoPapeles(papel)
+		Pos(avActual, caActual)
+		LiberarEsquina(10, 10)
+	fin
+
+variables
+	robotFlorero1: florero
+	robotFlorero2: florero
+	robotPapelero1: papelero
+	robotPapelero2: papelero
+comenzar
+	AsignarArea(robotFlorero1, areaFlorero1)
+	AsignarArea(robotFlorero1, areaFloreros)
+	AsignarArea(robotFlorero1, areaDeposito)
+
+	AsignarArea(robotFlorero2, areaFlorero2)
+	AsignarArea(robotFlorero2, areaFloreros)
+	AsignarArea(robotFlorero2, areaDeposito)
+
+	AsignarArea(robotPapelero1, areaPapelero1)
+	AsignarArea(robotPapelero1, areaPapeleros)
+	AsignarArea(robotPapelero1, areaDeposito)
+
+	AsignarArea(robotPapelero2, areaPapelero2)
+	AsignarArea(robotPapelero2, areaPapeleros)
+	AsignarArea(robotPapelero2, areaDeposito)
+
+	Iniciar(robotFlorero1, 6, 10)
+	Iniciar(robotFlorero2, 7, 10)
+	Iniciar(robotPapelero1, 8, 10)
+	Iniciar(robotPapelero2, 9, 10)
+fin

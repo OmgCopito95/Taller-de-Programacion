@@ -1,0 +1,135 @@
+{4- Realice un programa en el que 4 robots mueven de a una todas las flores de la esquina
+(10,10) a la esquina (11,11). Para ello, cada robot que toma una flor de la esquina (10,10) la
+deposita en la esquina (11,11) y luego retorna a su esquina inicial. Cada robot que finaliza
+(o, sea, que detecta que la esquina (10,10) se ha vaciado) deberá avisar al robot
+coordinador que ha finalizado. Cuando todos los robots finalizaron, el robot coordinador
+deberá informar qué robot finalizó último y a continuación deberá recolectar todas las flores
+de la esquina (11,11).
+
+El robot coordinador inicia en la esquina (1,1).
+Los robots inician en las esquinas (9,9) (9,10) (9,11) y (9,12).
+}
+
+programa tp3cuadtroA  
+procesos
+  proceso identificador 
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+
+areas
+  Area1: AreaPC (10,10,10,10)  {r1,r2,r3,r4}
+  Area2: AreaC (11,11,11,11)  {r1,r2,r3,r4}
+
+  Area3: AreaP  (1,1,1,1) {jefe}
+
+  Area4: AreaP  (9,9,9,9) {r1}
+  Area5: AreaP  (9,10,9,10) {r2}
+  Area6: AreaP  (9,11,9,11) {r3}
+  Area7: AreaP  (9,12,9,12) {r4}
+
+robots
+  robot robot1
+  variables
+    av_actual:numero
+    ca_actual:numero
+    av:numero
+    ca:numero
+    quiensoy:numero
+    ok:boolean
+  comenzar
+    ok:=V
+    RecibirMensaje(quiensoy,jefe) {recibo el id de robot jefe}
+    av_actual:=PosAv              {guarda avenida inicial}
+    ca_actual:=PosCa              {guarda calle inical}
+  
+    mientras(ok)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si HayFlorEnLaEsquina
+        tomarFlor
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        LiberarEsquina(10,10)  
+        depositarFlor
+        Pos(av_actual,ca_actual)
+        LiberarEsquina(11,11) 
+      sino
+        ok:=F
+        Pos(av_actual,ca_actual)
+        LiberarEsquina(10,10)
+        EnviarMensaje(quiensoy,jefe)  {envio al robot jefe mi identificador}
+        EnviarMensaje(ok,jefe) {envia booleano cuando termina}       
+  fin
+
+  robot robot2
+  variables
+    id:numero
+    ultimo:numero
+    ok:boolean
+
+  comenzar
+    identificador  {proceso de id para cada robot}
+    ultimo:=0
+
+    repetir 4 {PODRIAS RECIBIR 3 MSJ Y CHEQUEAR SOLO EL ULTIMO}
+      RecibirMensaje(id,*) {recibe el id en orden de llegada a medida que terminen los robots}
+      si (id=1)
+        RecibirMensaje(ok,r1)
+        ultimo:=ultimo+1
+        si(ultimo=4)
+          Informar('ultimo',id)      
+      sino
+        si(id=2)
+          RecibirMensaje(ok,r2)
+          ultimo:=ultimo+1
+          si(ultimo=4)
+            Informar('ultimo',id)          
+        sino
+          si(id=3)
+            RecibirMensaje(ok,r3)
+            ultimo:=ultimo+1
+            si(ultimo=4)
+              Informar('ultimo',id)
+          sino
+            RecibirMensaje(ok,r4)
+            ultimo:=ultimo+1
+            si(ultimo=4)
+              Informar('ultimo',id) {informo id o r4 ???}
+
+    Pos(11,11)
+    mientras HayFlorEnLaEsquina
+      tomarFlor          
+  fin
+
+variables
+  r1,r2,r3,r4: robot1  {robot recolector}
+  jefe: robot2  {robot jefe}
+
+comenzar
+  AsignarArea (r1,Area1) {parcialmente compartida 10,10}
+  AsignarArea (r2,Area1)
+  AsignarArea (r3,Area1)
+  AsignarArea (r4,Area1)
+
+  AsignarArea (jefe,Area2) { compartida 11,11}
+  AsignarArea (r1,Area2)
+  AsignarArea (r2,Area2)
+  AsignarArea (r3,Area2)
+  AsignarArea (r4,Area2)
+
+  AsignarArea (jefe,Area3) {areas privadas}
+  AsignarArea (r1,Area4)
+  AsignarArea (r2,Area5) 
+  AsignarArea (r3,Area6)
+  AsignarArea (r4,Area7)
+  
+  Iniciar (jefe,1,1)
+  Iniciar (r1,9,9)
+  Iniciar (r2,9,10)
+  Iniciar (r3,9,11)
+  Iniciar (r4,9,12)  
+fin

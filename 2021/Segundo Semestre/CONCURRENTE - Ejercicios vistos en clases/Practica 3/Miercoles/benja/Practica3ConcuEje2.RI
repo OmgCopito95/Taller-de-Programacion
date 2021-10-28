@@ -1,0 +1,157 @@
+programa Ejercicio3
+  
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso accederEsquina (E x:numero;E y:numero;E quiensoy:numero)
+  comenzar
+    BloquearEsquina(x,y)
+    mover
+    EnviarMensaje(quiensoy,robot3)
+    repetir 2
+      derecha
+    mover 
+    LiberarEsquina(x,y)
+  fin
+  proceso juntarPapeles (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor   
+      flores:= flores + 1
+  fin
+  
+  proceso ladoPapeles (E lado:numero;ES papeles:numero)
+  comenzar
+    repetir lado 
+      mover
+    juntarPapeles(papeles)
+  fin
+  
+  proceso ladoFlores (E lado:numero;ES flores:numero)
+  comenzar
+    repetir lado 
+      mover
+    juntarFlores(flores)  
+  fin
+
+  proceso escalon (E largo:numero;ES flor:numero)
+  comenzar
+    repetir 2
+      ladoFlores(largo,flor)
+      derecha               
+  fin
+  proceso escalonOpuesto (E largo:numero;ES papel:numero)
+  comenzar
+    repetir 2
+      ladoPapeles(largo,papel)
+      izquierda               
+  fin
+
+  proceso escaleraCreciente(E ancho:numero;ES flores:numero)
+  comenzar    
+    repetir 4
+      flores:=0
+      escalon(ancho,flores)
+      ancho:=ancho + 1                             
+      repetir 2
+        derecha   
+  fin
+  proceso escaleraDecreciente(E ancho:numero;ES flores:numero)
+  comenzar    
+    repetir 4
+      flores:=0
+      escalon(ancho,flores)
+      ancho:=ancho - 1                             
+      repetir 2
+        derecha   
+  fin
+  proceso escaleraCrecienteOpuesta(E ancho:numero;ES papeles: numero)
+  comenzar    
+    repetir 4
+      papeles:=0
+      escalonOpuesto(ancho,papeles) 
+      ancho:=ancho + 1                             
+      repetir 2
+        derecha   
+  fin
+  proceso escaleraDecrecienteOpuesta(E ancho:numero;ES papeles: numero)
+  comenzar    
+    repetir 4
+      papeles:=0
+      escalonOpuesto(ancho,papeles) 
+      ancho:=ancho - 1 
+      repetir 2                            
+        derecha   
+  fin
+
+areas
+  area1 : AreaC(1,1,31,31)
+  
+robots 
+  robot tipo1
+  variables
+    flores:numero
+    quiensoy:numero
+    termine:boolean
+  comenzar    
+    RecibirMensaje(quiensoy,robot3)
+    escaleraDecreciente(5,flores)
+    mover
+    derecha
+    accederEsquina(16,16,quiensoy)
+    escaleraCreciente(2,flores)
+    termine:=V
+    EnviarMensaje(termine,robot3)    
+  fin
+  robot tipo2
+  variables
+    papeles:numero
+    quiensoy:numero
+    termine:boolean
+  comenzar     
+    RecibirMensaje(quiensoy,robot3)
+    escaleraDecrecienteOpuesta(5,papeles)
+    mover
+    izquierda   
+    accederEsquina(16,16,quiensoy)
+    escaleraCrecienteOpuesta(2,papeles)
+    termine:=V
+    EnviarMensaje(termine,robot3)
+  fin
+  robot jefe
+  variables
+    id:numero
+    terminaron:boolean
+    x:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    RecibirMensaje(id,*)
+    RecibirMensaje(x,*)
+    repetir 2
+      RecibirMensaje(terminaron,*)
+    Informar(id)  
+  
+  fin   
+variables 
+  robot1: tipo1  
+  robot2:tipo2
+  robot3:jefe
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot3,area1)
+  Iniciar(robot1, 1, 1)
+  Iniciar(robot2,31,1)
+  Iniciar(robot3,15,1)
+
+fin

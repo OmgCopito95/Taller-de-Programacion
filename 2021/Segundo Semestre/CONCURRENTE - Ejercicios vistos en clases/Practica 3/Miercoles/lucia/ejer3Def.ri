@@ -1,0 +1,132 @@
+{Realice un programa donde 4 robots colaboren para recoger todas las flores de una
+esquina indicada por un robot jefe, seleccionada de manera aleatoria dentro del cuadrante
+(2,2) y (10,10). Para ello el jefe determina inicialmente una esquina y los robots deben
+accederla, tomar de a una las flores y volver a su posición inicial. Cuando los robots
+terminan el jefe deberá informar cuál de ellos logró recoger más flores.
+Las esquinas de inicio de los robots deberán ser jefe (1,1) y robots (2,1), (3, 1), (4,1) y (5,1).}
+
+programa ejer3
+procesos
+  proceso asignarID
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+  fin
+
+  proceso EnviarAvenidaRandom(ES av:numero) {ES? O E?} {E}
+  comenzar 
+    EnviarMensaje(av,R1)
+    EnviarMensaje(av,R2)
+    EnviarMensaje(av,R3)
+    EnviarMensaje(av,R4)
+  fin
+
+  proceso EnviarCalleRandom(ES ca:numero)
+  comenzar
+    EnviarMensaje(ca,R1)
+    EnviarMensaje(ca,R2)
+    EnviarMensaje(ca,R3)
+    EnviarMensaje(ca,R4)
+  fin
+
+
+areas
+  ciudad: AreaP(2,2,10,10) {PC - EL ROBOT JEFE NO ENTRA}
+  areaComun: AreaC(1,1,5,1) {SEPARAR EN AREAS PRIVADAS}
+
+robots
+  robot tipoR
+  variables
+    quienSoy:numero
+    avOrigen,caOrigen:numero
+    av,ca:numero
+    cantFlores:numero
+    ok:boolean
+  comenzar
+    ok:=V
+    cantFlores:= 0
+    avOrigen:= PosAv
+    caOrigen:= PosCa
+    RecibirMensaje(quienSoy,jefe)
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    mientras (ok)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      sino 
+        ok:=F
+      Pos(avOrigen,caOrigen)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(quienSoy,jefe)
+    EnviarMensaje(cantFlores,jefe)
+  fin
+
+  robot tipoJefe
+  variables
+    av:numero
+    ca:numero
+    nroRobot:numero
+    cantFlores:numero
+    max,maxRobot:numero
+  comenzar
+    max:= -1
+    asignarID
+    Random(av,2,10)
+    EnviarAvenidaRandom(av)
+    Random(ca,2,10)
+    EnviarCalleRandom(ca)    
+    repetir 4   {MODULARIZAR MAXIMO}
+      RecibirMensaje(nroRobot,*)
+      si(nroRobot = 1)
+        RecibirMensaje(cantFlores,R1)
+        si (cantFlores > max)
+          max:= cantFlores
+          maxRobot:= nroRobot
+      sino
+        si(nroRobot = 2)
+          RecibirMensaje(cantFlores,R2)
+          si (cantFlores > max)
+            max:= cantFlores
+            maxRobot:= nroRobot
+        sino
+          si(nroRobot = 3)
+            RecibirMensaje(cantFlores,R3)
+            si (cantFlores > max)
+              max:= cantFlores
+              maxRobot:= nroRobot
+          sino
+            si(nroRobot = 4)
+              RecibirMensaje(cantFlores,R4)
+              si (cantFlores > max)
+                max:= cantFlores
+                maxRobot:= nroRobot
+    Informar('Ganador ',maxRobot)
+  fin
+
+variables
+  R1:tipoR
+  R2:tipoR
+  R3:tipoR
+  R4:tipoR
+  jefe:tipoJefe
+comenzar
+  AsignarArea(R1,ciudad)
+  AsignarArea(R1,areaComun)
+  AsignarArea(R2,ciudad)
+  AsignarArea(R2,areaComun)
+  AsignarArea(R3,ciudad)
+  AsignarArea(R3,areaComun)
+  AsignarArea(R4,ciudad)
+  AsignarArea(R4,areaComun)
+  AsignarArea(jefe,areaComun)
+  Iniciar(R1,1,1)
+  Iniciar(R2,2,1)
+  Iniciar(R3,3,1)
+  Iniciar(R4,4,1)
+  Iniciar(jefe,5,1) 
+fin

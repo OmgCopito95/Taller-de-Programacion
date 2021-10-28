@@ -1,0 +1,126 @@
+{Realice un programa en el que 4 robots juegan una carrera por avenidas diferentes: 4, 6,
+8 y 10 respectivamente. Todos los robots inician en la calle 1.
+Para poder avanzar, cada robot debe juntar un papel de una fuente de papeles localizada
+en la esquina (11,11), colocarlo en la esquina actual de su avenida y avanzar un paso.
+Cuando la esquina fuente ya no tiene más papeles, o cuando se haya completado la
+avenida, deberán avisar al robot coordinador y este determinará el robot que llegó más
+lejos.}
+
+programa ejer5
+procesos
+  proceso asignarID
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+  fin
+
+  proceso MaxPasos(E pasos:numero; ES max:numero; E nroRobot:numero; ES maxRobot:numero)
+  comenzar
+    si (pasos > max)
+      max:= pasos
+      maxRobot:= nroRobot
+  fin
+
+areas
+ {ciudad:AreaC(1,1,100,100)}
+  area1: AreaP(4,1,4,100)
+  area2: AreaP(6,1,6,100)
+  area3: AreaP(8,1,8,100)
+  area4: AreaP(10,1,10,100)
+  areaComun: AreaPC(11,11,11,11)
+  areaJefe: AreaP(15,1,15,1)
+
+robots
+
+  robot tipoR
+  variables
+    pasos:numero
+    avOrigen:numero
+    caOrigen:numero
+    quienSoy:numero
+    ok:boolean
+    num:numero
+  comenzar
+    pasos:=0
+    num:= 0
+    ok:= V
+    avOrigen:= PosAv
+    caOrigen:= PosCa
+    RecibirMensaje(quienSoy,jefe)
+    {Pos(avOrigen,caOrigen)}
+    mientras(pasos < 99) & (ok)
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si HayPapelEnLaEsquina
+        tomarPapel
+        pasos:= pasos + 1 
+      sino
+        ok:= F                           {SI YA NO HAY MAS PAPELES LE ENVIO AL JEFE}
+        EnviarMensaje(quienSoy,jefe)
+        EnviarMensaje(pasos,jefe)
+      Pos(avOrigen,caOrigen)
+      LiberarEsquina(11,11)
+      si (ok)
+        depositarPapel
+        mover
+        avOrigen:= PosAv       {actualizo avenida para moverme en la proxima vuelta}
+        caOrigen:= PosCa       {actualizo calle para moverme en la proxima vuelta}
+    si (ok)                    {Ultima calle,deposito papel}
+      depositarPapel
+    EnviarMensaje(quienSoy,jefe)       {CASO QUE HAYA RECORRIDO LA AVENIDA, LE ENVIO AL JEFE QUE ROBOT TERMINO PRIMERO}
+    EnviarMensaje(pasos,jefe)
+  fin
+
+  robot tipoJ
+  variables
+    max:numero
+    nroRobot:numero
+    pasos:numero
+    maxRobot:numero    
+  comenzar
+    max:= -1
+    asignarID
+    repetir 4
+      RecibirMensaje(nroRobot,*)
+      si(nroRobot= 1)
+        RecibirMensaje(pasos,R1)
+        MaxPasos(pasos,max,nroRobot,maxRobot)
+      sino
+        si(nroRobot= 2)
+          RecibirMensaje(pasos,R2)
+          MaxPasos(pasos,max,nroRobot,maxRobot)
+        sino
+          si(nroRobot= 3)
+            RecibirMensaje(pasos,R3)
+            MaxPasos(pasos,max,nroRobot,maxRobot)
+          sino
+            si(nroRobot= 4)
+              RecibirMensaje(pasos,R4)
+              MaxPasos(pasos,max,nroRobot,maxRobot)
+    Informar(maxRobot)    
+  fin
+
+variables
+  R1:tipoR
+  R2:tipoR
+  R3:tipoR
+  R4:tipoR
+  jefe:tipoJ
+comenzar
+  AsignarArea(R1,area1)
+  AsignarArea(R1,areaComun)
+  AsignarArea(R2,area2)
+  AsignarArea(R2,areaComun)
+  AsignarArea(R3,area3)
+  AsignarArea(R3,areaComun)
+  AsignarArea(R4,area4)
+  AsignarArea(R4,areaComun)
+  AsignarArea(jefe,areaJefe)
+  Iniciar(R1,4,1)
+  Iniciar(R2,6,1)
+  Iniciar(R3,8,1)
+  Iniciar(R4,10,1)
+  Iniciar(jefe,15,1)
+fin

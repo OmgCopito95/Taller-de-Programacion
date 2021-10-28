@@ -1,0 +1,174 @@
+{2- Realice un programa en el cual 2 robots corren una carrera. El recorrido realizado por
+cada uno es el que se muestra en la siguiente figura. Durante el recorrido el robot 1 debe
+juntar todas las flores que encuentre en los vértices de cada escalón, mientras que el robot
+2 debe juntar todos los papeles que encuentre en los vértices de cada escalón.
+Al finalizar deben informar la cantidad de elementos recogidos.
+El robot 1 debe iniciar su recorrido en la esquina (1,1) y el robot 2 debe iniciar su recorrido
+en la esquina (31,1).
+Al finalizar la carrera, un robot jefe (inicializado en la esquina (15,1) ) debe informar qué
+robot llegó primero a la esquina central de su recorrido.
+}
+
+programa tp3dos
+procesos
+  proceso tomarflores (ES f:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      f:=f+1
+  fin
+  
+  proceso tomarpapeles(ES p:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      p:=p+1
+  fin
+
+  proceso recorridoflores(ES flo:numero; E quiensoy:numero)
+  variables
+    alto:numero
+  comenzar
+    alto:=5
+    repetir 4
+      repetir alto
+        mover
+      tomarflores(flo)  
+      derecha
+      repetir alto
+        mover
+      repetir 3
+        derecha
+      tomarflores(flo)
+      alto:= alto - 1  
+      {------------}
+    mover
+    derecha
+    BloquearEsquina(16,16)
+    mover 
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+    tomarflores(flo)
+    {------------} 
+    alto:=2
+    repetir 4
+     { tomarflores(flo)}
+      repetir alto
+        mover
+      tomarflores(flo)  
+      derecha
+      repetir alto
+        mover
+      repetir 3
+        derecha 
+      tomarflores(flo)  
+      alto:=alto + 1  
+    {--------} 
+    EnviarMensaje(quiensoy,jefe)     
+  fin
+
+
+  proceso recorridopapeles(ES pap:numero; E quiensoy:numero)
+  variables
+    alto:numero
+  comenzar  
+    alto:=5
+    repetir 4
+      repetir alto
+        mover
+      tomarpapeles(pap)    
+      repetir 3
+        derecha
+      repetir alto
+        mover  
+      tomarpapeles(pap) 
+      derecha
+      alto:=alto - 1
+    {------------}
+    mover
+    repetir 3
+      derecha
+    BloquearEsquina(16,16)
+    mover  
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+   {------------}    
+    alto:=2
+    repetir 4
+      tomarpapeles(pap)
+      repetir alto
+        mover
+      tomarpapeles(pap) 
+      repetir 3
+        derecha
+      repetir alto
+        mover
+      derecha 
+      alto:=alto + 1  
+    {--------}         
+    EnviarMensaje(quiensoy,jefe)     
+  fin
+    
+
+areas
+  Area1: AreaPC (1,1,16,30)
+  Area2: AreaP  (17,1,31,30)
+
+{ROBOT FLORES}    
+robots
+  robot robot1
+  variables
+    contadorf:numero
+    quiensoy:numero
+  comenzar
+    RecibirMensaje(quiensoy,jefe)
+    contadorf:=0
+    recorridoflores(contadorf,quiensoy)
+    Informar(contadorf)
+  fin
+
+
+{ROBOT PAPELES} 
+  robot robot2
+  variables
+    contadorp:numero
+    quiensoy:numero
+  comenzar 
+    RecibirMensaje(quiensoy,jefe)
+    contadorp:=0
+    recorridopapeles(contadorp,quiensoy)
+    Informar(contadorp) 
+  fin  
+
+{ROBOT JEFE}
+  robot robot3
+  variables
+    id:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    RecibirMensaje(id,*)    {FALTARIA RECIBIR EL MENSAJE DEL QUE PIERDE}
+    si(id=1){DEBERIA INFORMAR CUANDO TERMINÓ LA CARRERA}
+      Informar('ganador',id)
+    sino
+      Informar('ganador',id)
+  fin 
+
+variables
+  r1:robot1
+  r2:robot2
+  jefe:robot3
+comenzar
+  AsignarArea (r1,Area1)
+  AsignarArea (r2,Area1)
+  AsignarArea (jefe,Area1)
+
+  AsignarArea (r2,Area2)
+  Iniciar (r1,1,1)
+  Iniciar (r2,31,1)
+  Iniciar(jefe,15,1)
+fin

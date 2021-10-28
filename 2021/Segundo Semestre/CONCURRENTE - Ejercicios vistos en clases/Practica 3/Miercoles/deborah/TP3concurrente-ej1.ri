@@ -1,0 +1,122 @@
+{TP3-concurrente
+1- Realice un programa con 2 robots recolectores de flores (floreros) y 2 robots recolectores
+de papeles (papeleros).
+Los floreros comparten área y tienen 5 intentos cada uno para juntar las flores de una
+esquina, dentro de dicha área, elegida al azar en cada intento. Del mismo modo, los
+papeleros comparten área y tienen 3 intentos cada uno para juntar los papeles. En cada
+intento cada robot va a la esquina al azar, junta todos los elementos (flores o papeles según
+le corresponda) y vuelve a su esquina original. Al finalizar sus intentos cada robot debe
+acceder a la esquina (10, 10) y depositar los elementos recogidos de a uno.
+- Área de floreros: (1,1) a (5, 10)
+- Área de papeleros: (6, 1) a (10, 9)
+- Esquinas de inicio de floreros: (6,10) y (7,10)
+- Esquinas de inicio de papeleros: (8,10) y (9,10)}
+
+programa tp3-ej1
+ {R info dice que avenue no esta declarada, pero si lo esta :c sin modularizar el proceso esquinaRandom compila}
+procesos
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+  proceso juntarPapeles(ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel+1
+  fin
+  proceso esquinaRandom (ES avenue:numero ; ES caR:numero; E avInf:numero; E caInf:numero; E avSup:numero; E caSup:numero)
+  comenzar
+    Random(avenue,avInf,avSup)
+    Random(caR,caInf,caSup)
+    BloquearEsquina(avenue,caR)
+    Pos(avenue,caR)  
+  fin
+areas
+  areaFloreros: AreaPC(1,1,5,10)
+  areaPapeleros:AreaPC(6,1,10,9)
+  vertedero: AreaC(10,10,10,10)
+  areaf1:AreaP(6,10,6,10)
+  areaf2:AreaP(7,10,7,10)
+  areap1:AreaP(8,10,8,10)
+  areap2:AreaP(9,10,9,10)
+ 
+
+robots
+  robot florero
+  variables
+    iF,avI,caI,caR,flor,avInf,caInf,avSup,caSup: numero
+    avenue:numero
+
+  comenzar
+    flor:=0
+    iF:=5
+    avI:=PosAv
+    caI:=PosCa
+    avInf:=1
+    caInf:=1
+    avSup:=5
+    caSup:=10
+    repetir iF
+      esquinaRandom(avenue,caR,avInf,caInf,avSup,caSup)
+      juntarFlores(flor)
+      Pos(avI,caI)
+      LiberarEsquina(avenue,caR)
+      
+    repetir flor
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(avI,caI)
+      LiberarEsquina(10,10)
+  fin
+
+  robot papelero
+  variables
+    iP,avI,caI,caR,papel,avInf,caInf,avSup,caSup: numero
+    avenue:numero
+  comenzar
+    iP:=3
+    papel:=0
+    avI:=PosAv
+    caI:=PosCa
+    repetir iP
+      esquinaRandom(avenue,caR,6,1,10,9)
+      juntarPapeles(papel)
+      Pos(avI,caI)
+      LiberarEsquina(avenue,caR)
+    repetir papel
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(avI,caI)
+      LiberarEsquina(10,10)
+  fin
+
+variables
+
+  f1: florero
+  f2: florero
+  p1: papelero
+  p2: papelero
+
+comenzar
+  AsignarArea(f1,areaFloreros)
+  AsignarArea(f1,vertedero)
+  AsignarArea(f1,areaf1)
+  AsignarArea(f2,areaFloreros)
+  AsignarArea(f2,vertedero)
+  AsignarArea(f2,areaf2)
+  AsignarArea(p1,areaPapeleros)
+  AsignarArea(p1,vertedero)
+  AsignarArea(p1,areap1)
+  AsignarArea(p2,areaPapeleros)
+  AsignarArea(p2,vertedero)
+  AsignarArea(p2,areap2)
+  Iniciar(f1,6,10)
+  Iniciar(f2,7,10)
+  Iniciar(p1,8,10)
+  Iniciar(p2,9,10)
+fin

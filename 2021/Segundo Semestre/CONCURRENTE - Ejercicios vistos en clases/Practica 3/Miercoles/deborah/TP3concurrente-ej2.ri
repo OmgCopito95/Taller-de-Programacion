@@ -1,0 +1,159 @@
+{2- Realice un programa en el cual 2 robots corren una carrera. El recorrido realizado por
+cada uno es el que se muestra en la siguiente figura. Durante el recorrido el robot 1 debe
+juntar todas las flores que encuentre en los vértices de cada escalón, mientras que el robot
+2 debe juntar todos los papeles que encuentre en los vértices de cada escalón.
+Al finalizar deben informar la cantidad de elementos recogidos.
+El robot 1 debe iniciar su recorrido en la esquina (1,1) y el robot 2 debe iniciar su recorrido
+en la esquina (31,1).
+Al finalizar la carrera, un robot jefe (inicializado en la esquina (15,1) ) debe informar qué
+robot llegó primero a la esquina central de su recorrido.}
+
+programa tp3c-ejer2
+procesos
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+  proceso juntarPapeles(ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel+1
+  fin
+  proceso linea(E n:numero; ES flor:numero)
+  comenzar
+    juntarFlores(flor)
+    repetir n
+      mover
+  fin
+
+  proceso escalonF(E n:numero; ES flor:numero)
+  {proceso linea dentro se podria?}
+  comenzar
+    juntarFlores(flor)
+    repetir n
+      mover
+    derecha
+    juntarFlores(flor)
+    repetir n
+      mover
+    repetir 3
+      derecha
+  fin
+
+  proceso escalonP(E n:numero; ES papel:numero)
+  comenzar
+    juntarPapeles(papel)
+    repetir n
+      mover
+    repetir 3
+      derecha
+    juntarPapeles(papel)
+    repetir n
+      mover
+    derecha
+  fin
+
+areas
+{estan bien? }
+  inicioFlorero: AreaP(1,1,1,1)
+  areaFlorero:AreaP(1,2,15,30)
+  areaPapelero:AreaP(17,1,31,30)
+  esquinaCentral:AreaPC(16,16,16,16)
+  areaArbitro: AreaP(15,1,15,1)
+
+robots
+  robot equipoFlor
+  variables
+    flor,num,ide:numero
+  comenzar
+    RecibirMensaje(ide,a)
+    flor:=0
+    num:=5
+    mientras (num>1)
+      escalonF(num,flor)
+      num:= num-1
+    linea(num,flor)
+    derecha
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(ide,a)
+    Pos(15,16)    {CON UN MOVER ALCANZA}
+    LiberarEsquina(16,16)
+    repetir 2
+      derecha
+    num:=2
+    mientras (num<6)
+      escalonF(num,flor)
+      num:= num+1
+      {tomo como vertices llegada y salida}
+    juntarFlores(flor)
+    Informar(flor)
+  fin
+
+  robot equipoPapel
+  variables
+    papel,num,ide:numero
+  comenzar
+    RecibirMensaje(ide,a)
+    papel:=0
+    num:=5
+    mientras (num>1)
+      escalonP(num,papel)
+      num:= num-1
+    juntarPapeles(papel)
+    mover
+    repetir 3
+      derecha
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(ide,a)
+    Pos(17,16) {CON UN MOVER ALCANZA}
+    LiberarEsquina(16,16)
+    repetir 2
+      derecha
+    num:=2
+    mientras (num<6)
+      escalonP(num,papel)
+      num:= num+1
+    juntarPapeles(papel)
+    Informar(papel)
+  fin
+
+  robot arbitro
+  variables 
+    ide:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    RecibirMensaje(ide,*) {FALTA RECIBIR UN MENSAJE DEL PERDEDOR}
+    si (ide = 1)      {DEBERIA INFORMAR CUANDO TERMINÓ LA CARRERA}
+      Informar(1)
+    sino
+      Informar(2)
+  fin
+
+variables
+  r1:equipoFlor
+  r2:equipoPapel
+  a:arbitro
+
+comenzar
+  AsignarArea(r1,inicioFlorero)
+  AsignarArea(r1,areaFlorero)
+  AsignarArea(r1,esquinaCentral)
+  AsignarArea(r2,areaPapelero)
+  AsignarArea(r2,esquinaCentral)
+  AsignarArea(a,areaArbitro)
+  Iniciar(r1,1,1)
+  Iniciar(r2,31,1)
+  Iniciar(a,15,1)
+fin
+
+
+
+
+
+

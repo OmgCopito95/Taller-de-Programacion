@@ -1,0 +1,175 @@
+programa p2_ej4
+
+procesos
+  proceso juntarFlores (ES flores: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin  
+  
+  
+  proceso juntarPapeles (ES papeles: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin  
+  
+  
+  proceso limpiarEsquina (ES flores: numero; ES papeles: numero)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      juntarFlores
+    si (HayPapelEnLaEsquina)
+      juntarPapeles
+  fin
+  
+  
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1, robot1)
+    EnviarMensaje(2, robot2)
+    EnviarMensaje(3, robot3)
+    EnviarMensaje(4, robot4)
+  fin
+  
+  
+  proceso avisarRobot (E idIngreso: numero; E ok: boolean)
+  comenzar
+    si (idIngreso=1)
+      EnviarMensaje(ok,robot1)
+    sino
+      si (idIngreso=2)
+        EnviarMensaje(ok,robot2)
+      sino
+        si (idIngreso=3)
+          EnviarMensaje(ok,robot3)
+        sino
+          EnviarMensaje(ok,robot4)
+  fin
+  
+  proceso avisarFin (E ok: boolean)
+  comenzar
+    EnviarMensaje(ok, robot1)
+    EnviarMensaje(ok, robot2)
+    EnviarMensaje(ok, robot3)
+    EnviarMensaje(ok, robot4)
+  fin
+
+  
+  proceso esMaximo (E cant: numero; ES cantMax:numero; E id:numero; ES idMax:numero)
+  comenzar
+    si (cant > cantMax)
+      cantMax:=cant
+      idMax:=id
+  fin 
+
+
+areas
+  cuadrante: AreaPC(25,25,75,75)
+  areaF: AreaP(1,1,1,1)
+  area1: AreaP(25,1,25,1)
+  area2: AreaP(30,1,30,1)
+  area3: AreaP(35,1,35,1)
+  area4: AreaP(40,1,40,1)
+  
+  
+robots 
+  robot recolector
+  variables
+    papeles, flores, total:numero
+    id:numero
+    avInicio, calleInicio, avFin, calleFin:numero
+    ok, gane: boolean
+  comenzar
+    papeles:=0
+    flores:=0
+    avInicio:=PosAv
+    calleInicio:=PosCa
+    RecibirMensaje(id,robotF)
+    mientras (ok) 
+      Random(avFin,25,75)
+      Random(calleFin,25,75)
+      Pos(avFin,calleFin)
+      limpiarEsquina(flores, papeles)
+      Pos(avInicio, calleInicio)
+      EnviarMensaje(ok,robotF)
+      RecibirMensaje(ok,robotF) {espera mensaje para la proxima vuelta} 
+    total:=flores+papeles
+    EnviarMensaje(id,robotF)
+    EnviarMensaje(total,robotF) 
+    RecibirMensaje(gane,robotF)
+    si (gane)
+      Pos(50,50)     
+  fin
+  
+  robot fiscalizador
+  variables
+    idIngreso, idFinal:numero
+    ok: boolean
+    cantR1, cantR2, cantR3, cantR4:numero
+    cantMax, idMax:numero
+  comenzar
+    idMax:= -1
+    cantMax:= -1
+    ok:= V
+    identificarRobots
+    repetir 10
+      Random(idIngreso,1,4)
+      avisarRobot(idIngreso, ok)
+      RecibirMensaje(ok,*)
+    ok:=F {aviso a los robots que quedaron esperando que ya se terminaron las 10 llamadas}
+    avisarFin(ok)
+    repetir 4
+      RecibirMensaje(idFinal, *)   
+      si (idFinal=1)
+        RecibirMensaje(cantR1,robot1)
+        esMaximo(idFinal,cantR1,idMax,cantMax)
+      sino
+        si (idFinal=2)
+          RecibirMensaje(cantR2,robot2)
+          esMaximo(idFinal,cantR2,idMax,cantMax)
+        sino
+          si (idFinal=3)
+            RecibirMensaje(cantR3,robot3)
+            esMaximo(idFinal,cantR3,idMax,cantMax)
+          sino
+            RecibirMensaje(cantR4,robot4)
+            esMaximo(idFinal,cantR4,idMax,cantMax)
+    id:=1
+    repetir 4
+      si (id = idMax)
+        ok:=V
+      sino
+        ok:=F
+      avisarRobot(id,ok)
+      id:=id+1   
+  fin
+
+     
+variables 
+  robot1:recolector
+  robot2:recolector
+  robot3:recolector
+  robot4:recolector
+  robotF:fiscalizador
+
+
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot1,cuadrante)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot2,cuadrante)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot3,cuadrante)
+  AsignarArea(robot4,area4)
+  AsignarArea(robot4,cuadrante)
+  AsignarArea(robotF,areaF)
+  Iniciar(robotF,1,1)
+  Iniciar(robot1,25,1)
+  Iniciar(robot2,30,1)
+  Iniciar(robot3,35,1)
+  Iniciar(robot4,40,1)
+fin
+

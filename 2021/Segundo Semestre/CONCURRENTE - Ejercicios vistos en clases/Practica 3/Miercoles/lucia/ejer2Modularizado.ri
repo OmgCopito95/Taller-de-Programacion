@@ -1,0 +1,213 @@
+{Realice un programa en el cual 2 robots corren una carrera. El recorrido realizado por
+cada uno es el que se muestra en la siguiente figura. Durante el recorrido el robot 1 debe
+juntar todas las flores que encuentre en los vértices de cada escalón, mientras que el robot
+2 debe juntar todos los papeles que encuentre en los vértices de cada escalón.
+Al finalizar deben informar la cantidad de elementos recogidos.
+El robot 1 debe iniciar su recorrido en la esquina (1,1) y el robot 2 debe iniciar su recorrido
+en la esquina (31,1).
+Al finalizar la carrera, un robot jefe (inicializado en la esquina (15,1) ) debe informar qué
+robot llegó primero a la esquina central de su recorrido}
+
+programa ejer2
+procesos  
+  proceso izquierda
+  comenzar
+    repetir 2
+      derecha
+  fin
+
+  proceso asignarID
+  comenzar
+    EnviarMensaje(1,RF)
+    EnviarMensaje(2,RP)
+  fin
+
+{========== Comienzo de Procesos de Flores ==========}
+  proceso JuntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+
+  proceso escalonAbajoFlor(ES cantFlores:numero)
+  variables
+    total:numero
+  comenzar
+    total:= 5  {5 }
+    JuntarFlores(cantFlores)    {PRIMERA ESQUINA 1,1}
+    repetir 4      {4 escalones}
+      si total > 1  {aca va a ser 1, asi el ultimo escalon lo hago aparte}
+        repetir 2         
+          repetir total
+            mover
+          JuntarFlores(cantFlores)  {VERTICE}
+          derecha
+        izquierda    
+        total:= total - 1     {ojo porque en el ultimo escalon,comparten esquina}
+  fin
+
+  proceso areaComunFlor (ES cantFlores:numero; E quienSoy:numero)
+  comenzar
+    mover                       {escalon 1x1}  
+    JuntarFlores(cantFlores)
+    derecha
+    BloquearEsquina(16,16)     
+    mover
+    EnviarMensaje(quienSoy,RJ)
+    JuntarFlores(cantFlores)
+    Pos(15,16)   {CREO,esta ok}
+    LiberarEsquina(16,16)
+  fin
+
+  proceso escalonArribaFlor(ES cantFlores:numero)
+  variables
+    total:numero
+  comenzar
+    izquierda
+    total:= 2
+    repetir 4
+      si total < 6       {porque el ultimo escalon es 5x5}
+        repetir 2
+          repetir total
+            mover
+          JuntarFlores(cantFlores)
+          derecha
+        izquierda
+      total:= total + 1
+  fin
+{========== Fin de Procesos de FLORES ==========}
+
+{========== Comienzo de Procesos de Papeles ==========}
+  proceso JuntarPapeles (ES cantPapeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+
+  proceso escalonAbajoPapel(ES cantPapeles:numero)
+  variables
+    total:numero
+  comenzar
+    total:= 5  {5 o 4}
+    JuntarPapeles(cantPapeles)    {PRIMERA ESQUINA 1,1}
+    repetir 4      {4 escalones}
+      si total > 1  {aca tal vez en vez de 0 podria ser 1, asi el ultimo escalon lo hago aparte}
+        repetir 2         
+          repetir total
+            mover
+          JuntarPapeles(cantPapeles)  {VERTICE}
+          repetir 3
+            derecha
+        izquierda    
+        total:= total - 1           {ojo porque en el ultimo escalon,comparten esquina}
+  fin
+
+  proceso areaComunPapel(ES cantPapeles:numero; E quienSoy:numero)
+  comenzar
+    mover                       {escalon 1x1}  
+    JuntarPapeles(cantPapeles)
+    repetir 3
+      derecha
+    BloquearEsquina(16,16)     
+    mover
+    EnviarMensaje(quienSoy,RJ)
+    JuntarPapeles(cantPapeles)
+    Pos(17,16)   {CREO. esta ok}
+    LiberarEsquina(16,16)
+  fin
+
+  proceso escalonArribaPapel(ES cantPapeles:numero)
+  variables
+    total:numero
+  comenzar
+    repetir 2
+      derecha {izquierda}
+    total:= 2
+    repetir 4
+      si total < 6       {porque el ultimo escalon es 5x5}
+        repetir 2
+          repetir total
+            mover
+          JuntarPapeles(cantPapeles)
+          repetir 3
+            derecha
+        izquierda
+      total:= total + 1
+  fin
+{========== Fin de Procesos de PAPELES ==========}
+
+areas
+  areaFlor: AreaP(1,1,14,100)
+  areaFlor2: AreaP(15,2,15,100)
+  areaPapel: AreaP(17,1,31,100)
+  areaCompartida: AreaPC(16,16,16,16)
+  areaJefe: AreaP(15,1,15,1)
+ {ciudad: AreaC(1,1,100,100)}
+robots
+  
+  robot tipoFlor
+  variables
+    cantFlores:numero
+    total: numero
+    quienSoy:numero
+  comenzar
+    RecibirMensaje(quienSoy,RJ)
+    cantFlores:=0
+    escalonAbajoFlor(cantFlores)
+    areaComunFlor (cantFlores,quienSoy)
+    escalonArribaFlor(cantFlores)
+    Informar (cantFlores) 
+    EnviarMensaje(V,RJ)
+  fin
+  
+  robot tipoPapel
+  variables
+    cantPapeles:numero
+    total:numero
+    quienSoy:numero
+  comenzar
+    RecibirMensaje(quienSoy,RJ)
+    cantPapeles:=0
+    escalonAbajoPapel(cantPapeles)
+    areaComunPapel(cantPapeles,quienSoy)
+    escalonArribaPapel(cantPapeles)   
+    Informar(cantPapeles)
+    EnviarMensaje(V,RJ)
+  fin
+
+  robot tipoJefe
+  variables
+    ganador: numero
+    numeroGanador: numero
+    llegadas: numero
+    perdedor:numero
+    llegue: boolean
+  comenzar
+    asignarID
+    RecibirMensaje(ganador,*)
+    numeroGanador:= ganador
+    RecibirMensaje(perdedor,*)
+    llegadas:= 0
+    mientras(llegadas < 2)  {PODRIA SER UN REPETIR 2}
+      RecibirMensaje(llegue,*)
+      llegadas:= llegadas + 1
+    Informar('Ganador ',numeroGanador)
+  fin
+
+variables
+  RF:tipoFlor
+  RP:tipoPapel
+  RJ:tipoJefe
+comenzar
+  AsignarArea(RF,areaFlor)
+  AsignarArea(RF,areaFlor2)
+  AsignarArea(RF,areaCompartida)
+  AsignarArea(RP,areaPapel)
+  AsignarArea(RP,areaCompartida)
+  AsignarArea(RJ,areaJefe)
+  Iniciar(RF,1,1)
+  Iniciar(RP,31,1)
+  Iniciar(RJ,15,1)
+fin

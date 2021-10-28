@@ -1,0 +1,109 @@
+{1- Realice un programa con 2 robots recolectores de flores (floreros) y 2 robots recolectores
+de papeles (papeleros).
+Los floreros comparten área y tienen 5 intentos cada uno para juntar las flores de una
+esquina, dentro de dicha área, elegida al azar en cada intento. Del mismo modo, los
+papeleros comparten área y tienen 3 intentos cada uno para juntar los papeles. En cada
+intento cada robot va a la esquina al azar, junta todos los elementos (flores o papeles según
+le corresponda) y vuelve a su esquina original. Al finalizar sus intentos cada robot debe
+acceder a la esquina (10, 10) y depositar los elementos recogidos de a uno.
+- Área de floreros: (1,1) a (5, 10)
+- Área de papeleros: (6, 1) a (10, 9)
+- Esquinas de inicio de floreros: (6,10) y (7,10)
+- Esquinas de inicio de papeleros: (8,10) y (9,10)
+}
+
+programa tp3uno
+procesos
+  proceso tomarflores (ES f:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      f:=f+1
+  fin
+  
+  proceso tomarpapeles(ES p:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      p:=p+1
+  fin
+
+areas
+  Area1: AreaP (1,1,5,10) {CORREGIR AREAS - FALTAN}
+  Area2: AreaC (6,1,10,10)
+
+{ROBOT FLORES}
+robots
+  robot robot1
+  variables
+    av_original:numero
+    ca_original:numero
+    av:numero
+    ca:numero
+    contador:numero
+  comenzar
+    contador:=0
+    av_original:=PosAv
+    ca_original:=PosCa
+    repetir 5
+      Random (av,1,5)
+      Random (ca,1,10)      
+      BloquearEsquina(av,ca){FALTA PSICIONARSE EN LA ESQUINA BLOQUEADA}
+      tomarflores(contador)
+      Pos(av_original,ca_original)
+      LiberarEsquina(av,ca)
+
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir contador
+      depositarFlor   {HAY QUE IR, DEPOSITAR UNO Y VOLVER Y ASI HASTA QUE DEPOSITO TODO}
+    Pos(av_original,ca_original)  
+    LiberarEsquina(10,10)    
+  fin
+
+
+{ROBOT PAPELES}
+  robot robot2
+  variables
+    av_original:numero
+    ca_original:numero
+    av:numero
+    ca:numero
+    contador:numero
+  comenzar
+    contador:=0
+    av_original:=PosAv
+    ca_original:=PosCa
+    repetir 3
+      Random (av,6,10)    {MISMOS ERRORES QUE LOS FLOREROS}
+      Random (ca,1,10)  
+      BloquearEsquina(av,ca)
+      tomarpapeles(contador)
+      Pos(av_original,ca_original)
+      LiberarEsquina(av,ca)
+     
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir contador
+      depositarPapel 
+    Pos(av_original,ca_original)  
+    LiberarEsquina(10,10)    
+  fin
+
+variables
+  r1f,r2f: robot1
+  r1p,r2p: robot2
+comenzar
+  AsignarArea (r1f,Area1)
+  AsignarArea (r2f,Area1)
+
+  AsignarArea (r1f,Area2)
+  AsignarArea (r2f,Area2)
+  AsignarArea (r1p,Area2)
+  AsignarArea (r2p,Area2)
+ 
+  Iniciar (r1f,6,10)
+  Iniciar (r2f,7,10)
+  Iniciar (r1p,8,10)
+  Iniciar (r2p,9,10) 
+fin

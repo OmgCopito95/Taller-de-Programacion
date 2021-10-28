@@ -1,0 +1,119 @@
+{Realice un programa con 2 robots recolectores de flores (floreros) y 2 robots recolectores
+de papeles (papeleros).
+Los floreros comparten área y tienen 5 intentos cada uno para juntar las flores de una
+esquina, dentro de dicha área, elegida al azar en cada intento. Del mismo modo, los
+papeleros comparten área y tienen 3 intentos cada uno para juntar los papeles. En cada
+intento cada robot va a la esquina al azar, junta todos los elementos (flores o papeles según
+le corresponda) y vuelve a su esquina original. Al finalizar sus intentos cada robot debe
+acceder a la esquina (10, 10) y depositar los elementos recogidos de a uno.
+- Área de floreros: (1,1) a (5, 10)
+- Área de papeleros: (6, 1) a (10, 9)
+- Esquinas de inicio de floreros: (6,10) y (7,10)
+- Esquinas de inicio de papeleros: (8,10) y (9,10)}
+
+programa ejer1
+procesos
+  proceso JuntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+
+  proceso JuntarPapeles (ES cantPapeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+
+areas
+  areaF: AreaPC(1,1,5,10)
+  areaFInicio: AreaPC(6,10,7,10) { SEPARAR EN DOS PRIVADAS}
+  areaP: AreaPC(6,1,10,9)
+  areaPInicio: AreaPC(8,10,9,10) { SEPARAR EN DOS PRIVADAS}
+  areaComun: AreaC(10,10,10,10)
+robots
+
+  robot tipoFlor
+  variables
+    cantFlores:numero
+    AvOrigen:numero
+    CaOrigen:numero
+    av,ca:numero
+  comenzar
+    AvOrigen:= PosAv
+    CaOrigen:= PosCa
+    cantFlores:=0
+    repetir 5
+      Random (av,1,5)
+      Random (ca,1,10)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      JuntarFlores(cantFlores)
+      Pos(AvOrigen,CaOrigen)
+      LiberarEsquina(av,ca)
+    {Pos(AvOrigen,CaOrigen)} {esto esta de mas. Ya se posiciona en el repetir}
+    BloquearEsquina(10,10)   {bloqueo esquina en comun con el otro tipo de robot}
+    repetir cantFlores  {ejemplo, junto 5 flores}
+      Pos(10,10)
+      si HayFlorEnLaBolsa  {deposito de a una flor}
+        depositarFlor
+      Pos(AvOrigen,CaOrigen) {vuelvo a mi posicion original}
+    LiberarEsquina(10,10)  {termino de usar la esquina 10,10 en su totalidad y recien ahi,libero}
+
+  fin
+  
+  robot tipoPapel
+  variables
+    cantPapeles:numero
+    av,ca:numero
+    AvOrigen:numero
+    CaOrigen:numero
+  comenzar
+    AvOrigen:= PosAv
+    CaOrigen:= PosCa
+    cantPapeles:=0
+    repetir 3
+      Random(av,6,10)
+      Random(ca,1,9)
+      BloquearEsquina(av,ca)  {para que no se choquen los robots del mismo tipo}
+      Pos(av,ca)
+      JuntarPapeles(cantPapeles)
+      Pos(AvOrigen,CaOrigen)   {me aseguro de haber salido de la esquina bloqueada}
+      LiberarEsquina(av,ca)    {Ya asegurada la esquina que use y me fui,recien aca la libero}
+    {Pos(AvOrigen,CaOrigen)} {esto esta de mas. Ya se posiciona en el repetir}
+  
+    repetir cantPapeles  
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si (HayPapelEnLaBolsa)
+        depositarPapel
+      Pos(AvOrigen,CaOrigen)
+      LiberarEsquina(10,10)
+      
+  fin
+
+variables
+  RF1: tipoFlor
+  RF2: tipoFlor
+  RP1: tipoPapel
+  RP2: tipoPapel
+comenzar
+  AsignarArea(RF1,areaF)
+  AsignarArea(RF1,areaFInicio)
+  AsignarArea(RF1,areaComun)
+  AsignarArea(RF2,areaF)
+  AsignarArea(RF2,areaFInicio)
+  AsignarArea(RF2,areaComun)
+  AsignarArea(RP1,areaP)
+  AsignarArea(RP1,areaPInicio)
+  AsignarArea(RP1,areaComun)
+  AsignarArea(RP2,areaP)
+  AsignarArea(RP2,areaPInicio)
+  AsignarArea(RP2,areaComun)
+  Iniciar(RF1,6,10)
+  Iniciar(RF2,7,10)
+  Iniciar(RP1,8,10)
+  Iniciar(RP2,9,10)
+fin

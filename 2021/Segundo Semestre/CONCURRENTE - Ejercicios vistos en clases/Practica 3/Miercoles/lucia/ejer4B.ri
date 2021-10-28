@@ -1,0 +1,98 @@
+{Implemente una variante en la cual los robots luego de tomar cada flor de la esquina
+(10,10) vuelvan a su esquina inicial, pasen a la esquina (11,11) a depositarla y finalmente
+vuelvan a la esquina inicial.}
+
+programa ejer4B
+procesos
+  proceso asignarID
+  comenzar
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+  fin
+
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  
+  robot tipoR
+  variables
+    avOrigen,caOrigen:numero
+    quienSoy:numero
+    ok:boolean
+  comenzar
+    ok:= V
+    avOrigen:= PosAv
+    caOrigen:= PosCa
+    RecibirMensaje(quienSoy,jefe)
+    mientras (ok)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si HayFlorEnLaEsquina
+        tomarFlor
+        Pos(avOrigen,caOrigen)
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        depositarFlor
+      sino
+        ok:=F
+        EnviarMensaje(quienSoy,jefe)
+      { EnviarMensaje(V,jefe)   avisa que no hay mas flores}
+      Pos(avOrigen,caOrigen)
+      LiberarEsquina(10,10)
+      LiberarEsquina(11,11)
+  fin
+
+  robot tipoJ
+  variables
+    nroRobot:numero
+    termino:boolean
+    aux:numero
+  comenzar
+    asignarID
+    aux:= 0
+    repetir 4
+      RecibirMensaje(nroRobot,*)
+      si(nroRobot = 1)
+        aux:= aux + 1
+        si aux = 4
+          Informar(nroRobot)
+      sino 
+        si(nroRobot = 2)
+          aux:= aux + 1
+          si aux = 4
+            Informar(nroRobot)
+        sino
+          si(nroRobot = 3)
+            aux:= aux + 1
+            si aux = 4
+              Informar(nroRobot)
+          sino
+            si (nroRobot = 4)
+              aux:= aux + 1
+              si aux = 4
+                Informar(nroRobot)
+    Pos(11,11)
+    mientras HayFlorEnLaEsquina   {el enunciado no dice que toma las flores que solamente se recolectaron}
+      tomarFlor
+  fin
+
+variables
+  R1: tipoR
+  R2: tipoR
+  R3: tipoR
+  R4: tipoR
+  jefe: tipoJ
+comenzar
+  AsignarArea(R1,ciudad)
+  AsignarArea(R2,ciudad)
+  AsignarArea(R3,ciudad)
+  AsignarArea(R4,ciudad)
+  AsignarArea(jefe,ciudad)
+  Iniciar(R1,9,9)
+  Iniciar(R2,9,10)
+  Iniciar(R3,9,11)
+  Iniciar(R4,9,12)
+  Iniciar(jefe,1,1)
+fin

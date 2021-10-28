@@ -1,0 +1,140 @@
+programa Ejercicio4
+  
+procesos
+  proceso juntarFlor (ES flores:numero)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso avisarRobot (E id:numero;ES ok:boolean)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(ok,robot1)  
+    sino
+      si (id = 2)
+        EnviarMensaje(ok,robot2)
+      sino
+        si(id = 3)
+          EnviarMensaje(ok,robot3)
+        sino
+          si (id = 4)
+            EnviarMensaje(ok,robot4)
+  fin
+
+areas
+     
+  area2: AreaPC(6,1,10,9)   {area de papeles}
+
+  esquinaJ: AreaPC(1,1,1,1)  
+  esquina1: AreaP(9,9,9,9)
+  esquina2: AreaP(9,10,9,10)
+  esquina3: AreaP(9,11,9,11)
+  esquina4: AreaP(9,12,9,12)  
+  esquinaFlores: AreaPC(11,11,11,11)
+  esquinaDepositar: AreaPC(10,10,10,10)
+  
+
+robots 
+  robot jefe
+  variables
+    id:numero
+    ok:boolean
+    i:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)  
+    repetir 3 
+      RecibirMensaje(id,*)  
+    RecibirMensaje(id,*)
+    Informar(id)    
+    i:=1
+    repetir 4
+      si (i = id)    
+        ok:=V                       
+        avisarRobot(id,ok)             
+      sino
+        ok:=F
+        avisarRobot(id,ok)  
+      i:=i+1
+
+  fin
+  
+  
+  robot tipo1
+  variables
+    flores:numero
+    av,ca:numero
+    quiensoy:numero
+    ok:boolean
+  comenzar     
+  {  implemente una variante en el cual los robots luego de tomar cada flor de la esquina 10,10}
+  {   vuelvan a su esquina inicial, pasen a la esquina 11,11 a depositar y finalmente vuelvan}
+   { a la esquina inicial                                   }
+  
+    flores:=0 
+    av:=PosAv
+    ca:=PosCa   
+    RecibirMensaje(quiensoy,robot5)  
+    BloquearEsquina(10,10)
+    Pos(10,10)    
+    
+    mientras (HayFlorEnLaEsquina)  
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores + 1            
+      Pos(av,ca)
+      LiberarEsquina(10,10)
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+      BloquearEsquina(10,10)
+      Pos(10,10)        
+    
+    Pos(av,ca)
+    LiberarEsquina(10,10)   
+    EnviarMensaje(quiensoy,robot5)
+    
+    RecibirMensaje(ok,robot5)  
+    si (ok)
+      Pos(11,11)
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+  fin
+variables 
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+  robot4: tipo1
+  robot5:jefe
+comenzar 
+  AsignarArea(robot1,esquina1)  
+  AsignarArea(robot2,esquina2)
+  AsignarArea(robot3,esquina3)
+  AsignarArea(robot4,esquina4)
+  AsignarArea(robot5,esquinaJ)
+  
+  AsignarArea(robot1,esquinaFlores)
+  AsignarArea(robot1,esquinaDepositar)
+  AsignarArea(robot2,esquinaFlores)
+  AsignarArea(robot2,esquinaDepositar)
+  AsignarArea(robot3,esquinaFlores)
+  AsignarArea(robot3,esquinaDepositar)
+  AsignarArea(robot4,esquinaFlores)
+  AsignarArea(robot4,esquinaDepositar)
+  
+  Iniciar(robot1,9,9)
+  Iniciar(robot5,1,1)
+  Iniciar(robot2,9,10)
+  Iniciar(robot3,9,11)
+  Iniciar(robot4,9,12)
+  
+fin
+
+

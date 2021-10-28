@@ -1,0 +1,113 @@
+programa Ejercicio1
+  
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1  
+  fin
+  
+
+areas
+     
+  area1 : AreaPC(1,1,5,10) { area de flores}    
+  area2: AreaPC(6,1,10,9)   {area de papeles}
+    
+  esquinaF1: AreaP(6,10,6,10) {esquinas particulares}
+  esquinaF2: AreaP(7,10,7,10)
+  
+  esquinaP1: AreaP(8,10,8,10)
+  esquinaP2: AreaP(9,10,9,10)
+    
+  esquina: AreaPC(10,10,10,10)  {esquina en la que depositan.} {SERIA COMPARTIDA}
+
+robots 
+  robot tipo2
+  variables
+    papeles:numero
+    x,y:numero
+    av,ca:numero
+  comenzar
+    papeles:=0
+    av:=PosAv
+    ca:=PosCa   
+    repetir 3    
+      Random(x,6,10)
+      Random(y,1,9)
+      BloquearEsquina(x,y)
+      Pos(x,y)
+      si (HayPapelEnLaEsquina)
+        juntarPapeles(papeles)
+      Pos(av,ca)
+      LiberarEsquina(x,y)        
+      
+    repetir papeles
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(av,ca)
+      LiberarEsquina(10,10)  
+  fin
+  
+  
+  robot tipo1
+  variables
+    flores:numero
+    av,ca:numero
+    x,y:numero
+  comenzar     
+    flores:=0 
+    av:=PosAv
+    ca:=PosCa   
+    repetir 5    
+      Random(x,1,5)
+      Random(y,1,10)
+      BloquearEsquina(x,y)
+      Pos(x,y)
+      si (HayFlorEnLaEsquina)
+        juntarFlores(flores)
+      Pos(av,ca)
+      LiberarEsquina(x,y)    
+      
+    repetir flores
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(10,10)     
+       
+  fin
+variables 
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo2
+  robot4: tipo2
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot3,area2)
+  AsignarArea(robot4,area2)
+  
+  AsignarArea(robot1,esquinaF1)
+  AsignarArea(robot2,esquinaF2)
+  
+  AsignarArea(robot3,esquinaP1)
+  AsignarArea(robot4,esquinaP2)
+  
+  AsignarArea(robot1,esquina)
+  AsignarArea(robot2,esquina)  
+  AsignarArea(robot3,esquina)
+  AsignarArea(robot4,esquina)
+  
+  Iniciar(robot1, 6,10 )
+  Iniciar(robot2, 7,10)
+  Iniciar(robot3,8,10)
+  Iniciar(robot4,9,10)
+fin

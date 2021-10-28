@@ -1,0 +1,194 @@
+programa punto2
+
+procesos
+
+	proceso procesarMeta(ES meta: boolean)
+	comenzar
+		si(meta = V)
+			meta:= F
+	fin
+
+	proceso juntarPapeles(ES papel: numero)
+	comenzar
+		mientras(HayPapelEnLaEsquina)
+			tomarPapel
+			papel:= papel + 1
+	fin
+
+	proceso recorridoVueltaR2(ES papel: numero)
+	variables
+		desplazamientos: numero
+	comenzar
+		desplazamientos:= 2
+		mientras(desplazamientos <= 5)
+			juntarPapeles(papel)
+			repetir desplazamientos
+				mover
+			juntarPapeles(papel)
+			repetir 3
+				derecha
+			repetir desplazamientos
+				mover
+			derecha
+			desplazamientos:= desplazamientos + 1
+	fin
+
+	proceso recorridoIdaR2(ES papel: numero; ES meta: boolean)
+	variables
+		desplazamientos: numero
+	comenzar
+		desplazamientos:= 5
+		mientras(desplazamientos >= 2)
+			juntarPapeles(papel)
+			repetir desplazamientos
+				mover
+			juntarPapeles(papel)
+			repetir 3
+				derecha
+			repetir desplazamientos
+				mover
+			juntarPapeles(papel)
+			derecha
+			desplazamientos:= desplazamientos - 1
+		mover
+		repetir 3
+			derecha
+		BloquearEsquina(16, 16)
+		mover
+		RecibirMensaje(meta, robotJefe)
+		procesarMeta(meta)
+		repetir 2
+			derecha
+		mover
+		LiberarEsquina(16, 16)
+	fin
+
+	proceso juntarFlores(ES flor: numero)
+	comenzar
+		mientras(HayFlorEnLaEsquina)
+			tomarFlor
+			flor:= flor + 1
+	fin
+
+	proceso recorridoVuelta(ES flor: numero)
+	variables
+		desplazamientos: numero
+	comenzar
+		desplazamientos:= 2
+		mientras(desplazamientos <= 5)
+			juntarFlores(flor)
+			repetir desplazamientos
+				mover
+			juntarFlores(flor)
+			derecha
+			repetir desplazamientos
+				mover
+			juntarFlores(flor)
+			repetir 3
+				derecha
+			desplazamientos:= desplazamientos + 1
+	fin
+
+	proceso recorridoIda(ES flor: numero; ES meta: boolean)
+	variables
+		desplazamientos: numero
+	comenzar
+		desplazamientos:= 5
+		mientras(desplazamientos >= 2)
+			juntarFlores(flor)
+			repetir desplazamientos
+				mover
+			juntarFlores(flor)
+			derecha
+			repetir desplazamientos
+				mover
+			juntarFlores(flor)
+			repetir 3
+				derecha
+			desplazamientos:= desplazamientos - 1
+		mover
+		derecha
+		BloquearEsquina(16, 16)
+		mover
+		RecibirMensaje(meta, robotJefe)
+		procesarMeta(meta)
+		repetir 2
+			derecha
+		mover
+		LiberarEsquina(16, 16)
+
+	fin
+
+areas
+
+	ciudad: AreaC(1, 1, 31, 30)
+
+robots
+
+	robot tipoCorredor1
+	variables
+		flor: numero
+		id: numero
+		meta: boolean
+	comenzar
+		RecibirMensaje(id, robotJefe)
+		flor:= 0
+		recorridoIda(flor, meta)
+		recorridoVuelta(flor)
+		EnviarMensaje(id, robotJefe)
+		EnviarMensaje(meta, robotJefe)
+		Informar('CantidadDeFlores', flor)
+		
+	fin
+
+	robot tipoCorredor2
+	variables
+		papel: numero
+		id: numero
+		meta: boolean
+	comenzar
+		RecibirMensaje(id, robotJefe)
+		papel:= 0
+		recorridoIdaR2(papel, meta)
+		recorridoVueltaR2(papel)
+		EnviarMensaje(id, robotJefe)
+		EnviarMensaje(meta, robotJefe)
+		Informar('CantidadDePapeles', papel)	
+	fin
+
+	robot tipoJefe
+	variables
+		numRobot: numero
+		meta: boolean
+	comenzar
+		meta:= V
+
+		EnviarMensaje(1, robot1)
+		EnviarMensaje(2, robot2)
+
+		EnviarMensaje(meta, robot1)
+		EnviarMensaje(meta, robot2)
+
+		RecibirMensaje(numRobot, *)
+		si(numRobot = 1)
+			RecibirMensaje(meta, robot1)
+			si(meta = F)
+				Informar('RobotGanadorEs', numRobot)
+		sino
+			RecibirMensaje(meta, robot2)
+			si(meta = F)
+				Informar('RobotGanadorEs', numRobot)
+	fin
+
+variables
+	robot1: tipoCorredor1
+	robot2: tipoCorredor2
+	robotJefe: tipoJefe
+comenzar
+	AsignarArea(robot1, ciudad)
+	AsignarArea(robot2, ciudad)
+	AsignarArea(robotJefe, ciudad)
+	Iniciar(robot1, 1, 1)
+	Iniciar(robot2, 31, 1)
+	Iniciar(robotJefe, 15, 1)
+fin

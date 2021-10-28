@@ -1,0 +1,41 @@
+{b- Implemente una variante en la cual los robots luego de tomar cada flor de la esquina
+(10,10) vuelvan a su esquina inicial, pasen a la esquina (11,11) a depositarla y finalmente
+vuelvan a la esquina inicial.}
+
+
+{VARIANTE}
+
+robots
+  robot robot1
+  variables
+    av_actual:numero
+    ca_actual:numero
+    av:numero
+    ca:numero
+    quiensoy:numero
+    ok:boolean
+  comenzar
+    ok:=V
+    RecibirMensaje(quiensoy,jefe) {recibo el id de robot jefe}
+    av_actual:=PosAv              {guarda avenida inicial}
+    ca_actual:=PosCa              {guarda calle inical}
+  
+    mientras(ok)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si HayFlorEnLaEsquina
+        tomarFlor
+        Pos(av_actual,ca_actual)
+        LiberarEsquina(10,10)  
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        depositarFlor
+        Pos(av_actual,ca_actual)
+        LiberarEsquina(11,11)
+      sino   
+        ok:=F
+        Pos(av_actual,ca_actual)
+        LiberarEsquina(10,10)
+        EnviarMensaje(quiensoy,jefe)  {envio al robot jefe mi identificador}
+        EnviarMensaje(ok,jefe) {envia booleano cuando termina}       
+  fin
