@@ -1,0 +1,106 @@
+programa ejer4P3_chechu
+procesos
+  proceso enviarID {Asigno el id a cada robot}
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    EnviarMensaje(4, r4)
+  fin
+   
+  proceso procesarEsquina(E id: numero)
+  variables
+    avInicial, caInicial: numero
+    ok: boolean
+  comenzar
+    ok:= V
+    avInicial := PosAv {me guardo la pos inicial porque deben volver ahi}
+    caInicial := PosCa
+    mientras (ok)
+      BloquearEsquina(10,10) {bloqueo la esquina para que no acceda nadie mas que el robot actual}
+      Pos(10,10)
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+        BloquearEsquina(11,11) {bloqueo la esquina para que no acceda nadie mas que el robot actual}
+        Pos(11,11)
+        {LIBERAR LA 10}
+        depositarFlores(cantFlores)
+        Pos(avInicial, caInicial) {salgo de la posicion que bloquee para poder asegurarme al liberarla}
+        LiberarEsquina(11,11) {salgo de la posicion que bloquee para poder asegurarme al liberarla}
+      sino
+        ok := F
+        Pos(avInicial, caInicial)
+        LiberarEsquina(10,10)
+        EnviarMensaje(id,robotJefe)
+        EnviarMensaje(ok,robotJefe)
+  fin
+  
+{-----Areas--------}
+areas
+  areaExtraerFlores : AreaPC(10,10,10,10)
+  areaDepositarFlores: AreaC(11,11,11,11) {el robot jefe si va hasta alla tmb}
+  
+  areaR1: AreaP(9,9,9,9)
+  areaR2: AreaP(9,10,9,10)
+  areaR3: AreaP(9,11,9,11)
+  areaR4: AreaP(9,12,9,12)
+  
+  areaJefe : AreaP(1,1,1,1)
+{-----Robots--------}
+robots
+  robot tipo1
+  variables
+    id, cantFlores, avRandom,caRandom, avInicial,caInicial: numero
+  comenzar
+    RecibirMensaje(id,robotJefe) {recibo el id que me asigna el jefe, para informar el ganador}
+    procesarEsquina(id)
+  fin
+  
+  robot tipoJefe
+  variables
+    id:numero
+  comenzar
+    enviarID
+    repetir 3 {porque son 4 robots pero me interesa el que llego ultimo}
+      RecibirMnesaje(id,*)
+    RecibirMnesaje(id,*)
+    Informar(id)
+    Pos(11,11) {no bloqueo porque en teoria todos terminaron y no deberian chocarse, no?}
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor {tomo todas las flores que dejaron los robots}
+  fin
+{------Programa principal-------}
+variables
+  r1 : tipo1
+  r2 : tipo1
+  r3 : tipo1
+  r4 : tipo1
+  robotJefe : tipoJefe
+comenzar
+  AsignarArea(r1, areaExtraerFlores)
+  AsignarArea(r1, areaDepositarFlores)
+  AsignarArea(r1, areaR1)
+
+  AsignarArea(r2, areaExtraerFlores)
+  AsignarArea(r2, areaDepositarFlores)
+  AsignarArea(r2, areaR2)
+
+  AsignarArea(r3, areaExtraerFlores)
+  AsignarArea(r3, areaDepositarFlores)
+  AsignarArea(r3, areaR3)
+  
+  AsignarArea(r4, areaExtraerFlores)
+  AsignarArea(r4, areaDepositarFlores)
+  AsignarArea(r4, areaR4)
+  
+  AsignarArea(robotJefe, areaJefe)
+  AsignarArea(robotJefe, areaDepositarFlores)
+  
+  Iniciar(r1, 9,9)
+  Iniciar(r2, 9,10)
+  Iniciar(r3,9,11)
+  Iniciar(r4, 9,12)
+  Iniciar(robotJefe,1,1)
+fin
+
+{Me tira un Java NullPointer Exception}

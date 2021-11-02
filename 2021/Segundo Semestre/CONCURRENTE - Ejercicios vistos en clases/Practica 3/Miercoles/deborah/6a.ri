@@ -1,0 +1,277 @@
+{NO LLEGAMOS A REVISARLO CON DETENIMIENTO}
+
+{6.a- Tres robots deben recorrer el perímetro de su cuadrante, como se indica a
+continuación:
+● El robot 1 comienza la esquina (2,2) y debe realizar un cuadrante de 6x6 juntando
+todas las flores que encuentre
+● El robot 2 comienza en la esquina (5,5) y debe realizar un cuadrante de 10x10
+juntando todas las flores y los papeles que encuentre
+● El robot 3 comienza en la esquina (9,9) y debe realizar un cuadrante de 7x7 juntando
+todos los papeles que encuentre
+Cada robot que finalice su cuadrante deberá avisar al robot fiscalizador. Al recibir el aviso, el
+robot fiscalizador indicará inmediatamente una calle a la que deberá dirigirse el robotTaller de programación 2021 - Módulo Programación Concurrente
+recolector, considerando que el robot que finalizó primero irá a la calle 20, el segundo a la
+21 y el tercero a la 22.
+Cuando los robots recolectores reciben un número de calle, deberán posicionarse en la
+avenida 1 de dicha calle, y avanzar a lo largo de la calle depositando en cada esquina un
+papel, una flor o ambos, según lo que cada robot haya juntado. El recorrido finalizará al
+completar la calle o vaciarse las bolsas.
+6.b Analizar (no es necesario implementar): ¿cómo debería modificarse el ejercicio anterior
+si los robots recolectores no conocen de antemano el tamaño de su cuadrante (por ejemplo,
+porque lo calcula el fiscalizador de manera aleatoria)?
+6.c. Modifique el ejercicio anterior (6.a) para que ahora el robot fiscalizador espere a que
+todos los robots recolectores hayan completado sus cuadrantes antes de indicarles la calle
+que deberán recorrer.}
+
+programa tp3-ej6
+{Hice hasta el 6b}
+procesos
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+
+  proceso juntarPapeles(ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel+1
+
+  fin
+
+  proceso depositarFlores(ES flor:numero)
+  comenzar
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+    flor:= flor - 1
+  fin
+
+  proceso depositarPapeles(ES papel:numero)
+  comenzar
+    si (HayPapelEnLaBolsa)
+      depositarPapel
+    papel:= papel -1
+  fin
+
+areas
+  ciudad:areaPC(2,2,100,100)
+  areaF:areaP(1,1,1,1)
+
+robots
+  robot florero 
+  variables
+    ide,lado,calle,flor:numero
+  comenzar
+    flor:=0
+    RecibirMensaje(ide,f)
+    RecibirMensaje(lado,f)
+    BloquearEsquina(PosAv,PosCa)
+    repetir lado
+      juntarFlores(flor)
+      BloquearEsquina(PosAv,PosCa+1)
+       mover
+      LiberarEsquina(PosAv,PosCa - 1)
+    derecha
+    repetir lado
+        juntarFlores(flor)
+        BloquearEsquina(PosAv+1,PosCa)
+        mover
+        LiberarEsquina(PosAv - 1,PosCa)
+    derecha
+    repetir lado
+        juntarFlores(flor)
+        BloquearEsquina(PosAv,PosCa -1)
+        mover
+        LiberarEsquina(PosAv,PosCa +1)
+    derecha
+      repetir lado
+        juntarFlores(flor)
+        BloquearEsquina(PosAv - 1,PosCa)
+        mover
+        LiberarEsquina(PosAv+1,PosCa)
+    derecha
+    EnviarMensaje(ide,f)
+    RecibirMensaje(calle,f)
+    BloquearEsquina(1,calle)
+    Pos(1,calle)
+    repetir 2
+      derecha
+    mientras (PosAv<100) & (flor>0)
+        depositarFlores(flor)
+      BloquearEsquina(PosAv+1,calle)
+      mover
+      LiberarEsquina(PosAv -1,calle)
+    si (PosAv = 100)
+      si (flor>0)
+        depositarFlores(flor)
+      LiberarEsquina(100,calle)
+  fin
+
+  robot papelero
+  variables
+    ide,papel,lado,calle:numero
+  comenzar
+    papel:=0
+    RecibirMensaje(ide,f)
+    RecibirMensaje(lado,f)
+    BloquearEsquina(PosAv,PosCa)
+    repetir lado
+      juntarPapeles(papel)
+      BloquearEsquina(PosAv,PosCa+1)
+       mover
+      LiberarEsquina(PosAv,PosCa - 1)
+    derecha
+    repetir lado
+        juntarPapeles(papel)
+        BloquearEsquina(PosAv+1,PosCa)
+        mover
+        LiberarEsquina(PosAv - 1,PosCa)
+    derecha
+    repetir lado
+        juntarPapeles(papel)
+        BloquearEsquina(PosAv,PosCa -1)
+        mover
+        LiberarEsquina(PosAv,PosCa +1)
+    derecha
+      repetir lado
+        juntarPapeles(papel)
+        BloquearEsquina(PosAv - 1,PosCa)
+        mover
+        LiberarEsquina(PosAv+1,PosCa)
+    derecha
+    EnviarMensaje(ide,f)
+    RecibirMensaje(calle,f)
+    BloquearEsquina(1,calle)
+    Pos(1,calle)
+    repetir 2
+      derecha
+    mientras (PosAv<100) & (papel>0)
+      depositarpapeles(papel)
+      BloquearEsquina(PosAv+1,calle)
+      mover
+      LiberarEsquina(PosAv -1,calle)
+    si (PosAv = 100)
+      si (papel > 0)
+        depositarpapeles(papel)
+      LiberarEsquina(100,calle)
+
+
+  fin
+
+  robot floreroypapelero 
+  variables
+    flor,papel,ide,lado,calle:numero
+  comenzar
+    flor:=0
+    papel:=0
+    RecibirMensaje(ide,f)
+    RecibirMensaje(lado,f)
+    BloquearEsquina(PosAv,PosCa)
+    repetir lado
+      juntarFlores(flor)
+      juntarPapeles(papel)
+      BloquearEsquina(PosAv,PosCa+1)
+       mover
+      LiberarEsquina(PosAv,PosCa - 1)
+    derecha
+    repetir lado
+        juntarFlores(flor)
+        juntarPapeles(papel)
+        BloquearEsquina(PosAv+1,PosCa)
+        mover
+        LiberarEsquina(PosAv - 1,PosCa)
+    derecha
+    repetir lado
+        juntarFlores(flor)
+        juntarPapeles(papel)
+        BloquearEsquina(PosAv,PosCa -1)
+        mover
+        LiberarEsquina(PosAv,PosCa +1)
+    derecha
+      repetir lado
+        juntarFlores(flor)
+        juntarPapeles(papel)
+        BloquearEsquina(PosAv - 1,PosCa)
+        mover
+        LiberarEsquina(PosAv+1,PosCa)
+    derecha
+    EnviarMensaje(ide,f)
+    RecibirMensaje(calle,f)
+    BloquearEsquina(1,calle)
+    Pos(1,calle)
+    repetir 2
+      derecha
+    mientras (PosAv<100) & ((flor>0)|(papel>0))
+      si (papel > 0)
+        depositarpapeles(papel)
+      si (flor>0)
+        depositarFlores(flor)
+      BloquearEsquina(PosAv+1,calle)
+      mover
+      LiberarEsquina(PosAv -1,calle)
+    si (PosAv = 100)
+      si (papel > 0)
+        depositarpapeles(papel)
+      si (flor>0)
+        depositarFlores(flor)
+      LiberarEsquina(100,calle)  
+  fin
+
+ robot fiscal 
+  variables
+    ide,lado,calle:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    Random(lado,1,90)
+    EnviarMensaje(lado,r1)
+    Random(lado,1,90)
+    EnviarMensaje(lado,r2)
+    Random(lado,1,90)
+    EnviarMensaje(lado,r3)
+    RecibirMensaje(ide,*)
+    si (ide =1)
+      EnviarMensaje(20,r1)
+    sino
+      si (ide=2)
+        EnviarMensaje(20,r2)
+      sino
+        EnviarMensaje(20,r3)
+    RecibirMensaje(ide,*)
+    si (ide =1)
+      EnviarMensaje(21,r1)
+    sino
+      si (ide=2)
+        EnviarMensaje(21,r2)
+      sino
+        EnviarMensaje(21,r3)
+    RecibirMensaje(ide,*)
+    si (ide =1)
+      EnviarMensaje(22,r1)
+    sino
+      si (ide=2)
+        EnviarMensaje(22,r2)
+      sino
+        EnviarMensaje(22,r3)
+    
+  fin
+
+variables
+  r1: florero
+  r2: floreroypapelero
+  r3: papelero
+  f: fiscal
+
+comenzar
+ AsignarArea(r1,ciudad)
+ AsignarArea(r2,ciudad)
+ AsignarArea(r3,ciudad)
+ AsignarArea(f,areaF)
+ Iniciar(r1,2,2)
+ Iniciar(r2,5,5)
+ Iniciar(r3,9,9)
+ Iniciar(f,1,1)
+fin

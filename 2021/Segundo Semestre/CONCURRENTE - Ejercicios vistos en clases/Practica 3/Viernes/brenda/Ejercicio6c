@@ -1,0 +1,156 @@
+{NO LLEGAMOS A REVISARLO}
+
+programa Ejercicio-6c
+  
+procesos  
+  proceso juntarFlores (ES flor: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin    
+  
+  proceso juntarPapeles (ES papel: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel + 1
+  fin
+
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+  fin
+  
+  proceso informarRobots(E orden: numero; ES calle:numero)
+  comenzar
+    si (orden=1)
+      EnviarMensaje(calle,robot1)
+    sino
+      si (orden=2)
+        EnviarMensaje(calle,robot2)
+      sino
+        EnviarMensaje(calle,robot3)
+    calle:= calle + 1
+  fin
+
+
+areas
+  area1: AreaPC(2,2,16,16)
+  areaF: AreaP (1,1,1,1)
+  area20: AreaPC(1,20,100,20)
+  area21: AreaPC(1,21,100,21)
+  area22: AreaPC(1,22,100,22)
+  
+  
+robots 
+  robot florero
+  variables
+    id, flores, calle: numero
+  comenzar
+    RecibirMensaje(id,robotF)
+    flores:=0
+    repetir 4
+      repetir 6
+        juntarFlores (flores)
+        mover
+      derecha
+    EnviarMensaje(id,robotF)
+    RecibirMensaje(calle,robotF)
+    Pos(1,calle)
+    derecha
+    mientras((HayFlorEnLaBolsa) & (PosAv < 100))
+      depositarFlor
+      mover
+  fin
+  
+  robot floreroPapelero
+  variables
+    id, flores, papeles, calle: numero
+  comenzar
+    RecibirMensaje(id,robotF)
+    flores:=0
+    papeles:=0
+    repetir 4
+      repetir 10
+        juntarFlores (flores)
+        juntarPapeles (papeles)
+        mover
+      derecha
+    EnviarMensaje(id,robotF)
+    RecibirMensaje(calle,robotF)
+    Pos(1,calle)
+    derecha
+    mientras((HayFlorEnLaBolsa) & (PosAv < 100))
+      depositarFlor
+      mover
+    mientras((HayPapelEnLaBolsa) & (PosAv < 100))
+      depositarPapel
+      mover
+  fin
+            
+  robot papelero
+  variables
+    id, papeles, calle: numero
+  comenzar
+    RecibirMensaje(id,robotF)
+    papeles:=0
+    repetir 4
+      repetir 7
+        juntarPapeles (papeles)
+        mover
+      derecha
+    EnviarMensaje(id,robotF)
+    RecibirMensaje(calle,robotF)
+    Pos(1,calle)
+    derecha
+    mientras((HayPapelEnLaBolsa) & (PosAv < 100))
+      depositarPapel
+      mover
+  fin
+
+
+  robot fiscalizador
+  variables
+    primero, segundo, tercero, calle: numero
+  comenzar
+    calle:=20
+    identificarRobots
+    RecibirMensaje(primero,*)
+    RecibirMensaje(segundo,*)
+    RecibirMensaje(tercero,*)
+    informarRobots(primero, calle)
+    informarRobots(segundo, calle)
+    informarRobots(tercero, calle)
+  fin
+
+     
+variables 
+  robot1: florero
+  robot2: floreroPapelero
+  robot3: papelero
+  robotF: fiscalizador
+
+comenzar 
+  AsignarArea(robot1,area1)
+  AsignarArea(robot1,area20)
+  AsignarArea(robot1,area21)
+  AsignarArea(robot1,area22)
+  AsignarArea(robot2,area1)
+  AsignarArea(robot2,area20)
+  AsignarArea(robot2,area21)
+  AsignarArea(robot2,area22)
+  AsignarArea(robot3,area1)
+  AsignarArea(robot3,area20)
+  AsignarArea(robot3,area21)
+  AsignarArea(robot3,area22)
+  AsignarArea(robotF,areaF)
+  Iniciar(robot1, 2, 2)
+  Iniciar(robot2, 5, 5)
+  Iniciar(robot3, 9, 9)
+  Iniciar(robotF, 1, 1)
+fin
+
+

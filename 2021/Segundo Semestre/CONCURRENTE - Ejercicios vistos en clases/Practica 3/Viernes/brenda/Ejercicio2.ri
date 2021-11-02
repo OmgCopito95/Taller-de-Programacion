@@ -1,0 +1,155 @@
+programa Ejercicio-2
+  
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  
+  proceso juntarFlores (ES flor: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin    
+  
+  proceso juntarPapeles (ES papel: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel + 1
+  fin
+  
+  proceso escalonFlores (E alto: numero; ES flores: numero)
+  comenzar
+    repetir alto
+      mover
+    juntarFlores(flores)
+    derecha
+    repetir alto
+      mover
+    juntarFlores(flores)
+    izquierda
+  fin
+  
+  proceso escalonPapeles (E alto: numero; ES papeles: numero)
+  comenzar
+    repetir alto
+      mover
+    juntarPapeles(papeles)
+    izquierda
+    repetir alto
+      mover
+    juntarPapeles(papeles)
+    derecha
+  fin
+
+
+areas
+  area1: AreaPC(1,1,15,30)
+  area2: AreaP(17,1,31,30)
+  areaMedia: AreaPC(16,16,16,16)
+  
+  
+robots 
+  robot florero
+  variables
+    alto, flores, id: numero
+  comenzar
+    flores:=0
+    alto:=5
+    
+    RecibirMensaje(id,robotJ)
+    
+    juntarFlores(flores)     {junto del primer vertice}
+    
+    repetir 4     {hago la primera parte de la escalera}
+      escalonFlores(alto, flores)
+      alto:= alto - 1
+      
+    mover     {hago el escalon de 1x1 individualmente porque debo bloquear 1 posicion}
+    juntarFlores(flores)
+    derecha
+    BloquearEsquina(15,15){DEBERIA SER LA 16,16}
+    mover
+    
+    juntarFlores(flores)
+    Pos(PosAv - 1, PosCa)
+    LiberarEsquina(15,15)
+    repetir 2
+      derecha
+      
+    repetir 4     {hago la segunda parte de la escalera}
+      alto:= alto + 1
+      escalonFlores(alto, flores) 
+      
+    Informar(flores)
+    EnviarMensaje(id,robotJ) {ENVIAR CUANDO LLEGUE A LA CONFLICTIVA}
+    
+  fin
+  
+  robot papelero
+  variables
+    alto, papeles, id: numero
+  comenzar
+    papeles:=0
+    alto:=5
+    
+    RecibirMensaje(id,robotJ)
+    
+    juntarPapeles(papeles)     {junto del primer vertice}
+    
+    repetir 4          {hago la primera parte de la escalera}
+      escalonPapeles(alto, papeles)
+      alto:= alto - 1
+      
+    mover     {hago el escalon de 1x1 individualmente porque debo bloquear 1 posicion}
+    juntarPapeles(papeles)
+    izquierda
+    BloquearEsquina(15,15)
+    mover
+    juntarPapeles(papeles)
+    Pos(PosAv + 1, PosCa)
+    LiberarEsquina(15,15)
+    repetir 2
+      derecha
+      
+    repetir 4     {hago la segunda parte de la escalera}
+      alto:= alto + 1
+      escalonPapeles(alto, papeles) 
+      
+    Informar(papeles)
+    
+    EnviarMensaje(id,robotJ)
+  fin
+  
+  robot jefe
+  variables
+    ganador, perdedor: numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    RecibirMensaje(ganador,*)
+    RecibirMensaje(perdedor,*)  {FALTAN OTROS MENSAJES PARA QUE EL JEFE SEPA QUE TERMINARON E INFORMAR}
+    Informar('Gano', ganador)
+  fin
+
+     
+variables 
+  robot1: florero
+  robot2: papelero
+  robotJ: jefe
+
+comenzar 
+  AsignarArea(robot1,areaMedia)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,areaMedia)
+  AsignarArea(robot2,area2)
+  AsignarArea(robotJ,area1)
+  Iniciar(robot1, 1, 1)
+  Iniciar(robot2, 31, 1)
+  Iniciar(robotJ, 15, 1)
+fin
+
+

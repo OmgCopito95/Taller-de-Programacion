@@ -1,0 +1,177 @@
+{Realice un programa en el cual 2 robots corren una carrera. El recorrido realizado por cada uno es el que se muestra en la siguiente figura. Durante el recorrido el robot 1 debe juntar todas las flores que encuentre en los vértices de cada escalón, mientras que el robot 2 debe juntar todos los papeles que encuentre en los vértices de cada escalón.
+Al finalizar deben informar la cantidad de elementos recogidos.
+El robot 1 debe iniciar su recorrido en la esquina (1,1) y el robot 2 debe iniciar su recorrido en la esquina (31,1). 
+Al finalizar la carrera, un robot jefe (inicializado en la esquina (15,1) ) debe informar qué robot llegó primero a la esquina central de su recorrido. 
+}
+programa Ejer2P3
+
+procesos
+
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  
+  proceso  JuntarFlores (ES flor:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flor:=flor+1
+  fin
+  
+  proceso JuntarPapeles (ES papel:numero)
+  comenzar 
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papel:=papel+1
+  fin
+  
+  proceso HacerVerticeFlores (ES flores:numero ES vertice:numero)
+  comenzar
+    repetir vertice
+      JuntarFlores(flores)
+      mover
+  fin
+    
+  proceso HacerVerticePapeles (ES papeles:numero ES vertice:numero)
+  comenzar
+    repetir vertice
+      JuntarPapeles(papeles)
+      mover
+  fin
+  
+  proceso RecorrerEscalonFlores (ES flores:numero ES vertice:numero )
+  comenzar
+    HacerVerticeFlores (flores,vertice)
+    derecha
+    HacerVerticeFlores (flores,vertice)
+    izquierda
+  fin
+
+  proceso RecorrerEscalonPapeles (ES papeles:numero ES vertice:numero)
+  comenzar
+    HacerVerticePapeles(papeles,vertice)
+    izquierda
+    HacerVerticePapeles(papeles,vertice)
+    derecha
+  fin 
+  
+  proceso todoElRecorridoF (ES flores:numero E quienSoy:numero)
+  variables
+    vertice:numero
+  comenzar
+    vertice:=5
+    repetir 4
+      RecorrerEscalonFlores(flores,vertice)
+      vertice:= vertice - 1
+    JuntarFlores(flores)
+    mover
+    derecha
+    JuntarFlores(flores)
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(quienSoy,RobotJefe)
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+    vertice:=2
+    repetir 4
+      RecorrerEscalonFlores(flores,vertice)
+      vertice:= vertice + 1
+  fin
+    
+  proceso todoElRecorridoP (ES papeles:numero E quienSoy:numero)
+  variables
+    vertice:numero
+  comenzar
+    vertice:=5
+    repetir 4
+      RecorrerEscalonPapeles (papeles,vertice)
+      vertice:=vertice - 1
+    JuntarPapeles(papeles)
+    mover
+    izquierda
+    JuntarPapeles(papeles)
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(quienSoy,RobotJefe)
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+    vertice:=2
+    repetir 4
+      RecorrerEscalonPapeles(papeles,vertice)
+      vertice:= vertice + 1
+  fin
+ 
+
+areas
+  ciudadRobotJ :AreaP(16,1,16,1) { 15,1}
+  esquinaCompartida :AreaPC(16,16,16,16)
+  ciudadFlores :AreaP(1,1,15,31)
+  ciudadPapeles :AreaP(17,1,31,31)
+
+robots
+  robot tipoFlores
+  variables
+    flores:numero
+    quienSoy:numero
+  comenzar
+    quienSoy:=0
+    flores:=0
+    RecibirMensaje(quienSoy,RobotJefe)
+    todoElRecorridoF(flores,quienSoy)
+    EnviarMensaje(quienSoy,RobotJefe)
+    Informar(flores)
+  fin
+  
+  robot tipoPapeles
+  variables
+    papeles:numero
+    quienSoy:numero
+  comenzar
+    quienSoy:=0
+    papeles:=0
+    RecibirMensaje(quienSoy,RobotJefe)
+    todoElRecorridoP(papeles,quienSoy)
+    EnviarMensaje(quienSoy,RobotJefe)
+    Informar(papeles)
+  fin
+  
+  robot jefe
+  variables
+    quienLlego:numero
+    Finalizado:numero
+    ganador:numero
+  comenzar
+    EnviarMensaje(1,RobotFlores)
+    EnviarMensaje(2,RobotPapeles)
+    RecibirMensaje(quienLlego,*)
+    si quienLlego = 1
+      ganador:=1
+    sino
+      ganador:=2
+    RecibirMensaje(quienLlego,*)
+    repetir 2
+      RecibirMensaje(Finalizado,*)
+    Informar(ganador)
+  fin
+
+variables
+  RobotFlores :tipoFlores
+  RobotPapeles :tipoPapeles
+  RobotJefe :jefe
+comenzar
+  AsignarArea(RobotFlores,ciudadFlores)
+  AsignarArea(RobotPapeles,ciudadPapeles)
+  AsignarArea(RobotFlores,esquinaCompartida)
+  AsignarArea(RobotPapeles,esquinaCompartida)
+  AsignarArea(RobotJefe,ciudadRobotJ)
+  Iniciar(RobotFlores,1,1)
+  Iniciar(RobotPapeles,31,1)
+  Iniciar(RobotJefe,16,1)
+fin
+

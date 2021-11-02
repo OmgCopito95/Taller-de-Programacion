@@ -1,0 +1,76 @@
+programa nombrePrograma
+areas
+  ciudad: AreaC (1,1,100,100) { HORRIBLE}
+robots
+  robot robot1
+  variables
+    av,ca,id,flor:numero
+    ok:boolean
+  comenzar
+    RecibirMensaje(id,jefe)
+    av:=PosAv
+    ca:=PosCa
+    ok:=V
+    mientras(ok=V) 
+      BloquearEsquina(10,10)
+      Pos(10,10) 
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        LiberarEsquina(10,10)   {como se choca?}     
+        depositarFlor 
+      sino
+        ok:=F
+        EnviarMensaje(id,jefe)
+      Pos(av,ca) 
+      LiberarEsquina(10,10)
+      LiberarEsquina(11,11)         
+      EnviarMensaje(id,jefe)
+  fin
+  robot jefe
+  variables
+    av,ca,id:numero
+    ok:boolean
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    repetir 3
+      RecibirMensaje(id,*)  
+    RecibirMensaje(id,*)   
+    Informar(id) 
+    Pos(11,11)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(1,1)    
+  fin
+variables
+  r1,r2,r3,r4: robot1
+  jefe:jefe
+comenzar
+  AsignarArea(r1,ciudad)
+  AsignarArea(r2,ciudad)
+  AsignarArea(r3,ciudad)
+  AsignarArea(r4,ciudad) 
+  AsignarArea(jefe,ciudad)
+  Iniciar(jefe,1,1)
+  Iniciar(r1,9,9)
+  Iniciar(r2,9,10)
+  Iniciar(r3,9,11)
+  Iniciar(r4,9,12)
+fin
+
+{4- Realice un programa en el que 4 robots mueven de a una todas las flores de la esquina
+(10,10) a la esquina (11,11). Para ello, cada robot que toma una flor de la esquina (10,10) la
+deposita en la esquina (11,11) y luego retorna a su esquina inicial. Cada robot que finaliza
+(o, sea, que detecta que la esquina (10,10) se ha vaciado) deberá avisar al robot
+coordinador que ha finalizado. Cuando todos los robots finalizaron, el robot coordinador
+deberá informar qué robot finalizó último y a continuación deberá recolectar todas las flores
+de la esquina (11,11).
+El robot coordinador inicia en la esquina (1,1).
+Los robots inician en las esquinas (9,9) (9,10) (9,11) y (9,12).
+}
+
+

@@ -1,0 +1,108 @@
+programa ejer5P3_Chechu
+procesos
+  proceso enviarID {Asigno el id a cada robot}
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    EnviarMensaje(4, r4)
+  fin
+
+  proceso recibirID
+  variables
+    id:numero
+  comenzar
+    RecibirMensaje(id, robotJefe)
+    si(id = 1)
+      RecibirMensaje(,r1)
+    sino
+      si(id = 2)
+        RecibirMensaje(,r2)
+      sino 
+        si(id = 3)
+          RecibirMensaje(,r3)
+        sino
+          si(id = 4)
+            RecibirMensaje(,r4)
+  fin
+
+{-----Areas--------}
+areas
+  area1 : AreaP(4,1,4,100)
+  area2 : AreaP(6,1,6,100)
+  area3 : AreaP(8,1,8,100)
+  area4 : AreaP(10,1,10,100)
+  
+  areaFin : AreaPC(11,11,11,11)
+  areaJefe :  AreaP(1,1,1,1)
+
+{------Robots-------}
+robots
+  robot tipo1
+  variables
+    id:numero
+    avInicial,caInicial:numero
+  comenzar
+    RecibirMensaje(id, robotJefe) {el jefe me asigna un id}
+    avInicial := PosAv
+    caInicial := PosCa
+    
+    {esto deberia ir modularizado}
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    mientras (HayPapelEnLaEsquina) & (PosCa < 100) 
+      tomarPapel {junto de la esquina 11,11}
+    Pos(avInicial,caInicial) 
+    LiberarEsquina(11,11)
+    depositarPapel {dejo en la av y ca que estaba antes de ir a la 11}
+    mover {me muevo}
+    PosCa:= PosCa + 1
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    
+   Pos(avInicial, caInicial) {calle 100}
+   LiberarEsquina(11,11)
+   si (HayPapelEnLaBolsa)
+     depositarPapel
+     EnviarMensaje(id, robotJefe)
+     EnviarMensaje(PosCa, robotJefe)
+  fin
+  
+  robot tipoJefe
+  variables
+    id, max, idMax: numero
+  comenzar
+    max := - 1
+    enviarID
+    recibirID
+  fin
+{------Programa principal-------}
+variables
+  r1 : tipo1
+  r2 : tipo1
+  r3 : tipo1
+  r4 : tipo1
+  robotJefe : tipoJefe
+comenzar
+  AsignarArea (r1, area1)
+  AsignarArea (r1, areaFin)
+
+  AsignarArea (r2, area2)
+  AsignarArea (r2, areaFin)
+
+  AsignarArea (r3, area3)
+  AsignarArea (r3, areaFin)
+
+  AsignarArea (r4, area4)
+  AsignarArea (r4, areaFin)
+
+  Iniciar (r1, 4, 1)
+  Iniciar (r2, 6, 1)
+  Iniciar (r3, 8, 1)
+  Iniciar (r4, 10, 1)
+
+  Iniciar (robotJefe, 1, 1)
+fin
+
+
+{Creo que por algún lado debería meterle un booleano o algo para el caso de si no hay papel para que envíe el mensaje directamente al jefe supongo porque se rompe ahí}

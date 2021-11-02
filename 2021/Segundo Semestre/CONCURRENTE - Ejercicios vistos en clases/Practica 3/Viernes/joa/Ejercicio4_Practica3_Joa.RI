@@ -1,0 +1,116 @@
+{CREO QUE TENIA UN ERROR - REVISAR}
+
+{Realice un programa en el que 4 robots mueven de a una todas las flores de la esquina (10,10) a la esquina (11,11). Para ello, cada robot que toma una flor de la esquina (10,10) la deposita en la esquina (11,11) y luego retorna a su esquina inicial. Cada robot que finaliza (o, sea, que detecta que la esquina (10,10) se ha vaciado) deberá avisar al robot coordinador que ha finalizado. Cuando todos los robots finalizaron, el robot coordinador deberá informar qué robot finalizó último y a continuación deberá recolectar todas las flores de la esquina (11,11).}
+
+programa Ejer4P3
+
+procesos 
+  proceso PasarFlores (ES LaEsquinaTieneFlores:boolean E avInicial:numero E caInicial:numero E quienSoy:numero)
+  comenzar
+    mientras LaEsquinaTieneFlores
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si HayFlorEnLaEsquina
+        tomarFlor
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        LiberarEsquina(10,10)
+        depositarFlor
+        Pos(avInicial,caInicial)
+        LiberarEsquina(11,11)
+      sino
+        LaEsquinaTieneFlores:=F
+        Pos(avInicial,caInicial)
+        LiberarEsquina(10,10)
+        EnviarMensaje(quienSoy,robotJefe)
+  fin
+
+  
+areas
+  esquinaJefe: AreaP(1,1,1,1)
+  esquinaR1: AreaP(9,9,9,9)
+  esquinaR2: AreaP(9,10,9,10)
+  esquinaR3: AreaP(9,11,9,11)
+  esquinaR4: AreaP(9,12,9,12)
+  esquina10: AreaPC(10,10,10,10)
+  esquina11: AreaPC(11,11,11,11) {C}
+
+robots
+  robot recolector
+  variables
+    avInicial:numero
+    caInicial:numero
+    quienSoy:numero
+    LaEsquinaTieneFlores:boolean
+  comenzar
+    RecibirMensaje(quienSoy,robotJefe)
+    avInicial:=PosAv
+    caInicial:=PosCa
+    LaEsquinaTieneFlores:= V
+    PasarFlores(LaEsquinaTieneFlores,avInicial,caInicial,quienSoy)
+  fin
+  
+  robot jefe
+  variables
+    queRobot:numero
+    Perdedor:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)  
+    repetir 4 {PODRIAS QUEDARTE CON EL ULTIMO MENSAJE}
+      RecibirMensaje(queRobot,*)
+      si queRobot = 1
+        Perdedor:=1
+      sino
+        si queRobot = 2
+          Perdedor := 2
+        sino
+          si queRobot = 3
+            Perdedor := 3
+          sino
+            Perdedor := 4
+    Informar(Perdedor)
+    Pos(11,11)
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  
+variables
+  robot1: recolector
+  robot2: recolector
+  robot3: recolector
+  robot4: recolector
+  robotJefe : jefe
+comenzar
+  AsignarArea(robot1,esquina10)
+  AsignarArea(robot2,esquina10)
+  AsignarArea(robot3,esquina10)
+  AsignarArea(robot4,esquina10)
+  
+    
+  AsignarArea(robot1,esquina11)
+  AsignarArea(robot2,esquina11) 
+  AsignarArea(robot3,esquina11)
+  AsignarArea(robot4,esquina11)
+  AsignarArea(robotJefe,esquina11)
+  
+  AsignarArea(robot1,esquinaR1)
+  AsignarArea(robot2,esquinaR2)
+  AsignarArea(robot3,esquinaR3)
+  AsignarArea(robot4,esquinaR4)
+  AsignarArea(robotJefe,esquinaJefe)
+  
+  Iniciar(robot1,9,9)
+  Iniciar(robot2,9,10)
+  Iniciar(robot3,9,11)
+  Iniciar(robot4,9,12)
+  Iniciar(robotJefe,1,1)
+  
+fin
+
+
+
+
+

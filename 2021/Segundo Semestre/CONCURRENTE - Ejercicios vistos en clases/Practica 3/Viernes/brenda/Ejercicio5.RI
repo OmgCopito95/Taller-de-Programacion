@@ -1,0 +1,107 @@
+programa Ejercicio-5
+  
+procesos  
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+  fin
+  
+  proceso esMaximo (E posicion: numero; ES posMax:numero; E id:numero; ES idMax:numero)
+  comenzar
+    si (posicion > posMax)
+      posMax:=posicion
+      idMax:=id
+  fin 
+
+
+areas
+  area1: AreaP(4,1,4,100)
+  area2: AreaP(6,1,6,100)
+  area3: AreaP(8,1,8,100)
+  area4: AreaP(10,1,10,100)
+  areaCoord: AreaP(1,1,1,1)
+  areaFuente: AreaPC(11,11,11,11)
+  
+  
+robots 
+  robot papelero
+  variables
+    id, avenida, calle: numero
+    sigo: boolean
+  comenzar
+    sigo:=V
+    avenida:=PosAv
+    calle:=PosCa
+    
+    RecibirMensaje(id,robotC)
+    
+    mientras (sigo)
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si (HayPapelEnLaEsquina) & (calle < 100)
+        tomarPapel
+        Pos(avenida, calle)
+        LiberarEsquina(11,11)
+        depositarPapel
+        mover
+        calle:= calle + 1
+      sino
+        sigo:= F
+        Pos(avenida, calle)
+        LiberarEsquina(11,11)
+        EnviarMensaje(id, robotC)
+        EnviarMensaje(calle, robotC)
+  fin
+  
+  
+  robot coordinador
+  variables
+    id, posicion, idMax, posMax: numero
+  comenzar
+    posMax:=-1
+    identificarRobots
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id=1)
+        RecibirMensaje(posicion,robot1)
+      sino
+        si (id=2)
+          RecibirMensaje(posicion,robot2)
+        sino
+          si (id=3)
+            RecibirMensaje(posicion,robot3)
+          sino
+            RecibirMensaje(posicion,robot4)
+      esMaximo(posicion, posMax, id, idMax)
+    Informar('Gano', idMax)
+  fin
+
+     
+variables 
+  robot1: papelero
+  robot2: papelero
+  robot3: papelero
+  robot4: papelero
+  robotC: coordinador
+
+comenzar 
+  AsignarArea(robot1,areaFuente)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,areaFuente)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,areaFuente)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,areaFuente)
+  AsignarArea(robot4,area4)
+  AsignarArea(robotC,areaCoord)
+  Iniciar(robot1, 4, 1)
+  Iniciar(robot2, 6, 1)
+  Iniciar(robot3, 8, 1)
+  Iniciar(robot4, 10, 1)
+  Iniciar(robotC, 1, 1)
+fin
+
+

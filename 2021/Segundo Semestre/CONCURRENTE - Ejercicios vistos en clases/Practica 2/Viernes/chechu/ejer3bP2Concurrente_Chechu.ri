@@ -1,0 +1,141 @@
+programa ejer3bP2_chechu
+procesos
+{----JUNTAR FLORES-----}
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+  fin
+  
+{----JUNTAR PAPELES-----}
+  proceso juntarPapel(ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  
+  proceso recorrerCalleFlores(ES flores: numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  
+  proceso recorrerCallePapeles(ES papeles:numero)
+  comenzar
+    repetir 9
+      juntarPapel(papeles)
+      mover
+    juntarPapel(papeles)
+  fin
+{------AREAS--------}
+areas
+  {EQUIPO A}
+  areaA1: AreaP(1,1,10,1)
+  areaA12: AreaP (21,1,30,1) {NUEVA}
+  areaA2: AreaP(11,1,20,1)
+  areaA22: AreaP (31,1,40,1){NUEVA}
+  
+  {EQUIPO B}
+  areaB1: AreaP(1,5,10,5)
+  areaB12: AreaP (21,5,30,5)
+  areaB2: AreaP(11,5,20,5)
+  areaB22: AreaP (31,5,40,5)
+{------ROBOTS--------}
+robots
+  robot tipo1 {A1 - juntar papeles}
+  variables
+    papeles, avPos: numero
+  comenzar
+    papeles := 0
+    derecha
+    recorrerCallePapeles(papeles)
+    EnviarMensaje(papeles, robotA2)
+    EnviarMensaje (V, robotA2)
+     {empieza 2do recorrido}
+    RecibirMensaje(avPos,robotA2)
+    Pos(avPos,PosCa)
+    recorrerCallePapeles(papeles)
+    EnviarMensaje(papeles, robotA2)
+  fin
+  
+  robot tipo2 {A2 - juntar papeles - continuacion}
+  variables
+    papeles,avPos: numero
+    empezar: boolean
+  comenzar
+    RecibirMensaje(papeles,robotA1)
+    RecibirMensaje (empezar, robotA1)
+    recorrerCallePapeles(papeles)
+     {empieza 2do recorrido}
+    RecibirMensaje (empezar, robotA1)
+    avPos := PosAv + 10
+    EnviarMensaje (avPos, robotA1)
+    RecibirMensaje(papeles,robotA1)
+    Informar('Total',papeles)
+  fin
+  
+  robot tipo3 {B1- juntar flores}
+  variables
+    flores, avPos: numero
+  comenzar
+    flores := 0
+    derecha
+    recorrerCalleFlores(flores)
+    EnviarMensaje(flores,robotB2)
+    EnviarMensaje (V, robotB2)
+     {empieza 2do recorrido}
+    RecibirMensaje(avPos,robotB2)
+    Pos(avPos,PosCa) 
+    recorrerCalleFlores(flores)
+    EnviarMensaje(flores,robotB2)
+    EnviarMensaje (V, robotB2)
+  fin
+
+  robot tipo4{B2 - juntar flores - continuacion}
+  variables
+    flores, avPos: numero
+    empezar: boolean
+  comenzar
+    RecibirMensaje(flores, robotB1)
+    RecibirMensaje (empezar, robotB1)
+    recorrerCalleFlores(flores)
+     {empieza 2do recorrido}
+    RecibirMensaje (empezar, robotA1)
+    avPos := PosAv + 10
+    EnviarMensaje (avPos, robotB1)
+    RecibirMensaje(flores, robotB1)
+    Informar('Total',flores)
+  fin
+{-----------PROGRAMA PRINCIPAL------------}
+variables
+  robotA1: tipo1
+  robotA2: tipo2
+  robotB1: tipo3
+  robotB2: tipo4
+comenzar
+  {EQUIPO A}
+  AsignarArea(robotA1,areaA1)
+  AsignarArea(robotA1,areaA12)
+  AsignarArea(robotA2,areaA2)
+  AsignarArea(robotA2,areaA22)
+  
+  {EQUIPO B}
+  AsignarArea(robotB1,areaB1)
+  AsignarArea(robotB1,areaB12)
+  AsignarArea(robotB2,areaB2)
+  AsignarArea(robotB2,areaB22)
+
+{-------INICIALIZACION----------}
+
+  {EQUIPO A}
+  Iniciar(robotA1,1,1)
+  Iniciar(robotA2,11,1)
+  
+  {EQUIPO B}
+  Iniciar(robotB1,1,5)
+  Iniciar(robotB2,11,5)
+fin

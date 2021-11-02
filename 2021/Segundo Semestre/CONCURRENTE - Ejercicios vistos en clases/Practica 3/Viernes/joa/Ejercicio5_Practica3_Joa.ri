@@ -1,0 +1,129 @@
+{Realice un programa en el que 4 robots juegan una carrera por avenidas diferentes: 4, 6, 8 y 10 respectivamente. Todos los robots inician en la calle 1.
+Para poder avanzar, cada robot debe juntar un papel de una fuente de papeles localizada en la esquina (11,11), colocarlo en la esquina actual de su avenida y avanzar un paso. Cuando la esquina fuente ya no tiene más papeles, o cuando se haya completado la avenida, deberán avisar al robot coordinador y este determinará el robot que llegó más lejos.
+}
+
+programa Ejer5P3
+
+procesos
+  proceso JuntarPapel (ES papel:numero ES avActual:numero E caActual:numero)
+  comenzar
+    si (HayPapelEnLaEsquina) & (caActual < 99)
+      tomarPapel
+      papel:=papel+1
+      Pos(avActual,caActual)
+      LiberarEsquina(11,11)
+    sino
+      Pos(avActual,caActual)
+      LiberarEsquina(11,11)
+  fin
+  
+  proceso RecorridoAv (E avActual:numero E caActual:numero E queRobot:numero)
+  variables
+    papel:numero
+    HayPapeles:boolean
+  comenzar
+    HayPapeles:=V
+    mientras HayPapeles
+      papel:=0
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      JuntarPapel(papel,avActual,caActual)
+      si papel = 1
+        depositarPapel
+        mover
+        caActual:=caActual + 1
+      sino 
+        si papel = 0
+          HayPapeles:= F
+          EnviarMensaje(queRobot,robotCoordinador)
+          EnviarMensaje(caActual,robotCoordinador)   
+  fin
+  
+  proceso Comparacion (E cantCalles:numero ES cantTotales:numero E queRobot:numero ES robotGanador:numero)
+  comenzar
+    si cantCalles > cantTotales
+      cantTotales:=cantCalles
+      robotGanador:=queRobot
+  fin
+  
+areas
+  fuentePapeles :AreaPC(11,11,11,11)
+  av4 :AreaP(4,1,4,100)
+  av6 :AreaP(6,1,6,100)
+  av8 :AreaP(8,1,8,100)
+  av10 :AreaP(10,1,10,100)
+  esquinaCoord :AreaP(1,1,1,1)
+ 
+ 
+robots
+  robot corredor
+  variables
+    avInicial:numero
+    caInicial:numero
+    queRobot:numero
+  comenzar
+    queRobot:=0
+    avInicial:=PosAv
+    caInicial:=PosCa
+    RecibirMensaje(queRobot,robotCoordinador)
+    RecorridoAv(avInicial,caInicial,queRobot)
+  fin
+  
+  robot coordinador
+  variables
+    quienGano:numero
+    cantCalles:numero
+    mayorCalle:numero
+    queRobot:numero
+  comenzar
+    mayorCalle:=0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    
+    repetir 4
+      RecibirMensaje(queRobot,*)
+      si queRobot = 1
+        RecibirMensaje(cantCalles,robot1)
+        Comparacion(cantCalles,mayorCalle,queRobot,quienGano)
+      sino
+        si queRobot = 2
+          RecibirMensaje(cantCalles,robot2)
+          Comparacion(cantCalles,mayorCalle,queRobot,quienGano)
+        sino
+          si queRobot = 3
+            RecibirMensaje(cantCalles,robot3)
+            Comparacion(cantCalles,mayorCalle,queRobot,quienGano)
+          sino
+            RecibirMensaje(cantCalles,robot4)
+            Comparacion(cantCalles,mayorCalle,queRobot,quienGano)
+    Informar(quienGano)
+  fin
+  
+variables
+  robot1 : corredor
+  robot2 : corredor
+  robot3 : corredor
+  robot4 : corredor
+  robotCoordinador :coordinador
+comenzar
+  AsignarArea(robot1,av4)
+  AsignarArea(robot2,av6)
+  AsignarArea(robot3,av8)
+  AsignarArea(robot4,av10)
+  AsignarArea(robotCoordinador,esquinaCoord)
+  
+  AsignarArea(robot1,fuentePapeles)
+  AsignarArea(robot2,fuentePapeles)
+  AsignarArea(robot3,fuentePapeles)
+  AsignarArea(robot4,fuentePapeles)
+  
+  Iniciar(robot1,4,1)
+  Iniciar(robot2,6,1)
+  Iniciar(robot3,8,1)
+  Iniciar(robot4,10,1)
+  Iniciar(robotCoordinador,1,1)
+  
+  
+fin

@@ -1,0 +1,150 @@
+programa ejer3P3_chechu
+procesos
+  {---JUNTAR FLORES---}
+  proceso juntarFlores(ES cantFlores: numero)
+  comenzar
+    si (HayFlorEnLaEsquina) {en realidad preguntar de nuevo aca estaria demas no? porque si no no ingresa al mientras}
+      tomarFlor
+      cantFlores := cantFlores + 1
+  fin
+  
+  proceso enviarID {Asigno el id a cada robot}
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    EnviarMensaje(4, r4)
+  fin
+  
+  proceso enviarEsquina(E avRandom: numero; E caRandom: numero)
+  comenzar
+    EnviarMensaje(avRandom,r1)
+    EnviarMensaje(caRandom,r1)
+    
+    EnviarMensaje(avRandom,r2)
+    EnviarMensaje(caRandom,r2)
+    
+    EnviarMensaje(avRandom,r3)
+    EnviarMensaje(caRandom,r3)
+    
+    EnviarMensaje(avRandom,r4)
+    EnviarMensaje(caRandom,r4)
+  fin
+  
+  proceso procesarEsquina(E avRandom: numero E caRandom: numero; ES cantFlores: numero)
+  variables
+    cantFlores,avInicial, caInicial: numero
+  comenzar
+    cantFlores := 0
+    avInicial := PosAv {me guardo la pos inicial porque deben volver ahi}
+    caInicial := PosCa
+    
+    BloquearEsquina(avRandom,caRandom) {bloqueo la esquina para que no acceda nadie mas que el robot actual}
+    Pos(avRandom,caRandom)
+    mientras (HayFlorEnLaEsquina)
+      juntarFlores(cantFlores)
+      Pos(avInicial, caInicial) {salgo de la posicion que bloquee para poder asegurarme al liberarla}
+      LiberarEsquina(avRandom,caRandom)
+      BloquearEsquina(avRandom,caRandom)
+      Pos(avRandom,caRandom)
+    Pos(avInicial, caInicial)
+    LiberarEsquina(avRandom,caRandom)
+  fin
+  
+  proceso recibirID (ES id: numero; ES cantF: numero)
+  comenzar
+    RecibirMensaje(id,*)
+    si(id = 1)
+      RecibirMensaje(cantFlores,r1)
+    sino
+      si(id = 2)
+        RecibirMensaje(cantFlores,r2)
+      sino 
+        si(id = 3)
+          RecibirMensaje(cantFlores,r3)
+        sino
+          si(id = 4)
+            RecibirMensaje(cantFlores,r4)
+  fin
+  
+  proceso calcularEInformarGanador
+  variables
+    cantFlores, id, idMax,max: numero
+  comenzar
+    max := - 1
+    repetir 4 {porque son 4 robots}
+      recibirID(id, cantFlores)
+     
+      si (cantFlores > max) {podria modularizarlo}
+        max := cantFlores
+        idMax := id
+    Informar ('Ganador', idMax)
+  fin
+{-----Areas--------}
+areas
+  areaFlores : AreaPC(2,2,10,10)
+  
+  areaR1: AreaP(2,1,2,1)
+  areaR2: AreaP(3,1,3,1)
+  areaR3: AreaP(4,1,4,1)
+  areaR4: AreaP(5,1,5,1)
+  
+  areaJefe : AreaP(1,1,1,1)
+{-----Robots--------}
+robots
+  robot tipo1
+  variables
+    id, cantFlores, avRandom,caRandom, avInicial,caInicial: numero
+  comenzar
+    RecibirMensaje(id,robotJefe) {recibo el id que me asigna el jefe, para informar el ganador}
+ 
+    RecibirMensaje(avRandom,robotJefe){recibo la esquina random que me envia el jefe}
+    RecibirMensaje(caRandom,robotJefe)
+    
+    procesarEsquina(avRandom,caRandom,cantFlores)
+    EnviarMensaje(id, robotJefe) {le mando el id y la cantidad juntada por este robotal jefe}
+    EnviarMensaje(cantFlores,robotJefe)
+  fin
+  
+  robot tipoJefe
+  variables
+    avRandom, caRandom, id:numero
+  comenzar
+    enviarID
+    
+    Random(avRandom,2,10)
+    Random(caRandom,2,10)
+    enviarEsquina(avRandom, caRandom)
+    
+    calcularEInformarGanador
+  fin
+{------Programa principal-------}
+variables
+  r1 : tipo1
+  r2 : tipo1
+  r3 : tipo1
+  r4 : tipo1
+  robotJefe : tipoJefe
+comenzar
+  AsignarArea(r1, areaFlores)
+  AsignarArea(r1, areaR1)
+
+  AsignarArea(r2, areaFlores)
+  AsignarArea(r2, areaR2)
+
+  AsignarArea(r3, areaFlores)
+  AsignarArea(r3, areaR3)
+  
+  AsignarArea(r4, areaFlores)
+  AsignarArea(r4, areaR4)
+  
+  AsignarArea(robotJefe, areaJefe)
+  
+  Iniciar(r1, 2,1)
+  Iniciar(r2, 3,1)
+  Iniciar(r3,4,1)
+  Iniciar(r4, 5,1)
+  Iniciar(robotJefe,1,1)
+fin
+
+{informa 0}

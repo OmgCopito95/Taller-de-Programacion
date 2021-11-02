@@ -1,0 +1,96 @@
+programa Ejercicio-4a
+  
+procesos  
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+  fin
+
+
+areas
+  areaInicio: AreaPC(10,10,10,10)
+  areaFin: AreaC(11,11,11,11)
+  area1: AreaP(9,9,9,9)
+  area2: AreaP(9,10,9,10)
+  area3: AreaP(9,11,9,11)
+  area4: AreaP(9,12,9,12)
+  areaCoord: AreaP(1,1,1,1)
+  
+  
+robots 
+  robot florero
+  variables
+    id, avInicial, calleInicial: numero
+    sigo: boolean
+  comenzar
+    sigo:=V
+    avInicial:=PosAv
+    calleInicial:=PosCa
+    
+    RecibirMensaje(id,robotC)
+    mientras (sigo)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        LiberarEsquina(10,10)
+        depositarFlor
+        Pos(avInicial, calleInicial)
+        LiberarEsquina(11,11)
+      sino
+        sigo:= F
+        Pos(avInicial, calleInicial)
+        LiberarEsquina(10,10)
+        EnviarMensaje(id, robotC)   {aviso al coordinador que termino mandandole el id}
+  fin
+  
+  
+  robot coordinador
+  variables
+    id, ultimo, flores: numero
+  comenzar
+    identificarRobots
+    repetir 4
+      RecibirMensaje(ultimo,*)
+    Informar('Ultimo', ultimo)
+    Pos(11,11)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+
+     
+variables 
+  robot1: florero
+  robot2: florero
+  robot3: florero
+  robot4: florero
+  robotC: coordinador
+
+comenzar 
+  AsignarArea(robot1,areaInicio)
+  AsignarArea(robot1,areaFin)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,areaInicio)
+  AsignarArea(robot2,areaFin)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,areaInicio)
+  AsignarArea(robot3,areaFin)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,areaInicio)
+  AsignarArea(robot4,areaFin)
+  AsignarArea(robot4,area4)
+  AsignarArea(robotC,areaFin)
+  AsignarArea(robotC,areaCoord)
+  Iniciar(robot1, 9, 9)
+  Iniciar(robot2, 9, 10)
+  Iniciar(robot3, 9, 11)
+  Iniciar(robot4, 9, 12)
+  Iniciar(robotC, 1, 1)
+fin
+
+

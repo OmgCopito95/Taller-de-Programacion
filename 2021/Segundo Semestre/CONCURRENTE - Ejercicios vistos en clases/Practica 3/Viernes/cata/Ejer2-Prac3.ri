@@ -1,0 +1,136 @@
+{CREO QUE TIRABA UN ERROR - REVISAR}
+
+programa nombrePrograma
+procesos 
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+  proceso juntarPapeles(ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:=papel+1
+  fin
+
+  proceso recorrer(E alto: numero; E flor:numero)
+  comenzar
+    repetir 5
+      repetir alto
+        mover
+      juntarFlores(flor)  
+      derecha
+      repetir alto
+        mover
+      juntarFlores(flor)  
+      girar(3)
+      alto:=alto - 1
+  fin
+  
+  proceso recorrerSuperior(E alto: numero; E flor:numero)
+  comenzar
+    repetir 4
+      repetir alto
+        mover
+      juntarFlores(flor)  
+      derecha
+      repetir alto
+        mover
+      juntarFlores(flor)  
+      girar(3)
+      alto:=alto + 1
+  fin 
+   
+  proceso recorrerP(E alto: numero; E papel:numero)
+  comenzar
+    repetir 5
+      repetir alto
+        mover
+      juntarPapeles(papel)  
+      girar(3)
+      repetir alto
+        mover
+      juntarPapeles(papel)  
+      girar(1)
+      alto:=alto - 1
+  fin
+  proceso recorrerSuperiorP(E alto: numero; E papel:numero)
+  comenzar 
+    repetir 4
+      repetir alto
+        mover
+      juntarPapeles(papel) 
+      girar(3)
+      repetir alto
+        mover
+      juntarPapeles(papel)  
+      girar(3)
+      alto:=alto + 1
+  fin 
+  proceso girar(E cant:numero)
+  comenzar
+    repetir cant
+      derecha
+  fin   
+areas
+  ciudad: AreaC (1,1,100,100) { revisar }
+robots
+  robot robot1
+  variables
+    alto, flor,id:numero
+  comenzar 
+    RecibirMensaje(id,jefe)
+    flor:=0
+    recorrer(5,flor)
+    BloquearEsquina(16,16)
+    mover
+    girar(3)    
+    recorrerSuperior(2,flor) 
+    LiberarEsquina(16,16) {LIBERAR CUANDO SALGA DE LA ESQUINA}
+  fin
+  robot robot2
+  variables
+    alto, papel,id:numero
+  comenzar 
+    RecibirMensaje(id,jefe)
+    papel:=0
+    recorrerP(5,papel)  
+    mover
+    BloquearEsquina(16,16) 
+    recorrerSuperiorP(2,papel)
+    LiberarEsquina(16,16)   {deberia liberar antes pero nunca anduvo bien entonces ahi quedo}        
+  fin
+  
+  robot jefe
+  variables
+    id:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+        
+  
+  fin  
+variables
+  r1: robot1
+  r2: robot2 
+  jefe:jefe 
+comenzar
+  AsignarArea (r1,ciudad)
+  AsignarArea (r2,ciudad)
+  AsignarArea(jefe,ciudad)
+  Iniciar (r1,1,1)
+  Iniciar(r2,31,1)
+  Iniciar(jefe,15,1)
+fin
+
+{Realice un programa en el cual 2 robots corren una carrera. El recorrido realizado por
+cada uno es el que se muestra en la siguiente figura. Durante el recorrido el robot 1 debe
+juntar todas las flores que encuentre en los vÃƒÆ’Ã‚Â©rtices de cada escalÃƒÆ’Ã‚Â³n, mientras que el robot 2 debe juntar todos los papeles que encuentre en los vÃƒÆ’Ã‚Â©rtices de cada escalÃƒÆ’Ã‚Â³n. Al finalizar deben informar la cantidad de elementos recogidos.
+El robot 1 debe iniciar su recorrido en la esquina (1,1) y el robot 2 debe iniciar su recorrido
+en la esquina (31,1). Al finalizar la carrera, un robot jefe (inicializado en la esquina (15,1) ) debe informar quÃƒÆ’Ã‚Â© robot llegÃƒÆ’Ã‚Â³ primero a la esquina central de su recorrido.}
+
+
+
+

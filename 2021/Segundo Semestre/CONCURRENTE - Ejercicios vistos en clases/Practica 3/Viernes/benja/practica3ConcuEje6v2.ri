@@ -1,0 +1,350 @@
+{NO LLEGAMOS A REVISARLO}
+
+programa Ejercicio6
+  
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+      
+  
+  proceso juntarPapeles (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+  
+  
+  
+  
+  proceso esquinaFlores(ES flores: numero;E x:numero;E y:numero)
+  comenzar
+  
+    BloquearEsquina(x,y)
+    mover
+    juntarFlores(flores)
+    mover
+    LiberarEsquina(x,y)
+    
+  fin
+
+  
+  
+  proceso ladoFlores(ES flores: numero;E lado:numero)
+  comenzar
+    repetir lado    
+      juntarFlores(flores)      
+      mover      
+    juntarFlores(flores)  
+  fin
+
+  
+  
+  proceso lado (E alto:numero;ES flores:numero;ES papeles:numero)
+  comenzar
+    repetir alto
+      juntarFlores(flores)
+      juntarPapeles(papeles)
+      mover  
+    juntarFlores(flores)
+    juntarPapeles(papeles)         
+  fin
+  
+  
+  
+  proceso procesarEsquina (ES flores:numero;ES papeles:numero;E x:numero;E y:numero)  
+  comenzar
+    BloquearEsquina(x,y)
+    mover
+    juntarFlores(flores)
+    juntarPapeles(papeles)
+    mover
+    LiberarEsquina(x,y)
+  fin
+  
+  
+  
+  proceso cuadrado (E alto:numero;ES flores:numero;ES papeles:numero)  
+  comenzar
+    lado(2,flores,papeles)
+    procesarEsquina(flores,papeles,8,5)
+    lado(6,flores,papeles)
+    derecha
+    
+    lado(3,flores,papeles)
+    procesarEsquina(flores,papeles,9,15)
+    lado(5,flores,papeles)
+    derecha
+    
+    lado(5,flores,papeles)
+    procesarEsquina(flores,papeles,15,9)    
+    lado(3,flores,papeles)
+    derecha
+    
+    lado(6,flores,papeles)
+    procesarEsquina(flores,papeles,8,5)
+    lado(2,flores,papeles)
+    derecha
+  fin
+  
+ 
+  proceso ladoPapeles (E alto:numero;ES papeles:numero)
+  comenzar
+    repetir alto
+      juntarPapeles(papeles)
+      mover     
+    juntarPapeles(papeles)      
+    
+  fin
+  
+  proceso esquinaPapeles (ES papeles:numero;E x:numero;E y:numero)
+  comenzar
+  
+    BloquearEsquina(x,y)
+    mover
+    juntarPapeles(papeles)
+    mover
+    LiberarEsquina(x,y)
+    
+  fin
+  
+  proceso cuadradoFlores (ES flores:numero;E alto:numero)  
+  comenzar    
+    
+    ladoFlores(flores,6)
+    derecha  
+   
+    ladoFlores(flores,2)          
+    esquinaFlores(flores,5,8)
+    ladoFlores(flores,2)
+    derecha
+    
+    ladoFlores(flores,2)
+    esquinaFlores(flores,8,5)
+    ladoFlores(flores,2)
+    derecha
+    
+    ladoFlores(flores,6)
+    derecha
+    
+  fin
+
+
+  proceso cuadradoPapeles (ES papeles:numero;E alto:numero)
+  comenzar  
+  
+    ladoPapeles(5,papeles)
+    esquinaPapeles(papeles,9,15){ lado izquierdo }
+    derecha
+        
+    repetir 2
+      ladoPapeles(7,papeles) {lado derecho y superior}
+      derecha
+    
+    esquinaPapeles(papeles,15,9)  {lado inferior}
+    ladoPapeles(5,papeles)
+    derecha    
+   
+  fin
+
+
+
+areas
+  ladoflores1:AreaP(2,2,2,8)
+  ladoflores2:AreaP(3,2,8,2)
+  ladoflores3:AreaP(3,8,4,8)
+  ladoflores4:AreaP(6,8,8,8)
+  ladoflores5:AreaP(8,3,8,4)
+  ladoflores6:AreaP(8,6,8,8) 
+  
+  
+  ladopapeles1: AreaP(9,9,9,14)   
+  ladopapeles2:AreaP (9,16,16,16) 
+  ladopapeles3:AreaP(16,9,16,15) 
+  ladopapeles4: AreaP(10,9,14,9)
+      
+  lado1:AreaP(5,5,5,7)
+  lado2:AreaP(5,9,5,15)
+  lado3:AreaP(6,15,8,15)
+  lado4:AreaP(10,15,15,15)
+  lado5:AreaP(15,10,15,14)
+  lado6:AreaP(15,5,15,8)
+  lado7:AreaP(9,5,14,5) 
+  lado8:AreaP(6,5,7,5)  
+  
+  esquinaConflictiva1: AreaC(5,8,5,8)
+  esquinaConflictiva2: AreaC(8,5,8,5)
+  esquinaConflictiva3: AreaC(9,15,9,15)
+  esquinaConflictiva4: AreaC(15,9,15,9)
+  
+  areaFiscalizador: AreaP (1,1,1,1)
+  
+  recorrido20: AreaP(1,20,100,20)
+  recorrido21: AreaP(1,21,100,21)
+  recorrido22: AreaP(1,22,100,22)
+  
+  
+robots 
+  robot tipo1
+  variables
+    flores:numero
+    quiensoy:numero
+    calle:numero
+  comenzar     
+    flores:=0
+    
+    cuadradoFlores(flores,6)
+    
+    EnviarMensaje(1,robot4)    {mando quien soy}
+    RecibirMensaje(calle,robot4)
+    Pos(1,calle)
+    derecha
+    mientras (HayFlorEnLaBolsa) & (PosAv < 100)
+      depositarFlor
+      mover
+    si (HayFlorEnLaBolsa)  
+      depositarFlor
+  fin
+  
+  
+  robot tipo3
+  variables
+    papeles:numero
+    calle:numero        
+  comenzar     
+    papeles:=0        
+    cuadradoPapeles(papeles,7)    
+    EnviarMensaje(3,robot4)        
+    RecibirMensaje(calle,robot4)              
+    Pos(1,calle)
+    derecha
+    
+    mientras (HayPapelEnLaBolsa) & (PosAv < 100)     
+      depositarPapel      
+      mover     
+    si (HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+  
+  robot tipo2
+  variables
+    flores:numero
+    papeles:numero
+    calle:numero
+  comenzar    
+    flores:=0
+    papeles:=0    
+    cuadrado(7,flores,papeles)    
+    EnviarMensaje(2,robot4) 
+    RecibirMensaje(calle,robot4)    
+    
+    Pos (1,calle)
+    derecha
+    mientras (HayPapelEnLaBolsa)|(HayFlorEnLaBolsa) & (PosAv < 100)             
+      si (HayPapelEnLaBolsa  & HayFlorEnLaBolsa)
+        depositarFlor
+        depositarPapel
+      sino
+        si (HayPapelEnLaBolsa & ~(HayFlorEnLaBolsa))
+          depositarPapel
+        sino
+          si ~(HayPapelEnLaBolsa) & (HayFlorEnLaBolsa)
+            depositarFlor
+      mover    
+    si (HayPapelEnLaBolsa   & HayFlorEnLaBolsa)  
+      depositarFlor
+      depositarPapel
+    sino
+      si (HayPapelEnLaBolsa  & ~(HayFlorEnLaBolsa))  
+        depositarPapel
+      sino 
+        si ~(HayPapelEnLaBolsa) & HayFlorEnLaBolsa
+          depositarFlor
+  fin
+  
+  robot jefe
+  variables
+    id:numero
+    calle:numero
+  comenzar
+    calle:=20  
+    repetir 3 
+      RecibirMensaje(id,*)
+      si (id = 1)
+        EnviarMensaje(calle,robot1)
+      sino
+        si (id = 2)   
+          EnviarMensaje(calle,robot2)
+        sino 
+          EnviarMensaje(calle,robot3)  
+      calle:=calle + 1 
+  fin
+
+variables 
+  robot1: tipo1
+  robot2: tipo2
+  robot3: tipo3
+  robot4: jefe
+comenzar 
+  AsignarArea(robot1,ladoflores1)
+  AsignarArea(robot1,ladoflores2)
+  AsignarArea(robot1,ladoflores3)
+  AsignarArea(robot1,ladoflores4)
+  AsignarArea(robot1,ladoflores5)
+  AsignarArea(robot1,ladoflores6)
+  
+  
+  AsignarArea(robot3,ladopapeles1)
+  AsignarArea(robot3,ladopapeles2)
+  AsignarArea(robot3,ladopapeles3)
+  AsignarArea(robot3,ladopapeles4)
+  
+  
+  AsignarArea(robot2,lado1)
+  AsignarArea(robot2,lado2)
+  AsignarArea(robot2,lado3)
+  AsignarArea(robot2,lado4)
+  AsignarArea(robot2,lado5)
+  AsignarArea(robot2,lado6)
+  AsignarArea(robot2,lado7)
+  AsignarArea(robot2,lado8)
+  
+  AsignarArea(robot1,esquinaConflictiva1)
+  AsignarArea(robot1,esquinaConflictiva2)
+  AsignarArea(robot1,esquinaConflictiva3)
+  AsignarArea(robot1,esquinaConflictiva4)
+  AsignarArea(robot2,esquinaConflictiva1)
+  AsignarArea(robot2,esquinaConflictiva2)
+  AsignarArea(robot2,esquinaConflictiva3)
+  AsignarArea(robot2,esquinaConflictiva4)
+  AsignarArea(robot3,esquinaConflictiva1)
+  AsignarArea(robot3,esquinaConflictiva2)
+  AsignarArea(robot3,esquinaConflictiva3)
+  AsignarArea(robot3,esquinaConflictiva4)
+  
+ 
+  
+  AsignarArea(robot1,recorrido20)
+  AsignarArea(robot1,recorrido21)
+  AsignarArea(robot1,recorrido22)
+  
+  AsignarArea(robot2,recorrido20)
+  AsignarArea(robot2,recorrido21)
+  AsignarArea(robot2,recorrido22)
+  
+  AsignarArea(robot3,recorrido20)
+  AsignarArea(robot3,recorrido21)
+  AsignarArea(robot3,recorrido22)
+  
+  AsignarArea(robot4,areaFiscalizador)
+  Iniciar(robot4, 1, 1)
+  Iniciar(robot1, 2, 2)
+  Iniciar(robot2, 5, 5)
+  Iniciar(robot3, 9, 9)
+fin
+
+

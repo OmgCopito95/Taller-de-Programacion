@@ -3,6 +3,7 @@ LIBERAR ESQUINA -> ejecuta y sigue el codigo como siempre
 
 - misma cant de bloquear y liberar en todo el programa
 
+
 QUIERO IR A LA ESQUINA 10,10 desde la esquina 5,5.(supongo que puede ir mas de un robot)
 
 1) me guardo mi posicion actual
@@ -12,3 +13,4 @@ QUIERO IR A LA ESQUINA 10,10 desde la esquina 5,5.(supongo que puede ir mas de u
 4) hago lo que tengo que hacer
 5) vuelvo a mi posicion de origen
 6) libero esquina 10,10
+

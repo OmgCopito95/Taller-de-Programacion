@@ -1,0 +1,138 @@
+programa ejer1P3_chechu
+procesos
+{----JUNTAR FLORES-----}
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+  fin
+  
+ {----JUNTAR PAPELES-----}
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  {--------------RECORRIDO DE AREAS PARA JUNTAR------------------}
+  proceso recorrerAreaFloreros(ES flores: numero; E avInicial: numero E caInicial: numero)
+  variables
+    av,ca:numero 
+  comenzar
+    Random(av,1,5)
+    Random(ca,1,10)
+    BloquearEsquina(av,ca) {limito el acceso para que entre este robot y no otro}
+    Pos(av,ca) {me posiciono en la esquina random}
+    juntarFlores(flores)
+    Pos(avInicial,caInicial) {vuelvo a la posicion inicial}
+    LiberarEsquina(av,ca) {una vez que me asegure salir de la esquina bloqueada la libero}
+  fin
+  
+  proceso recorrerAreaPapeleros(ES flores: numero; E avInicial: numero E caInicial: numero)
+  variables
+    av,ca:numero
+  comenzar
+    Random(av,6,10)
+    Random(ca,1,9)
+    BloquearEsquina(av,ca) {limito el acceso para que entre este robot y no otro}
+    Pos(av,ca) {me posiciono en la esquina random}
+    juntarPapeles(papeles)
+    Pos(avInicial,caInicial) {vuelvo a la posicion inicial}
+    LiberarEsquina(av,ca) {una vez que me asegure salir de la esquina bloqueada la libero} 
+  fin
+{--------------PROCESO PARA DEPOSITAR FLORES/PAPELES DE A UNO-------------------}
+  proceso dejarFlores (E flores: numero; E avInicio: numero; E caInicio: numero)
+  comenzar 
+    repetir flores {porque tiene que ir dejando las flores de a una y sera esa cantidad de flores las iteraciones necesarias para las siguientes intrucciones} 
+      BloquearEsquina(10,10) {limito el acceso para que entre este robot y no otro}
+      Pos(10,10)
+      depositarFlor
+      Pos(avInicio,caInicio) {vuelvo a la posicion del inicio}
+      LiberarEsquina(10,10) {una vez que me asegure salir de la esquina bloqueada la libero}
+  fin
+
+  proceso dejarPapeles (E papeles: numero; E avInicio: numero; E caInicio: numero)
+  comenzar
+    repetir papeles {porque tiene que ir dejando los papeles de a uno y sera esa cantidad de papeles las iteraciones necesarias para las siguientes intrucciones} 
+      BloquearEsquina(10,10) {limito el acceso para que entre este robot y no otro}
+      Pos(10,10)
+      depositarPapel
+      Pos(avInicio,caInicio) {vuelvo a la posicion del inicio}
+      LiberarEsquina(10,10) {una vez que me asegure salir de la esquina bloqueada la libero}
+  fin
+
+{-----AREAS------}
+areas
+
+  {-----AREAS FLORERO------}
+  areaFloreros: AreaPC(1,1,5,10)
+  areaInFlorero1: AreaP(6,10,6,10)
+  areaInFlorero2: AreaP(7,10,7,10)
+  
+  {-----AREAS PAPELERO------}
+  areaPapeleros: AreaPC(6,1,10,9)
+  areaInPapelero1: AreaP(8,10,8,10)
+  areaInPapelero2: AreaP(9,10,9,10)
+  
+  {-----AREA FINAL DE LOS ROBOTS------}
+  areaFin: AreaC(10,10,10,10)
+  
+{-----ROBOTS------}
+robots
+  {.::FLOREROS::.}
+  robot tipoF
+  variables
+    avInicial,caInicial,flores: numero
+  comenzar
+    flores := 0
+    avInicial := PosAv {me guardo la posicion inicial porque ahi voy a volver}
+    caInicial := PosCa
+    repetir 5 {tienen 5 intentos}
+      recorrerAreaFloreros (flores, avInicial,caInicial)
+    dejarFlores(flores, avInicial, caInicial)
+  fin
+  
+   {.::PAPELEROS::.}
+  robot tipoP
+  variables
+    avInicial,caInicial,papeles: numero
+  comenzar
+    papeles:= 0
+    avInicial := PosAv {me guardo la posicion inicial}
+    caInicial := PosCa
+    repetir 3 {tienen 3 intentos}
+      recorrerAreaPapeleros (papeles, avInicial,caInicial)
+    dejarPapeles(papeles,avInicial,caInicial)
+  fin
+
+{-----PROGRAMA PRINCIPAL------}
+variables
+  robotFlorero1  tipoF
+  robotFlorero2: tipoF
+  
+  robotPapelero1: tipoP
+  robotPapelero2: tipoP
+comenzar
+ {.::FLOREROS::.}
+  AsignarArea(robotFlorero1, areaFloreros)
+  AsignarArea(robotFlorero1, areaInFlorero1)
+  AsignarArea(robotFlorero1, areaFin)
+  AsignarArea(robotFlorero2, areaFloreros)
+  AsignarArea(robotFlorero2, areaInFlorero2)
+  AsignarArea(robotFlorero2, areaFin)
+  
+ {.::PAPELEROS::.}
+  AsignarArea(robotPapelero1, areaPapeleros)
+  AsignarArea(robotPapelero1, areaInPapelero1)
+  AsignarArea(robotPapelero1, areaFin)
+  AsignarArea(robotPapelero2, areaPapeleros)
+  AsignarArea(robotPapelero2, areaInPapelero2)
+  AsignarArea(robotPapelero2, areaFin)
+  
+  {INICIALIZACION DE ROBOTS}
+  Iniciar(robotFlorero1,6,10)
+  Iniciar(robotFlorero2,7,10)
+  Iniciar(robotPapelero1,8,10)
+  Iniciar(robotPapelero2,9,10)
+fin

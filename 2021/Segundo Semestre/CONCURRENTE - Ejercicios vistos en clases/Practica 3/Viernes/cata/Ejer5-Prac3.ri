@@ -1,0 +1,96 @@
+programa nombrePrograma
+
+ 
+areas
+  ciudad4: AreaP(4,1,4,100)
+  ciudad6: AreaP(6,1,6,100)
+  ciudad8: AreaP(8,1,8,100)
+  ciudad10:AreaP(10,1,10,100)
+  ciudadjf:AreaP(1,1,1,1)
+  fuente: AreaPC(11,11,11,11)
+robots
+  robot robot1
+  variables
+    av,ca,id:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    av:=PosAv
+    ca:=1
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    mientras(HayPapelEnLaEsquina) & (PosCa < 100)
+      tomarPapel
+      Pos(av,ca)
+      LiberarEsquina(11,11)      
+      depositarPapel
+      mover
+      ca:=ca+1 
+      BloquearEsquina(11,11)
+      Pos(11,11)
+    Pos(av,ca)    
+    LiberarEsquina(11,11)   
+    si(HayPapelEnLaBolsa)
+      depositarPapel 
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(ca,jefe)   
+  fin
+  robot jefe
+  variables
+    id,max,ca,ganador:numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    max:=-1
+    repetir 4 
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(ca,r1)
+      sino
+        si(id=2)
+          RecibirMensaje(ca,r2)
+        sino
+          si(id=3)
+            RecibirMensaje(ca,r3)
+          sino
+            si(id=4)
+              RecibirMensaje(ca,r4)  
+      si(ca>max)
+        max:=ca
+        ganador:=id
+    Informar('recorrio',max)  
+    Informar('ganador', ganador)
+    
+    
+  
+  fin
+  
+variables
+  r1,r2,r3,r4: robot1
+  jefe:jefe
+comenzar
+  AsignarArea (r1,ciudad4)
+  AsignarArea (r2,ciudad6)
+  AsignarArea (r3,ciudad8)
+  AsignarArea (r4,ciudad10)
+  AsignarArea(jefe,ciudadjf)
+  AsignarArea (r1,fuente)
+  AsignarArea (r2,fuente)
+  AsignarArea (r3,fuente)  
+  AsignarArea (r4,fuente)
+  AsignarArea(jefe,fuente)
+  Iniciar (r1,4,1)
+  Iniciar (r2,6,1)
+  Iniciar (r3,8,1)
+  Iniciar (r4,10,1)
+  Iniciar(jefe,1,1)
+fin
+
+{5- Realice un programa en el que 4 robots juegan una carrera por avenidas diferentes: 4, 6,
+8 y 10 respectivamente. Todos los robots inician en la calle 1.
+Para poder avanzar, cada robot debe juntar un papel de una fuente de papeles localizada
+en la esquina (11,11), colocarlo en la esquina actual de su avenida y avanzar un paso.
+Cuando la esquina fuente ya no tiene mÃ¡s papeles, o cuando se haya completado la
+avenida, deberÃ¡n avisar al robot coordinador y este determinarÃ¡ el robot que llegÃ³ mÃ¡s
+lejos.}
