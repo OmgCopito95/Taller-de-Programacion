@@ -63,15 +63,6 @@
 
 ---
 
-## Prácticas 2021 - Segundo Semestre :mask:
-
-- Turno D :sun_with_face:
-    - **[Turno D - Clases Prácticas](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Segundo%20Semestre/Turno%20D%20-%20Aula%205)**
-- Turno E :new_moon_with_face:
-    - **[Turno E - Clases Prácticas](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2021/Segundo%20Semestre/Turno%20E%20-%20Aula%204)**
-
----
-
 ## Códigos de Ayuda
 
 - **[IMPERATIVO](https://github.com/OmgCopito95/Algoritmos-Basicos/tree/master/IMPERATIVO)**
