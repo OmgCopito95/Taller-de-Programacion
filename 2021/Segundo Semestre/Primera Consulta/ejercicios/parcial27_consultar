@@ -1,0 +1,172 @@
+{ Dos robots trabajadores deben recorrer el perímetro de un rectángulo asignado. 
+Durante el recorrido deben ir recolectando todas las flores y papeles que encuentren. Al 
+finalizar cada uno de los lados del rectángulo, los robots deben depositar todos los objetos
+recolectados hasta el momento: las flores en la esquina (21,21) y los papeles en (22,22). 
+Las flores y los papeles deben ser depositados de a uno. También en este momento 
+deben informar al coordinador la cantidad de objetos recolectados en el lado.
+Un robot coordinador determina al azar el alto y el ancho del rectángulo que debe realizar 
+cada uno de los robot recolectores dentro del área de trabajo correspondiente. El 
+coordinador, quien debe llevar la contabilidad de los objetos recolectados de cada robot, 
+debe determinar e informar cuál fue el robot que más objetos recolectó en total.
+El área de trabajo del robot 1 es (1,1,20,20), el área de trabajo del robot 2 es (21,1,40,20).
+El coordinador inicia en (23,23); robot 1 en (1,1); robot 2 en (21,1)}
+
+
+programa parcial23
+
+
+procesos
+  
+  proceso juntarFlores (ES flor:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flor:=flor+1
+  fin
+  
+  proceso juntarPapeles (ES papel:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papel:=papel+1
+  fin
+  
+  proceso depositarFloresyPapeles (ES flores:numero ES papeles:numero E avI:numero E caI:numero)
+  comenzar
+    repetir flores
+      BloquearEsquina(21,21)
+      Pos(21,21)
+      depositarFlor
+      flores:=flores - 1
+      Pos(avI,caI)
+      LiberarEsquina(21,21)
+      
+    repetir papeles
+      BloquearEsquina(22,22)
+      Pos(22,22)
+      depositarPapel
+      papeles:=papeles - 1
+      Pos(avI,caI)
+      LiberarEsquina(22,22)
+  fin
+
+
+  proceso recorrerRectangulo ( E alto:numero E ancho:numero E quienSoy:numero)
+  variables
+    cantObjetos:numero
+    avI:numero
+    caI:numero
+    papeles:numero
+    flores:numero
+  comenzar
+    papeles:=0
+    flores:=0
+    repetir 2
+      cantObjetos:=0
+      repetir alto
+        juntarFlores(flores)
+        juntarPapeles(papeles)
+        mover
+      derecha
+      avI:=PosAv
+      caI:=PosCa
+      cantObjetos:= flores + papeles
+      depositarFloresyPapeles(flores,papeles,avI,caI)
+      EnviarMensaje(quienSoy,robotCoord)
+      EnviarMensaje(cantObjetos,robotCoord)
+      cantObjetos:=0
+      repetir ancho
+        juntarFlores(flores)
+        juntarPapeles(papeles)
+        mover
+      derecha
+      avI:=PosAv
+      caI:=PosCa
+      cantObjetos:=flores + papeles
+      depositarFloresyPapeles(flores,papeles,avI,caI)
+      EnviarMensaje(quienSoy,robotCoord)
+      EnviarMensaje(cantObjetos,robotCoord)
+  fin
+  
+areas
+  areaR1: AreaP(1,1,20,20)
+  areaR2: AreaP(21,1,40,20) 
+  esquinaF: AreaPC(21,21,21,21)
+  esquinaP: AreaPC(22,22,22,22)
+  esquinaCoordinador: AreaP(23,23,23,23)
+
+robots
+  
+  robot trabajador
+  variables
+    alto:numero
+    ancho:numero
+    quienSoy:numero
+  comenzar
+    quienSoy:=0
+    RecibirMensaje(quienSoy,robotCoord)
+    RecibirMensaje(alto,robotCoord)
+    RecibirMensaje(ancho,robotCoord)
+    recorrerRectangulo(alto,ancho,quienSoy) 
+  fin
+  
+  robot coordinador
+  variables
+    queRobot:numero
+    objetos:numero
+    cantO1:numero
+    cantO2:numero
+    alto:numero
+    ancho:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    
+    Random(alto,1,19)
+    Random(ancho,1,19)
+    EnviarMensaje(alto,robot1)
+    EnviarMensaje(ancho,robot1)
+    Random(alto,1,19)
+    Random(ancho,1,19)    
+    EnviarMensaje(alto,robot2)
+    EnviarMensaje(ancho,robot2)
+    
+    repetir 8
+      RecibirMensaje(queRobot,*)
+      si queRobot = 1
+        RecibirMensaje(objetos,robot1)
+        cantO1:= cantO1 + objetos
+      sino
+        si queRobot = 2
+          RecibirMensaje(objetos,robot2)
+          cantO2:= cantO2 + objetos
+    si cantO1 > cantO2
+      queRobot:= 1
+    sino
+      queRobot :=2
+    Informar(queRobot)
+  fin
+ 
+variables
+  robot1: trabajador
+  robot2: trabajador
+  robotCoord: coordinador
+comenzar
+  AsignarArea(robot1,areaR1)
+  AsignarArea(robot1,esquinaF)
+  AsignarArea(robot1,esquinaP)
+  AsignarArea(robot2,areaR2)
+  AsignarArea(robot2,esquinaF)
+  AsignarArea(robot2,esquinaP)
+  AsignarArea(robotCoord,esquinaCoordinador)
+  
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,21,1)
+  Iniciar(robotCoord,23,23) 
+fin  
+
+
+
+
+
+

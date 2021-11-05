@@ -1,0 +1,130 @@
+programa parcia17
+
+procesos
+  
+  proceso juntarFlores (ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+  
+  proceso juntarPapeles (ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:=papel+1
+  fin
+
+  
+areas
+  area1: AreaPC(2,4,12,24)
+  area2: AreaPC(16,4,26,24)
+  esquinaFis: AreaP(1,1,1,1)
+
+robots
+  
+  robot florero
+  variables
+    flor:numero
+    avInicial:numero
+    quienSoy:numero
+  comenzar
+    RecibirMensaje(quienSoy,robotFis)
+    avInicial:=PosAv
+    derecha
+    repetir 8
+      a:=PosAv+1
+      b:=avInicial+5
+      si( a = b )
+        Informar(a)
+        BloquearEsquina(PosAv+1,PosCa)
+        mover
+        juntarFlores(flor)
+        mover
+        Liberar(PosAv - 1,PosCa)
+      sino
+        juntarFlores(flor)
+        mover
+    juntarFlores(flor)
+    EnviarMensaje(quienSoy,robotFis)
+    EnviarMensaje(flor,robotFis)
+  fin
+   
+  robot papelero
+  variables
+    papel:numero
+    caInicial:numero
+    quienSoy,a,b:numero
+  comenzar
+    caInicial:=PosCa
+    repetir 18
+      a:=PosCa+1
+      b:=caInicial+10
+      si( a = b )
+        Informar(a)
+        BloquearEsquina(PosAv,PosCa+1)
+        mover
+        juntarPapeles(papel)
+        mover
+        Liberar(PosAv,PosCa - 1)
+      sino
+        juntarPapeles(papel)
+        mover
+    juntarPapeles(papel)
+    EnviarMensaje(quienSoy,robotFis)
+    EnviarMensaje(papel,robotFis)
+  fin
+  
+  robot fiscalizador
+  variables
+    objeto:numero
+    masObjetos:numero
+    queRobot:numero
+    ganador:numero
+  comenzar
+    Informar(ganador)
+    EnviarMensaje(1,robotFA)
+    EnviarMensaje(2,robotFV)
+    EnviarMensaje(3,robotPA)
+    EnviarMensaje(4,robotPV)
+    Informar(ganador)
+    repetir 4
+      RecibirMensaje(queRobot,*)
+      si queRobot = 1
+        RecibirMensaje(objeto,robotFA)
+      sino
+        si queRobot = 2
+          RecibirMensaje(objeto,robotFV)
+        sino
+          si queRobot = 3
+            RecibirMensaje(objeto,robotPA)         
+          sino
+            si queRobot = 4
+              RecibirMensaje(objeto,robotPV)
+      si objeto > masObjetos
+        ganador:=queRobot
+        masObjetos:=objeto
+    Informar(ganador)    
+  fin
+  
+  
+ 
+variables
+  robotFA: florero
+  robotFV florero
+  robotPA: papelero
+  robotPV: papelero
+  robotFis: fiscalizador
+comenzar
+  AsignarArea(robotFA,area1)
+  AsignarArea(robotFV,area2)
+  AsignarArea(robotPA,area1)
+  AsignarArea(robotPV,area2)
+  AsignarArea(robotFis,esquinaFis)
+  Iniciar(robotFA,2,8)
+  Iniciar(robotFV,16,8)
+  Iniciar(robotPA,7,4)
+  Iniciar(robotPV,21,4)
+  Iniciar(robotFis,1,1)
+fin  

@@ -1,0 +1,155 @@
+programa nombrePrograma
+procesos 
+  proceso identificar
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+  fin
+  proceso juntarFlores(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor+1
+  fin
+  proceso juntarPapeles(ES papel:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:=papel+1
+  fin
+  proceso girar(E cant:numero)
+  comenzar
+    repetir cant
+      derecha
+  fin
+  proceso recorrer(ES flor:numero; ES id:numero)
+  comenzar
+    repetir 10
+      juntarFlores(flor)
+      mover
+    juntarFlores(flor)
+    EnviarMensaje(id,jefe)   
+  fin
+  proceso recorrerP(ES papel:numero; ES id:numero)
+  comenzar
+    repetir 10
+      juntarPapeles(papel)
+      mover
+    juntarPapeles(papel)
+    EnviarMensaje(id,jefe)
+  fin
+
+areas
+  ciudad: AreaPC(15,15,25,25)
+  areaJ:AreaP(1,1,1,1)
+  areaR1:AreaP(2,2,2,2)
+  areaR2:AreaP(3,3,3,3)
+robots
+  robot tipo1
+  variables
+    id,flor:numero
+
+  comenzar
+    flor:=0
+    RecibirMensaje(id,jefe)
+    Pos(15,25)
+    girar(1)
+    recorrer(flor,id) 
+    girar(1)  
+    RecibirMensaje(id,jefe)
+    recorrer(flor,id)
+    RecibirMensaje(id,jefe)
+    girar(1)
+    recorrer(flor,id)
+    RecibirMensaje(id,jefe)
+    girar(1)
+    recorrer(flor,id)
+    
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(flor,jefe)
+    
+  fin
+  robot tipo2
+  variables
+    id,papel:numero
+  comenzar
+    papel:=0
+    RecibirMensaje(id,jefe)
+    Pos(25,15)
+    girar(3)
+    recorrerP(papel,id)
+    girar(1) 
+    RecibirMensaje(id,jefe)
+    recorrerP(papel,id)
+    RecibirMensaje(id,jefe) 
+    girar(1)
+    recorrerP(papel,id)
+    girar(1)
+    RecibirMensaje(id,jefe)
+    recorrerP(papel,id)
+    
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(papel,jefe)
+     
+  fin
+  robot tipoJ
+  variables 
+    id,cantOk,flor,papel:numero
+    ok:boolean
+  comenzar
+    papel:=0
+    flor:=0
+    identificar
+    RecibirMensaje(id,*)
+    RecibirMensaje(id,*)
+    identificar {de nuevo?? no se bien como seguir la interaccion}
+    RecibirMensaje(id,*)
+    RecibirMensaje(id,*) 
+    identificar  
+    RecibirMensaje(id,*)
+    RecibirMensaje(id,*)
+    identificar
+    RecibirMensaje(id,*)
+    RecibirMensaje(id,*)
+    
+    repetir 2
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flor,r1)
+      sino
+        si(id=2)
+          RecibirMensaje(papel,r2)  
+    Informar(flor)
+    Informar(papel)  
+  fin
+variables
+  jefe:tipoJ
+  r1:tipo1
+  r2:tipo2
+comenzar
+  AsignarArea (jefe,areaJ)
+  AsignarArea (r1,ciudad)
+  AsignarArea (r2,ciudad)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  Iniciar (jefe,1,1)
+  Iniciar(r1,2,2)
+  Iniciar(r2,3,3)
+fin
+
+{Dos robots trabajadores deben recorrer el perímetro de un cuadrado asignado.
+Durante el recorrido un robot debe ir recolectando todas las flores y el otro robot todos
+los papeles que encuentre.
+Para evitar colisiones un robot coordinador sincronizará que todo el tiempo los robots
+recorran lados opuestos del cuadrado. Un robot arranca recorriendo
+el lado superior mientras que el otro el lado inferior, cuando ambos robots finalicen 
+ese primer tramo, el primer robot comienza a recorrer el lado izquierdo mientras que el 
+otro el derecho. De esa manera continúan hasta que ambos robots finalicen el cuadrado completo.
+Los dos robots deben recorrer los cuatro lados del cuadrado y al finalizar todo el recorrido
+le envían al coordinador la cantidad de objetos recolectados.
+El robot coordinador debe determinar e informar cuál fue el robot que más objetos juntó.
+El cuadrado que deben recorrer ambos robots es (15,15,25,25).
+El coordinador inicia en (1,1);
+robot trabajador 1 en (2,2); robot trabajador 2 en (3,3). 
+Dentro del cuadrado, robot trabajador 1 inicia su recorrido en (15,25) y robot trabajador 2 
+en (25,15). Ambos recorren el cuadrado en el sentido de las agujas del reloj}

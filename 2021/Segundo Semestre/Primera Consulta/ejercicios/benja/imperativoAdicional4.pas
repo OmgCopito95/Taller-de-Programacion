@@ -1,0 +1,226 @@
+program adicionalMI;
+
+{4. Una agencia dedicada a la venta de autos ha organizado su stock y, dispone en papel de la
+información de los autos en venta.
+Implementar un programa que:
+a. Genere un árbol binario de búsqueda ordenado por patente identificatoria del auto en
+venta. Cada nodo del árbol debe contener patente, año de fabricación (2010..2018), la
+marca y el modelo.
+b. Contenga un módulo que recibe el árbol generado en a) y una marca y devuelva la
+cantidad de autos de dicha marca que posee la agencia. Mostrar el resultado.
+c. Contenga un módulo que reciba el árbol generado en a) y retorne una estructura con la
+información de los autos agrupados por año de fabricación.
+d. Contenga un módulo que reciba el árbol generado en a) y una patente y devuelva el
+año de fabricación del auto con dicha patente. Mostrar el resultado.}
+
+
+{hacer revisar}
+
+
+const 
+
+ fin =-1;
+ 
+type
+
+   sub = 2010..2018;
+   str = string[50];
+   
+     iden = record {identificacion}
+       patente:integer;
+       anio:sub;
+       marca:str;
+       modelo:str;
+       
+      end;
+      
+      arbol = ^nodo;
+      
+      nodo = record
+        HI:arbol;
+        HD:arbol;
+        dato:iden;
+      end;  
+      
+      lista = ^nodo2;
+      
+      nodo2 = record
+      
+          dato:iden;
+          sig:lista;       
+          
+      end;   
+      vector = array [sub] of lista;
+      
+      
+      
+procedure leerIdentificacion(var info:iden);
+begin
+  write('patente : ');  
+  readln (info.patente);  
+  with info do begin
+  if (patente <> fin ) then begin  
+     write('año de fabricacion  (2010..2018)   : ');     
+     readln(anio);
+     writeln(anio);
+     
+     write('marca:');
+      readln(marca);
+     writeln(marca);
+     
+     write(' modelo: ');
+     readln(modelo);
+     writeln(modelo);
+     writeln('    ');
+     writeln('   ');
+end;
+end;
+end;
+      
+procedure crear (var a:arbol; info:iden);
+Begin
+  if (a = nil) then
+   begin
+      new(a);
+      a^.dato:=info;
+      a^.hi:= nil; 
+      a^.hd:= nil;
+   end
+   else
+    if (info.patente < a^.dato.patente) then 
+       crear(a^.hi,info)
+    else 
+       crear(a^.hd,info);   
+end;
+
+
+
+procedure crearArbol (var a:arbol);
+var 
+info:iden;
+begin
+  leerIdentificacion(info);
+  writeln(' la lectura finaliza con codigo ',fin);
+  while (info.patente <> fin ) do 
+  begin
+
+    crear(a,info);   
+    leerIdentificacion(info);
+        
+  end;
+end;
+
+{Contenga un módulo que recibe el árbol generado en a) y una marca y devuelva la
+cantidad de autos de dicha marca que posee la agencia. Mostrar el resultado.}
+ 
+ procedure cantidadDeAutos (a:arbol; marca:str; var cant:integer);
+ begin
+    if (a <> nil) then 
+    begin    
+       cantidadDeAutos(a^.HI,marca,cant) ;
+       if (a^.dato.marca = marca) then
+             cant:=cant+1;   
+       cantidadDeAutos(a^.HD,marca,cant);
+       
+     end;
+    
+ end;
+ 
+ {Contenga un módulo que reciba el árbol generado en a) y retorne una estructura con la
+información de los autos agrupados por año de fabricación}
+ 
+ 
+procedure agregarAdelante(var l:lista; dato:iden);
+var
+	nue: lista;
+begin
+	new(nue);
+	nue^.dato := dato;
+	nue^.sig := l;
+	l := nue;
+end; 
+ 
+ 
+ 
+procedure cargarEstructura (var v:vector; a:arbol);
+begin
+ 
+  if (a <> nil ) then begin  
+  
+     cargarEstructura(v,a^.HI);     
+     agregarAdelante(v[a^.dato.anio],a^.dato);
+     cargarEstructura(v,a^.HD);
+     
+end;
+end;
+
+{Contenga un módulo que reciba el árbol generado en a) y una patente y devuelva el
+año de fabricación del auto con dicha patente. Mostrar el resultado.}
+
+
+function buscarPatente(a:arbol;patente:integer):arbol;
+begin
+  if (a = nil ) then
+     buscarPatente:= nil
+  else 
+     if a^.dato.patente = patente then
+            buscarPatente:=a
+        else
+            if (a^.dato.patente < patente )  then
+                buscarPatente:=buscarPatente(a^.HI,patente)  
+             else
+                 buscarPatente:=buscarPatente(a^.HD,patente);
+
+ end;
+ 
+ 
+       
+var 
+a:arbol;
+cant:integer;
+v:vector;
+
+begin
+Randomize;
+cant:=0;
+a:=nil;
+writeln('----',1,'---');
+crearArbol(a);
+
+writeln('---',2,'---');
+
+cantidadDeAutos(a,'xyz',cant);
+writeln('---',3,'---');
+//modulo que inicialice el vector en nil las listas
+cargarEstructura(v,a);
+cantidadDeAutos(a,'xyz',cant);
+writeln('---',4,'----');
+ write (buscarPatente(a,1234)^.dato.patente);   //podria explotar
+
+
+end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
