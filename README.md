@@ -33,6 +33,7 @@
 - **[2018](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2018/Parciales)**
 - **[2019](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2019/Parciales)**
 - **[2020](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/2020/Parciales)**
+- **[Rejunte de Parciales](https://github.com/OmgCopito95/Taller-de-Programacion/tree/main/Parciales%20(rejunte))**
 
 ## 
 
