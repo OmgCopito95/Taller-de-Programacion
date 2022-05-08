@@ -1,0 +1,263 @@
+programa ejercicio6
+procesos
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      f := f + 1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      p := p + 1
+  fin
+  proceso juntar(ES f:numero ; ES p:numero)
+  comenzar
+    juntarFlores(f)
+    juntarPapeles(p)
+  fin
+  proceso cuadrado1(ES f:numero)
+  comenzar
+    repetir 6
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    derecha
+    repetir 2
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    BloquearEsquina(5,8)
+    repetir 2
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    LiberarEsquina(5,8)
+    repetir 2
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    derecha
+    repetir 2
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    BloquearEsquina(8,5)
+    repetir 2
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    LiberarEsquina(8,5)
+    repetir 2
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    derecha
+    repetir 6
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+  fin
+  proceso cuadrado2(ES f:numero ; ES p:numero)
+  comenzar
+    repetir 2
+      mover
+      juntar(f,p)
+    juntar(f,p)
+    BloquearEsquina(5,8)
+    repetir 2
+      juntar(f,p)
+      mover
+    LiberarEsquina(5,8)
+    juntar(f,p)
+    repetir 6
+      juntar(f,p)
+      mover
+    juntar(f,p)
+    derecha
+    repetir 3
+      juntar(f,p)
+      mover
+    juntar(f,p)
+    BloquearEsquina(9,15)
+    repetir 2
+      juntar(f,p)
+      mover
+    LiberarEsquina(9,15)
+    juntar(f,p)
+    repetir 5
+      juntar(f,p)
+      mover
+    juntar(f,p)
+    derecha
+    repetir 5
+      juntar(f,p)
+      mover
+    juntar(f,p)
+    BloquearEsquina(15,9)
+    repetir 2
+      juntar(f,p)
+      mover
+    LiberarEsquina(15,9)
+    juntar(f,p)
+    repetir 3
+      juntar(f,p)
+      mover
+    juntar(f,p)
+    derecha
+    repetir 6
+      juntar(f,p)
+      mover
+    juntar(f,p)
+    BloquearEsquina(8,5)
+    repetir 2
+      juntar(f,p)
+      mover
+    LiberarEsquina(8,5)
+    juntar(f,p)
+    repetir 2
+      juntar(f,p)
+      mover
+    juntar(f,p)
+  fin
+  proceso cuadrado3(ES p:numero)
+  comenzar
+    repetir 5
+      juntarPapeles(p)
+      mover
+    juntarPapeles(p)
+    BloquearEsquina(9,15)
+    repetir 2
+      juntarPapeles(p)
+      mover
+    LiberarEsquina(9,15)
+    juntarPapeles(p)
+    derecha
+    repetir 2
+      repetir 7
+        juntarPapeles(p)
+        mover
+      juntarPapeles(p)
+      derecha
+    BloquearEsquina(15,9)
+    juntarPapeles(p)
+    repetir 2
+      juntarPapeles(p)
+      mover
+    LiberarEsquina(15,9)
+    juntarPapeles(p)
+    repetir 5
+      juntarPapeles(p)
+      mover
+    juntarPapeles(p)
+  fin
+areas
+  area1 : AreaPC(2,1,16,16)
+  area2 : AreaPC(20,1,20,100)
+  area3 : AreaPC(21,1,21,100)
+  area4 : AreaPC(22,1,22,100)
+  areaFiscalizador : AreaP(1,1,1,1)
+robots
+  robot tipo1
+  variables
+    quienSoy : numero
+    f : numero
+    av : numero
+  comenzar
+    RecibirMensaje(quienSoy,fiscalizador)
+    f := 0
+    cuadrado1(f)
+    EnviarMensaje(quienSoy,fiscalizador)
+    RecibirMensaje(av,fiscalizador)
+    Pos(av,1)
+    derecha
+    mientras ((PosCa < 100) & (HayFlorEnLaBolsa))
+      depositarFlor
+      mover
+  fin
+  robot tipo2
+  variables
+    quienSoy : numero
+    f , p : numero
+    av : numero
+  comenzar
+    RecibirMensaje(quienSoy,fiscalizador)
+    f := 0
+    p := 0
+    cuadrado2(f,p)
+    EnviarMensaje(quienSoy,fiscalizador)
+    RecibirMensaje(av,fiscalizador)
+    Pos(av,1)
+    derecha
+    mientras ((PosCa < 100) & (HayFlorEnLaBolsa) & (HayPapelEnLaBolsa))
+      depositarFlor
+      depositarPapel
+      mover
+  fin
+  robot tipo3
+  variables
+    quienSoy : numero
+    p : numero
+    av : numero
+  comenzar
+    RecibirMensaje(quienSoy,fiscalizador)
+    p := 0
+    cuadrado3(p)
+    EnviarMensaje(quienSoy,fiscalizador)
+    RecibirMensaje(av,fiscalizador)
+    Pos(av,1)
+    derecha
+    mientras ((PosCa < 100) & (HayPapelEnLaBolsa))
+      depositarPapel
+      mover
+  fin
+  robot tipoFiscalizador
+  variables
+    ok : boolean
+    quienEs,aux:numero
+  comenzar
+    identificarRobots
+    aux := 20
+    repetir 3
+      RecibirMensaje(quienEs,*)
+      si (quienEs = 1)
+        EnviarMensaje(aux,r1)
+      sino
+        si (quienEs = 2)
+          EnviarMensaje(aux,r2)
+        sino
+          si (quienEs = 3)
+            EnviarMensaje(aux,r3)
+      aux := aux + 1
+  fin
+variables
+  r1 : tipo1
+  r2 : tipo2
+  r3 : tipo3
+  fiscalizador: tipoFiscalizador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r1,area2)
+  AsignarArea(r1,area3)
+  AsignarArea(r1,area4)
+  AsignarArea(r2,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r2,area3)
+  AsignarArea(r2,area4)
+  AsignarArea(r3,area1)
+  AsignarArea(r3,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r3,area4)
+  AsignarArea(fiscalizador,areaFiscalizador)
+  Iniciar(r1,2,2)
+  Iniciar(r2,5,5)
+  Iniciar(r3,9,9)
+  Iniciar(fiscalizador,1,1)
+fin

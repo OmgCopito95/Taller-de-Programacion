@@ -1,0 +1,84 @@
+programa Ejercicio3
+procesos
+  proceso posicionarRobot(E n:numero)
+  comenzar
+    repetir n
+      derecha
+  fin
+  proceso contarFlores(ES flores:numero)
+  variables
+    cant:numero
+  comenzar
+    cant := 0
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cant := cant + 1
+        flores := flores + 1
+      repetir cant
+        depositarFlor
+  fin
+  proceso contarPapeles(ES papeles:numero)
+  variables
+    cant:numero
+  comenzar
+    cant := 0
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cant := cant + 1
+        papeles := papeles + 1
+      repetir cant
+        depositarPapel
+  fin
+  proceso supero(E totalFlores:numero ; E totalPapeles:numero ; ES cant : numero)
+  comenzar
+    si (totalPapeles = (totalFlores + 1))
+      cant := cant + 1
+  fin
+  proceso escalon(E cant:numero ; ES totalSupero:numero)
+  variables
+    aux:numero
+    totalFlores:numero
+    totalPapeles:numero
+  comenzar
+    aux := 1
+    repetir cant
+      totalFlores := 0
+      totalPapeles := 0
+      repetir aux
+        contarFlores(totalFlores)
+        contarPapeles(totalPapeles)
+        mover
+      derecha
+      repetir aux
+        contarFlores(totalFlores)
+        contarPapeles(totalPapeles)
+        mover
+      supero(totalFlores,totalPapeles,totalSupero)
+      posicionarRobot(3)
+      aux := aux + 1
+  fin
+areas
+  ciudad: AreaC(12,6,32,24)
+robots
+  robot tipo1
+  variables
+    total:numero
+  comenzar
+    total := 0
+    escalon(4,total)
+    Informar(total)
+  fin
+variables
+  R1 : tipo1
+  R2 : tipo1
+  R3 : tipo1
+comenzar
+  AsignarArea(R1,ciudad)
+  AsignarArea(R2,ciudad)
+  AsignarArea(R3,ciudad)
+  Iniciar(R1,12,14)
+  Iniciar(R2,17,10)
+  Iniciar(R3,22,6)
+fin

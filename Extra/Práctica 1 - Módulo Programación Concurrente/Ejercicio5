@@ -1,0 +1,92 @@
+programa Ejercicio5
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso depositarFlores(E cant:numero)
+  comenzar
+    repetir cant
+      depositarFlor
+  fin
+  proceso depositarPapeles(E cant:numero)
+  comenzar
+    repetir cant
+      depositarPapel
+  fin
+  proceso limpiarFlores
+  variables
+    f:numero
+  comenzar
+    f := 0
+    repetir 19
+      juntarFlores(f)
+      mover
+    depositarFlores(f)
+  fin
+  proceso limpiarPapeles
+  variables
+    p:numero
+  comenzar
+    p := 0
+    repetir 19
+      juntarPapeles(p)
+      mover
+    depositarPapeles(p)
+  fin
+areas
+  area1 : AreaP(1,80,20,80)
+  area2 : AreaP(1,75,20,75)
+  area3 : AreaP(75,80,75,100)
+  area4 : AreaP(80,80,80,100)
+  area5 : AreaP(80,15,100,15)
+  area6 : AreaP(80,10,100,10)
+  area7 : AreaP(10,1,10,20)
+  area8 : AreaP(15,1,15,20)
+robots
+  robot tipo1
+  variables
+    av:numero
+  comenzar
+    av := PosAv
+    derecha
+    limpiarFlores
+    Pos(av,PosCa - 5)
+    limpiarFlores
+  fin
+  robot tipo2
+  variables
+    ca:numero
+  comenzar
+    ca := PosCa
+    limpiarPapeles
+    Pos(PosAv + 5,ca)
+    limpiarPapeles
+  fin
+variables
+  r1 : tipo1
+  r2 : tipo2
+  r3 : tipo1
+  r4 : tipo2
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r1,area2)
+  AsignarArea(r2,area3)
+  AsignarArea(r2,area4)
+  AsignarArea(r3,area5)
+  AsignarArea(r3,area6)
+  AsignarArea(r4,area7)
+  AsignarArea(r4,area8)
+  Iniciar(r1,1,80)
+  Iniciar(r2,75,80)
+  Iniciar(r3,80,15)
+  Iniciar(r4,10,1)
+fin

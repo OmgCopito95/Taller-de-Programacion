@@ -1,0 +1,105 @@
+programa ejercicio4
+procesos
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso juntarFlor(ES ok:boolean)
+  comenzar
+    si HayFlorEnLaEsquina
+      tomarFlor
+    sino
+      ok := F
+  fin
+  proceso dejarFlor(E ok:boolean)
+  comenzar
+    si (ok = V)
+      depositarFlor
+  fin
+  proceso juntarFlores
+  comenzar
+  	mientras HayFlorEnLaEsquina
+  		tomarFlor
+  fin
+  proceso recolectar(E av:numero ; E ca:numero)
+  comenzar
+  	BloquearEsquina(11,11)
+    Pos(11,11)
+    juntarFlores
+    Pos(av,ca)
+    LiberarEsquina(11,11)
+  fin
+areas
+  area1 : AreaP(9,9,9,9)
+  area2 : AreaP(9,10,9,10)
+  area3 : AreaP(9,11,9,11)
+  area4 : AreaP(9,12,9,12)
+  areaCoordinador : AreaP(1,1,1,1)
+  areaEsquina10 : AreaPC(10,10,10,10)
+  areaEsquina11 : AreaC(11,11,11,11)
+robots
+  robot tipo1
+  variables
+    quienSoy : numero
+    av , ca : numero
+    ok : boolean
+  comenzar
+    av := PosAv
+    ca := PosCa
+    ok := V
+    RecibirMensaje(quienSoy,coordinador)
+    mientras (ok = V)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      juntarFlor(ok)
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      LiberarEsquina(10,10)
+      dejarFlor(ok)
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+    EnviarMensaje(quienSoy,coordinador)
+  fin
+  robot tipoCoordinador
+  variables
+  	av , ca : numero
+  	quienEs : numero
+  comenzar
+  	av := PosAv
+  	ca := PosCa
+    identificarRobots
+    repetir 4
+    	RecibirMensaje(quienEs,*)
+    Informar(quienEs)
+    recolectar(av,ca)
+  fin
+variables
+  r1 : tipo1
+  r2 : tipo1
+  r3 : tipo1
+  r4 : tipo1
+  coordinador : tipoCoordinador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r1,areaEsquina10)
+  AsignarArea(r1,areaEsquina11)
+  AsignarArea(r2,area2)
+  AsignarArea(r2,areaEsquina10)
+  AsignarArea(r2,areaEsquina11)
+  AsignarArea(r3,area3)
+  AsignarArea(r3,areaEsquina10)
+  AsignarArea(r3,areaEsquina11)
+  AsignarArea(r4,area4)
+  AsignarArea(r4,areaEsquina10)
+  AsignarArea(r4,areaEsquina11)
+  AsignarArea(coordinador,areaCoordinador)
+  AsignarArea(coordinador,areaEsquina11)
+  Iniciar(r1,9,9)
+  Iniciar(r2,9,10)
+  Iniciar(r3,9,11)
+  Iniciar(r4,9,12)
+  Iniciar(coordinador,1,1)
+fin

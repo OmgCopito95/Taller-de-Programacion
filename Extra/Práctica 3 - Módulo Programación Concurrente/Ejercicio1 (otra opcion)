@@ -1,0 +1,94 @@
+programa ejercicio1-otra-opcion
+procesos
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      f := f + 1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      p := p + 1
+  fin
+areas
+  area1 : AreaP(6,10,6,10)
+  area2 : AreaP(7,10,7,10)
+  area3 : AreaP(8,10,8,10)
+  area4 : AreaP(9,10,9,10)
+  areaFloreros : AreaPC(1,1,5,10)
+  areaPapeleros : AreaPC(6,1,10,9)
+  esquina10 : AreaC(10,10,10,10)
+robots
+  robot tipo1
+  variables
+    avIni , caIni : numero
+    av , ca : numero
+    f : numero
+  comenzar
+    avIni := PosAv
+    caIni := PosCa
+    f := 0
+    repetir 5
+      Random(av,1,5)
+      Random(ca,1,10)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarFlores(f)
+      Pos(avIni,caIni)
+      LiberarEsquina(av,ca)
+    repetir f                 {deposita de a una flor}
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(avIni,caIni)
+      LiberarEsquina(10,10)
+  fin
+  robot tipo2
+  variables
+    avIni , caIni : numero
+    av , ca : numero
+    p : numero
+  comenzar
+    avIni := PosAv
+    caIni := PosCa
+    p := 0
+    repetir 3
+      Random(av,6,10)
+      Random(ca,1,9)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarPapeles(p)
+      Pos(avIni,caIni)
+      LiberarEsquina(av,ca)
+    repetir p                {deposita de a un papel}
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(avIni,caIni)
+      LiberarEsquina(10,10)
+  fin
+variables
+  r1 : tipo1  {recolectores de flores}
+  r2 : tipo1
+  r3 : tipo2   {recolectores de papeles}
+  r4 : tipo2
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r1,areaFloreros)
+  AsignarArea(r1,esquina10)
+  AsignarArea(r2,area2)
+  AsignarArea(r2,areaFloreros)
+  AsignarArea(r2,esquina10)
+  AsignarArea(r3,area3)
+  AsignarArea(r3,areaPapeleros)
+  AsignarArea(r3,esquina10)
+  AsignarArea(r4,area4)
+  AsignarArea(r4,areaPapeleros)
+  AsignarArea(r4,esquina10)
+  Iniciar(r1,6,10)
+  Iniciar(r2,7,10)
+  Iniciar(r3,8,10)
+  Iniciar(r4,9,10)
+fin

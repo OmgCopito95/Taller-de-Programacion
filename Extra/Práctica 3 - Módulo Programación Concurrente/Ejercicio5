@@ -1,0 +1,106 @@
+programa ejercicio5
+procesos
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso juntarPapel(ES p:numero ; ES ok:boolean)
+  comenzar
+    si HayPapelEnLaEsquina
+      tomarPapel
+      p := p + 1
+    sino
+      ok := F
+  fin
+  proceso dejarPapel(E ok:boolean)
+  comenzar
+    si (ok = V)
+      depositarPapel
+      si (PosCa < 100)
+        mover
+  fin
+  proceso calcularMaximo(E quienEs:numero ; E cant:numero ; ES max:numero ; ES rMax:numero)
+  comenzar
+    si (cant > max)
+      max := cant
+      rMax := quienEs
+  fin
+areas
+  areaAvenida4 : AreaP(4,1,4,100)
+  areaAvenida6 : AreaP(6,1,6,100)
+  areaAvenida8 : AreaP(8,1,8,100)
+  areaAvenida10 : AreaP(10,1,10,100)
+  areaCoordinador : AreaP(1,1,1,1)
+  areaFuente : AreaPC(11,11,11,11)
+robots
+  robot tipo1
+  variables
+    quienSoy : numero
+    av , ca : numero
+    p : numero
+    ok : boolean
+  comenzar
+    RecibirMensaje(quienSoy,coordinador)
+    p := 0
+    ok := V
+    mientras((ca < 100)&(ok = V))
+      av := PosAv
+      ca := PosCa
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      juntarPapel(p,ok)
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+      dejarPapel(ok)
+    EnviarMensaje(quienSoy,coordinador)
+    EnviarMensaje(p,coordinador)
+  fin
+  robot tipoCoordinador
+  variables
+    quienEs : numero
+    cant : numero
+    max , rMax : numero
+  comenzar
+    identificarRobots
+    max := -1
+    repetir 4
+      RecibirMensaje(quienEs,*)
+      si (quienEs = 1)
+        RecibirMensaje(cant,r1)
+      sino
+        si (quienEs = 2)
+          RecibirMensaje(cant,r2)
+        sino
+          si (quienEs = 3)
+            RecibirMensaje(cant,r3)
+          sino
+            si (quienEs = 4)
+              RecibirMensaje(cant,r4)
+      calcularMaximo(quienEs,cant,max,rMax)
+    Informar(rMax)
+  fin
+variables
+  r1 : tipo1
+  r2 : tipo1
+  r3 : tipo1
+  r4 : tipo1
+  coordinador : tipoCoordinador
+comenzar
+  AsignarArea(r1,areaAvenida4)
+  AsignarArea(r1,areaFuente)
+  AsignarArea(r2,areaAvenida6)
+  AsignarArea(r2,areaFuente)
+  AsignarArea(r3,areaAvenida8)
+  AsignarArea(r3,areaFuente)
+  AsignarArea(r4,areaAvenida10)
+  AsignarArea(r4,areaFuente)
+  AsignarArea(coordinador,areaCoordinador)
+  Iniciar(r1,4,1)
+  Iniciar(r2,6,1)
+  Iniciar(r3,8,1)
+  Iniciar(r4,10,1)
+  Iniciar(coordinador,1,1)
+fin

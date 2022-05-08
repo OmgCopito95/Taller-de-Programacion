@@ -1,0 +1,47 @@
+programa Ejercicio1
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso depositarFlores(E flores:numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+  proceso recorrido(ES flores:numero ; ES vacio:numero)
+  comenzar
+    repetir 99
+      si HayFlorEnLaEsquina
+        juntarFlores(flores)
+      sino
+        vacio := vacio + 1
+      mover
+    si HayFlorEnLaEsquina
+      juntarFlores(flores)
+    sino
+      vacio := vacio + 1
+  fin
+areas
+  avenida1 : AreaP(1,1,1,100)
+robots
+  robot tipo1
+  variables
+    flores:numero
+    vacio:numero
+  comenzar
+    flores:=0
+    vacio:=0
+    recorrido(flores,vacio)
+    depositarFlores(flores)
+    Informar('Cant_Flores',flores)
+    Informar('Cant_Vacio',vacio)
+  fin
+variables
+  r1 : tipo1
+comenzar
+  AsignarArea(r1,avenida1)
+  Iniciar(r1,1,1)
+fin

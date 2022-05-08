@@ -1,0 +1,59 @@
+programa Ejercicio2
+procesos
+  proceso posicionar (E n:numero)
+  comenzar
+    repetir n
+      derecha
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso recorrido
+  variables
+    cant:numero
+  comenzar
+    repetir 20
+      juntarPapeles(cant)
+      mover
+    Informar(cant)
+  fin
+areas
+  cuadrado : AreaC(10,10,30,30)
+robots
+  robot robot1
+  comenzar
+    recorrido
+  fin
+  robot robot2
+  comenzar
+    posicionar(1)
+    recorrido
+  fin
+  robot robot3
+  comenzar
+    posicionar(2)
+    recorrido
+  fin
+  robot robot4
+  comenzar
+    posicionar(3)
+    recorrido
+  fin
+variables
+  r1 : robot1
+  r2 : robot2
+  r3 : robot3
+  r4 : robot4
+comenzar
+  AsignarArea(r1,cuadrado)
+  AsignarArea(r2,cuadrado)
+  AsignarArea(r3,cuadrado)
+  AsignarArea(r4,cuadrado)
+  Iniciar(r1,10,10)
+  Iniciar(r2,10,30)
+  Iniciar(r3,30,30)
+  Iniciar(r4,30,10)
+fin
