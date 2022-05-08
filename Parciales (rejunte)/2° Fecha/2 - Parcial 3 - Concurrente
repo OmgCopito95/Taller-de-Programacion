@@ -1,0 +1,103 @@
+programa parcial3
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles := papeles + 1
+  fin
+areas
+  area1 : AreaP(1,1,1,1)
+  area2 : AreaP(2,1,2,1)
+  area3 : AreaP(3,1,3,1)
+  area4 : AreaP(4,1,4,1)
+  area5 : AreaP(5,1,5,1)
+  area6 : AreaP(6,1,6,1)
+  areaJefe : AreaP(7,1,7,1)
+  areaCuadrante : AreaPC(3,3,12,12)
+robots
+  robot tipo1
+  variables
+    avIni , caIni : numero
+    av , ca : numero
+    f : numero
+  comenzar
+    f := 0
+    avIni := PosAv
+    caIni := PosCa
+    repetir 2
+      Random(av,3,12)
+      Random(ca,3,12)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarFlores(f)
+      Pos(avIni,caIni)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(f,jefe)
+  fin
+  robot tipo2
+  variables
+    avIni , caIni : numero
+    av , ca : numero
+    p : numero
+  comenzar
+    p := 0
+    avIni := PosAv
+    caIni := PosCa
+    repetir 3
+      Random(av,3,12)
+      Random(ca,3,12)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarPapeles(p)
+      Pos(avIni,caIni)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(p,jefe)
+  fin
+  robot tipoJefe
+  variables
+    cant , total : numero
+  comenzar
+    total := 0
+    repetir 6
+      RecibirMensaje(cant,*)
+      si (cant = 0)
+        total := total + 1
+    Informar(total)
+  fin
+variables
+  r1 : tipo1
+  r2 : tipo1
+  r3 : tipo1
+  r4 : tipo2
+  r5 : tipo2
+  r6 : tipo2
+  jefe : tipoJefe
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r4,area4)
+  AsignarArea(r5,area5)
+  AsignarArea(r6,area6)
+  AsignarArea(r1,areaCuadrante)
+  AsignarArea(r2,areaCuadrante)
+  AsignarArea(r3,areaCuadrante)
+  AsignarArea(r4,areaCuadrante)
+  AsignarArea(r5,areaCuadrante)
+  AsignarArea(r6,areaCuadrante)
+  AsignarArea(jefe,areaJefe)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+  Iniciar(r4,4,1)
+  Iniciar(r5,5,1)
+  Iniciar(r6,6,1)
+  Iniciar(jefe,7,1)
+fin

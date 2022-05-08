@@ -1,0 +1,134 @@
+programa parcial6
+procesos
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarObjetos(ES f:numero ; ES p:numero)
+  comenzar
+    juntarFlores(f)
+    juntarPapeles(p)
+  fin
+  proceso rectangulo(E alto:numero ; E ancho:numero ; ES f:numero ; ES p:numero)
+  comenzar
+    repetir 2
+      repetir alto
+        juntarObjetos(f,p)
+        mover
+      derecha
+      repetir ancho
+        juntarObjetos(f,p)
+        mover
+      derecha
+  fin
+  proceso calcularMaximos(E quienEs:numero ; E cant:numero ; ES max1:numero ES max2:numero ; ES rMax1:numero ; ES rMax2:numero)
+  comenzar
+    si (cant > max1)
+      max2 := max1
+      rMax2 := rMax1
+      max1 := cant
+      rMax1 := quienEs
+    sino
+      si (cant > max2)
+        max2 := cant
+        rMax2 := quienEs
+  fin
+  proceso informarRobots(E rMax1:numero ; E rMax2:numero)
+  comenzar
+    si ((rMax1 = 1) || (rMax2 = 1))
+      EnviarMensaje(V,r1)
+    sino
+      EnviarMensaje(F,r1)
+      si ((rMax1 = 2) || (rMax2 = 2))
+        EnviarMensaje(V,r2)
+      sino
+        EnviarMensaje(F,r2)
+        si ((rMax1 = 3) || (rMax2 = 3))
+          EnviarMensaje(V,r3)
+        sino
+          EnviarMensaje(F,r3)
+  fin
+areas
+  area1 : AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    alto : numero
+    f , p : numero
+    total : numero
+    ok : boolean
+    av , ca : numero
+  comenzar
+    total := 0
+    f := 0
+    p := 0
+    av := PosAv
+    ca := PosCa
+    Random(alto,5,60)
+    rectangulo(alto,3,f,p)
+    total := f + p
+    EnviarMensaje(total,jefe)
+    RecibirMensaje(ok,jefe)
+    si ok = V
+      repetir f
+        BloquearEsquina(61,61)
+        Pos(61,61)
+        depositarFlor
+        Pos(av,ca)
+        LiberarEsquina(61,61)
+  fin
+  robot tipoJefe
+  variables
+    quienEs : numero
+    cant : numero
+    max1 , max2 : numero
+    rMax1 , rMax2 : numero
+  comenzar
+    identificarRobots
+    max1 := -1
+    max2 := -1
+    repetir 3
+      RecibirMensaje(quienEs,*)
+      si (quienEs = 1)
+        RecibirMensaje(cant,r1)
+      sino
+        si (quienEs = 2)
+          RecibirMensaje(cant,r2)
+        sino
+          si (quienEs = 3)
+            RecibirMensaje(cant,r3)
+      calcularMaximos(quienEs,cant,max1,max2,rMax1,rMax2)
+    informarRobots(rMax1,rMax2)
+  fin
+variables
+  r1 : tipo1
+  r2 : tipo1
+  r3 : tipo1
+  jefe : tipoJefe
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area1)
+  AsignarArea(r3,area1)
+  {AsignarArea(r4,areaCallejero)}
+  AsignarArea(jefe,area1)
+  Iniciar(r1,5,1)
+  Iniciar(r2,10,1)
+  Iniciar(r3,15,1)
+  {Iniciar(r4,1,3)}
+  Iniciar(jefe,1,1)
+fin
+  

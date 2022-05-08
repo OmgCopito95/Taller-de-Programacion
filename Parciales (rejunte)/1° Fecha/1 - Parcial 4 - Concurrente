@@ -1,0 +1,120 @@
+programa parcial4-1
+procesos
+  proceso identificarRobots
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso calcularMinimo(E quienEs:numero ; E cant:numero ; ES min:numero ; ES rMin:numero)
+  comenzar
+    si (cant < min)
+      min := cant
+      rMin := quienEs
+  fin
+areas
+  area1 : AreaPC(3,4,13,24)
+  area2 : AreaPC(17,4,27,24)
+  areaFiscalizador : AreaP(1,1,1,1)
+robots
+  robot tipoFloreroAzul
+  variables
+    quienSoy : numero
+    f : numero
+  comenzar
+    RecibirMensaje(quienSoy,fiscalizador)
+    f := 0
+    derecha
+    repetir 3
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    BloquearEsquina(PosAv+1,PosCa)
+    mover
+    juntarFlores(f)
+    mover
+    LiberarEsquina(PosAv-1,PosCa)
+    repetir 5
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    EnviarMensaje(quienSoy,fiscalizador)
+    EnviarMensaje(f,fiscalizador)
+  fin
+  robot tipoPapeleroAzul
+  variables
+    quienSoy : numero
+    p : numero
+  comenzar
+    RecibirMensaje(quienSoy,fiscalizador)
+    p := 0
+    repetir 18
+      juntarPapeles(p)
+      mover
+    juntarPapeles(p)
+    BloquearEsquina(PosAv,PosCa+1)
+    mover
+    juntarPapeles(p)
+    mover
+    LiberarEsquina(PosAv,PosCa-1)
+    juntarPapeles(p)
+    EnviarMensaje(quienSoy,fiscalizador)
+    EnviarMensaje(p,fiscalizador)    
+  fin
+ 
+  robot tipoFiscalizador
+  variables
+    quienEs : numero
+    cant : numero
+    min , rMin : numero
+  comenzar
+    identificarRobots
+    min := 9999
+    repetir 4
+      RecibirMensaje(quienEs,*)
+      si (quienEs = 1)
+        RecibirMensaje(cant,r1)
+      sino
+        si (quienEs = 2)
+          RecibirMensaje(cant,r2)
+        sino
+          si (quienEs = 3)
+            RecibirMensaje(cant,r3)
+          sino
+            si (quienEs = 4)
+              RecibirMensaje(cant,r4)
+      calcularMinimo(quienEs,cant,min,rMin)
+    Informar(rMin)
+  fin
+variables
+  r1 : tipoFloreroAzul    {azul}
+  r2 : tipoPapeleroAzul
+  r3: tipoFloreroAzul
+  r4: tipoPapeleroAzul
+  fiscalizador : tipoFiscalizador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area1)
+  AsignarArea(r3,area2)
+  AsignarArea(r4,area2)
+  AsignarArea(fiscalizador,areaFiscalizador)
+  Iniciar(r1,3,23)
+  Iniciar(r2,7,4)
+  Iniciar(r3,17,23)
+  Iniciar(r4,21,4)
+  Iniciar(fiscalizador,1,1)
+fin
+
