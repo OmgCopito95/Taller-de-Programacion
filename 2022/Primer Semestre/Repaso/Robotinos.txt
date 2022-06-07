@@ -1,0 +1,185 @@
+{Dos equipos de tres robots cada uno deben juntar todas las flores de un área asignada y llevarlas a la esquina (20,20).}
+{Cada robot, dentro de su área, recorre una calle asignada.}
+{En cada equipo hay dos robots “laterales” que recolectan las flores de su calle, depositándolas en la calle central del área (en la misma avenida donde las juntó).}
+{El tercer robot del equipo debe recorrer la calle central recolectando tanto las flores que ya había en la calle como las depositadas por sus dos compañeros.}
+{El robot central es el encargado de depositar en (20,20) todas las flores recolectadas .}
+{Un robot fiscalizador debe indicar que equipo finalizó primero y cual recolectó más flores.}
+{Los robots del equipo azul comienzan en (9,19), (9,20) y (9,21).}
+{Los robots del equipo verde comienzan en (31,19), (31,20) y (31,21).}
+{El fiscalizador se encuentra en (20,18).}
+{Los robots del equipo azul hacen el recorrido desde la avenida 10 hasta la 19.}
+{Los robots del equipo verde hacen el recorrido desde la avenida 30 hasta la avenida 21.}
+{Los robots "laterales" (de ambos equipos) recorren la calle 19 y 21. El robot "central" recorre la calle 20.
+{Los robots deben asegurarse de recolectar todas las flores de su área.}
+{Se debe maximizar la concurrencia.}
+
+programa robotinos
+areas
+  area_jefe: AreaP(20,18,20,18)
+  
+  inicio_rsi: AreaP(9,21,9,21)
+  inicio_rci: AreaP(9,20,9,20)
+  inicio_rii: AreaP(9,19,9,19)
+  
+  calle_rsi: AreaP(10,21,19,21)
+  calle_rci: AreaPC(10,20,19,20)
+  calle_rii: AreaP(10,19,19,19)
+
+  inicio_rsd: AreaP(31,21,31,21)
+  inicio_rcd: AreaP(31,20,31,20)
+  inicio_rid: AreaP(31,19,31,19)
+  
+  calle_rsd: AreaP(21,21,30,21)
+  calle_rcd: AreaPC(21,20,30,20)
+  calle_rid: AreaP(21,19,30,19)
+  
+  deposito: AreaPC(20,20,20,20)
+    
+robots
+  robot lateral
+  variables 
+    equipo, ID, av, ca: numero
+  comenzar
+    RecibirMensaje(equipo, jefe)
+    RecibirMensaje(ID, jefe)
+    si equipo = 1
+      derecha
+    sino
+      repetir 3
+        derecha
+    
+    repetir 10
+      mover
+      av:= PosAv
+      ca:= PosCa      
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        BloquearEsquina(av, 20)
+        Pos(av, 20)
+        depositarFlor
+        Pos(av, ca)
+        LiberarEsquina(av, 20)
+        
+      si equipo = 1
+        EnviarMensaje(ID, centralI)
+      sino
+        EnviarMensaje(ID, centralD) 
+  fin
+  
+  robot central
+  variables
+    equipo, quien, av, ca, flores: numero
+  comenzar
+    flores:= 0
+    RecibirMensaje(equipo, jefe)
+    si equipo = 1
+      derecha
+    sino
+      repetir 3
+        derecha
+    repetir 10
+      RecibirMensaje(quien, *)
+      si equipo = 1
+        si quien = 1        
+          RecibirMensaje(quien, lateralII)
+        sino
+          RecibirMensaje(quien, lateralSI)
+      sino
+        si quien = 1
+          RecibirMensaje(quien, lateralID)
+        sino
+          RecibirMensaje(quien, lateralSD)
+      mover
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        flores:= flores + 1
+    av:= PosAv
+    ca:= PosCa
+    repetir flores
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlor
+      Pos(av, ca)
+      LiberarEsquina(20,20)
+    
+    EnviarMensaje(equipo, jefe)
+    EnviarMensaje(flores, jefe)
+  fin
+  robot Jefazo
+  variables
+    quien, primero, flores, max, maxq: numero
+  comenzar
+    EnviarMensaje(1, centralI)
+    
+    EnviarMensaje(1, lateralSI)
+    EnviarMensaje(1, lateralSI)  
+    EnviarMensaje(1, lateralII)
+    EnviarMensaje(-1, lateralII)  
+  
+    EnviarMensaje(2, centralD)
+    
+    EnviarMensaje(2, lateralSD)  
+    EnviarMensaje(1, lateralSD)
+    EnviarMensaje(2, lateralID)
+    EnviarMensaje(-1, lateralID)  
+    
+    primero:= 0
+    max:= -1
+    repetir 2
+      RecibirMensaje(quien, *)
+      si primero = 0
+        primero:= quien
+      si quien = 1
+        RecibirMensaje(flores, centralI)
+      sino
+        RecibirMensaje(flores, centralD)
+      si flores > max
+        max:= flores
+        maxq:= quien
+        
+    Informar(primero)
+    Informar(maxq)
+  fin
+  
+variables
+  centralI, centralD: central
+  lateralSI, lateralII, lateralSD, lateralID: lateral 
+  jefe: Jefazo
+comenzar
+  AsignarArea(centralI, inicio_rci)
+  AsignarArea(centralI, calle_rci)
+  AsignarArea(centralI, deposito)
+  
+  AsignarArea(centralD, inicio_rcd)  
+  AsignarArea(centralD, calle_rcd)
+  AsignarArea(centralD, deposito)
+  
+  AsignarArea(lateralSI, inicio_rsi)  
+  AsignarArea(lateralSI, calle_rsi)
+  AsignarArea(lateralSI, calle_rci)  
+  
+  AsignarArea(lateralII, inicio_rii)
+  AsignarArea(lateralII, calle_rii)
+  AsignarArea(lateralII, calle_rci)  
+    
+  AsignarArea(lateralSD, inicio_rsd)
+  AsignarArea(lateralSD, calle_rsd)
+  AsignarArea(lateralSD, calle_rcd)  
+  
+  AsignarArea(lateralID, inicio_rid)
+  AsignarArea(lateralID, calle_rid)
+  AsignarArea(lateralID, calle_rcd)  
+  
+  AsignarArea(jefe, area_jefe)  
+  
+  Iniciar(centralI, 9, 20)
+  Iniciar(centralD, 31, 20)
+  
+  Iniciar(lateralII, 9, 19)
+  Iniciar(lateralSI, 9, 21)  
+  
+  Iniciar(lateralSD, 31, 21)
+  Iniciar(lateralID, 31, 19)
+  
+  Iniciar(jefe, 20,18)
+fin
